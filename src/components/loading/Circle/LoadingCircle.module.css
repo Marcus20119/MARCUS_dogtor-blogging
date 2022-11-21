@@ -1,5 +1,7 @@
 .dashedLoading {
   position: relative;
+  width: var(--size);
+  height: var(--size);
   width: 30px;
   height: 30px;
 }
@@ -11,6 +13,8 @@
   top: 0;
   left: 0;
   border-radius: 50%;
+  width: var(--size);
+  height: var(--size);
   width: 30px;
   height: 30px;
 }

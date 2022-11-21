@@ -3,18 +3,17 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 import Field from '~/components/field';
 import Label from '~/components/label';
 import { Input, InputTogglePassword } from '~/components/input';
 import Button from '~/components/button';
-import { auth, db } from '~/firebase/firebase-config';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { auth } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 
-const StyledSignUpPage = styled.div`
+const StyledSignInPage = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
@@ -48,18 +47,11 @@ const StyledSignUpPage = styled.div`
 `;
 
 const schema = yup.object({
-  fullname: yup.string().required('Required'),
-  password: yup
-    .string()
-    .required('Required')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'
-    ),
-  email: yup.string().email().required('required'),
+  password: yup.string().required('Required'),
+  email: yup.string().required('required'),
 });
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const {
     control,
     handleSubmit,
@@ -69,34 +61,13 @@ const SignUpPage = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
-  // const { userInfo } = useAuth();
-  // console.log(userInfo);
 
   const navigateTo = useNavigate();
   // Handle submit
   const onSubmitHandler = async data => {
     try {
-      // credentials
-      const cred = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      // Update user profile
-      await updateProfile(auth.currentUser, {
-        displayName: data.fullname,
-      });
-      // Add user to collection
-      await addDoc(collection(db, 'users'), {
-        email: data.email,
-        password: data.password,
-        id: cred.user.uid,
-        fullname: data.fullname,
-      });
-
-      // Reset form
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       reset({
-        fullname: '',
         password: '',
         email: '',
       });
@@ -111,9 +82,8 @@ const SignUpPage = () => {
       console.log(err);
     }
   };
-
   return (
-    <StyledSignUpPage>
+    <StyledSignInPage>
       <div className="small-container">
         <img
           className="sup-dogtor-logo"
@@ -126,10 +96,6 @@ const SignUpPage = () => {
           className="sup-form"
           autoComplete="off"
         >
-          <Field>
-            <Label id="fullname">Fullname</Label>
-            <Input control={control} name="fullname"></Input>
-          </Field>
           <Field>
             <Label id="email">Email Address</Label>
             <Input control={control} name="email"></Input>
@@ -144,12 +110,12 @@ const SignUpPage = () => {
             type="submit"
             isSubmitting={isSubmitting}
           >
-            Sign Up
+            Sign In
           </Button>
         </form>
       </div>
-    </StyledSignUpPage>
+    </StyledSignInPage>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;

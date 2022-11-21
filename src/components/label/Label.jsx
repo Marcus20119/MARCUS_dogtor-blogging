@@ -9,6 +9,12 @@ const LabelStyled = styled.label`
   color: #181818;
 `;
 
+/**
+ *
+ * @param {*} param0
+ * @returns
+ */
+
 const Label = ({ id, children, ...props }) => {
   return (
     <LabelStyled htmlFor={id} {...props}>

@@ -12,7 +12,7 @@ const InputWrapStyled = styled.div`
     border-radius: 8px;
     border: solid 1px transparent;
     background-color: ${props => props.theme.color.skin};
-    padding: ${props => (props.icon ? `8px 36px 8px 12px` : `8px 12px`)};
+    padding: ${props => (props.icon ? `12px 40px 12px 16px` : `12px 16px`)};
     &:focus {
       border: solid 1px ${props => props.theme.color.brown};
       background-color: ${props => props.theme.color.white};

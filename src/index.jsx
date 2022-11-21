@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -19,6 +21,7 @@ root.render(
         <AuthProvider>
           <App />
         </AuthProvider>
+        <ToastContainer />
       </BrowserRouter>
     </ThemeProvider>
   </Fragment>

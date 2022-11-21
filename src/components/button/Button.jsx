@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { LoadingCircle } from '../loading';
 
@@ -6,7 +7,6 @@ const ButtonStyled = styled.button`
   justify-content: center;
   align-items: center;
   padding: 8px 12px;
-  width: ${props => props.width || '100%'};
   border-radius: 8px;
   font-weight: 600;
   font-size: 20px;
@@ -15,6 +15,7 @@ const ButtonStyled = styled.button`
   min-width: fit-content;
   cursor: pointer;
   opacity: 0.9;
+  width: ${props => props.width || '100%'};
   font-family: ${props => props.theme.font.tertiary};
   background-color: ${props =>
     props.backgroundColor || props.theme.color.brown};
@@ -25,6 +26,14 @@ const ButtonStyled = styled.button`
   }
 `;
 
+/**
+ *
+ * @param {*} children - text or an Element inside the button
+ * @param {boolean} disabled - defined the button is disabled or not
+ * @param {boolean} isSubmitting - defined the button is submitting or not
+ * @returns
+ */
+
 const Button = ({ disabled, isSubmitting, children, ...props }) => {
   const child = isSubmitting ? <LoadingCircle /> : children;
   return (
@@ -32,6 +41,12 @@ const Button = ({ disabled, isSubmitting, children, ...props }) => {
       {child}
     </ButtonStyled>
   );
+};
+
+Button.propTypes = {
+  children: PropTypes.any.isRequired,
+  disabled: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
 };
 
 export default Button;
