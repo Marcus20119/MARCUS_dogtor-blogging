@@ -10,9 +10,8 @@ import { Input, InputTogglePassword } from '~/components/input';
 import Button from '~/components/button';
 import { auth, db } from '~/firebase/firebase-config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '~/contexts/authContext';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
 
 const StyledSignUpPage = styled.div`
   position: relative;
@@ -44,6 +43,16 @@ const StyledSignUpPage = styled.div`
     width: 70%;
     min-width: 350px;
     margin-bottom: 28px;
+  }
+  .sup-question {
+    font-weight: 500;
+    font-size: 15px;
+    &-color {
+      color: #f46e45;
+    }
+    &-color:hover {
+      opacity: 0.8;
+    }
   }
 `;
 
@@ -92,6 +101,7 @@ const SignUpPage = () => {
         password: data.password,
         id: cred.user.uid,
         fullname: data.fullname,
+        createdAt: serverTimestamp(),
       });
 
       // Reset form
@@ -101,7 +111,7 @@ const SignUpPage = () => {
         email: '',
       });
       // Navigate to home
-      navigateTo('/');
+      navigateTo('/home');
       toast.success('Sign Up success !', {
         autoClose: 300,
         delay: 100,
@@ -138,9 +148,18 @@ const SignUpPage = () => {
             <Label id="password">Password</Label>
             <InputTogglePassword control={control} name="password" />
           </Field>
+          <div className="sup-question">
+            <span className="sup-question-black">
+              You already have an account?
+            </span>
+            <Link to="/sign-in" className="sup-question-color">
+              {' '}
+              Sign In
+            </Link>
+          </div>
           <Button
             width="350px"
-            style={{ marginTop: '20px', padding: '12px 16px' }}
+            style={{ marginTop: '12px', padding: '12px 16px' }}
             type="submit"
             isSubmitting={isSubmitting}
           >

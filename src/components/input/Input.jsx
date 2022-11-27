@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useController } from 'react-hook-form';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const InputWrapStyled = styled.div`
   position: relative;
@@ -41,6 +42,16 @@ const ErrorStyled = styled.span`
   font-weight: 500;
 `;
 
+/**
+ * @requires
+ * @param {object} control - control from react-hook-form
+ * @param {string} name - name of the input
+ *
+ * @param {string} id
+ * @param {*} icon
+ * @param {string} placeholder
+ */
+
 const Input = ({ control, name, id, icon, placeholder, ...props }) => {
   const {
     field,
@@ -51,7 +62,7 @@ const Input = ({ control, name, id, icon, placeholder, ...props }) => {
       <InputWrapStyled>
         <input
           id={id || name}
-          placeholder={placeholder || `Type your ${name} ...`}
+          placeholder={placeholder || `Enter your ${name} ...`}
           {...field}
           {...props}
         />
@@ -62,6 +73,14 @@ const Input = ({ control, name, id, icon, placeholder, ...props }) => {
       )}
     </Fragment>
   );
+};
+
+Input.propTypes = {
+  control: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  icon: PropTypes.any,
+  placeholder: PropTypes.string,
 };
 
 export { Input };

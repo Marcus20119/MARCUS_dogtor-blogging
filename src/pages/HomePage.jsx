@@ -5,7 +5,11 @@ const HomeStyled = styled.div``;
 
 const HomePage = () => {
   const { userInfo } = useAuth();
-  return <HomeStyled>{userInfo.displayName}</HomeStyled>;
+  return (
+    <HomeStyled>
+      <div className="container">{userInfo.displayName}</div>
+    </HomeStyled>
+  );
 };
 
 export default HomePage;

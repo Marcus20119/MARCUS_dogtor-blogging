@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const LabelStyled = styled.label`
   display: block;
@@ -10,9 +11,9 @@ const LabelStyled = styled.label`
 `;
 
 /**
- *
- * @param {*} param0
- * @returns
+ * @requires
+ * @param {string} id
+ * @param {*} children
  */
 
 const Label = ({ id, children, ...props }) => {
@@ -21,6 +22,11 @@ const Label = ({ id, children, ...props }) => {
       {children}
     </LabelStyled>
   );
+};
+
+Label.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 export default Label;

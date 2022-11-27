@@ -4,14 +4,13 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Field from '~/components/field';
 import Label from '~/components/label';
 import { Input, InputTogglePassword } from '~/components/input';
 import Button from '~/components/button';
 import { auth } from '~/firebase/firebase-config';
-import { useAuth } from '~/contexts/authContext';
 
 const StyledSignInPage = styled.div`
   position: relative;
@@ -22,19 +21,19 @@ const StyledSignInPage = styled.div`
   height: 100vh;
   width: 100vw;
 
-  .sup-dogtor-logo {
+  .sip-dogtor-logo {
     display: block;
     width: 10%;
     min-width: 150px;
   }
-  .sup-title {
+  .sip-title {
     font-size: 32px;
     font-family: ${props => props.theme.font.secondary};
     letter-spacing: 0.7px;
     color: ${props => props.theme.color.brown};
     margin-bottom: 28px;
   }
-  .sup-form {
+  .sip-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +42,16 @@ const StyledSignInPage = styled.div`
     width: 70%;
     min-width: 350px;
     margin-bottom: 28px;
+  }
+  .sip-question {
+    font-weight: 500;
+    font-size: 15px;
+    &-color {
+      color: #f46e45;
+    }
+    &-color:hover {
+      opacity: 0.8;
+    }
   }
 `;
 
@@ -66,16 +75,20 @@ const SignInPage = () => {
   // Handle submit
   const onSubmitHandler = async data => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const cred = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
       reset({
         password: '',
         email: '',
       });
       // Navigate to home
-      navigateTo('/');
-      toast.success('Sign Up success !', {
-        autoClose: 300,
-        delay: 100,
+      navigateTo('/home');
+      toast.success(`Welcome back, ${cred.user.displayName.split(' ')[0]} !`, {
+        autoClose: 1000,
+        delay: 300,
         hideProgressBar: true,
       });
     } catch (err) {
@@ -86,15 +99,15 @@ const SignInPage = () => {
     <StyledSignInPage>
       <div className="small-container">
         <img
-          className="sup-dogtor-logo"
+          className="sip-dogtor-logo"
           src="/imgs/dogtor-logo.png"
           alt="dogtor-logo"
         />
-        <span className="sup-title">Dogtor blogging</span>
+        <span className="sip-title">Dogtor blogging</span>
         <form
           onSubmit={handleSubmit(onSubmitHandler)}
-          className="sup-form"
-          autoComplete="off"
+          className="sip-form"
+          // autoComplete="off"
         >
           <Field>
             <Label id="email">Email Address</Label>
@@ -104,9 +117,18 @@ const SignInPage = () => {
             <Label id="password">Password</Label>
             <InputTogglePassword control={control} name="password" />
           </Field>
+          <div className="sip-question">
+            <span className="sip-question-black">
+              You have not had an account?
+            </span>
+            <Link to="/sign-up" className="sip-question-color">
+              {' '}
+              Register an account
+            </Link>
+          </div>
           <Button
             width="350px"
-            style={{ marginTop: '20px', padding: '12px 16px' }}
+            style={{ marginTop: '12px', padding: '12px 16px' }}
             type="submit"
             isSubmitting={isSubmitting}
           >

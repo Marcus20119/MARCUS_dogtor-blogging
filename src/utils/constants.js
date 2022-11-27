@@ -8,5 +8,6 @@ export const theme = {
     brown: '#8d351a',
     white: '#f9f9f9',
     skin: '#f4e6ca90',
+    black: '#181818',
   },
 };
