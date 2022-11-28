@@ -111,7 +111,7 @@ const SignUpPage = () => {
         email: '',
       });
       // Navigate to home
-      navigateTo('/home');
+      navigateTo('/latest');
       toast.success('Sign Up success !', {
         autoClose: 300,
         delay: 100,

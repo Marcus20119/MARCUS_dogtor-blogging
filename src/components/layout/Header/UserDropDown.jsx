@@ -1,6 +1,7 @@
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserAvatar } from '~/components/user';
 import { useAuth } from '~/contexts/authContext';
 import { auth } from '~/firebase/firebase-config';
 
@@ -27,6 +28,7 @@ const UserDropDownStyled = styled.div`
   transform: scale(0);
   transform-origin: 90% 0;
   animation: zoomOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 666;
 
   .userDropDown-header {
     display: flex;
@@ -34,22 +36,6 @@ const UserDropDownStyled = styled.div`
     align-items: center;
     justify-content: center;
 
-    &__avatar {
-      display: block;
-      height: 70px;
-      width: 70px;
-      border-radius: 50%;
-      border: solid 1px ${props => props.theme.color.brown};
-      overflow: hidden;
-
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
-      }
-    }
     &__name {
       font-weight: 500;
     }
@@ -116,9 +102,7 @@ const UserDropDown = ({ handleHide }) => {
   return (
     <UserDropDownStyled>
       <div className="userDropDown-header">
-        <div className="userDropDown-header__avatar">
-          <img src="/imgs/user.jpg" alt="user" />
-        </div>
+        <UserAvatar src="/imgs/user.jpg" alt="user-avatar" size="70px" />
         <span className="userDropDown-header__name">
           {userInfo.displayName}
         </span>

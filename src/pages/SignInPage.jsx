@@ -90,7 +90,7 @@ const SignInPage = () => {
         email: '',
       });
       // Navigate to home
-      navigateTo('/home');
+      navigateTo('/latest');
       toast.success(`Welcome back, ${cred.user.displayName.split(' ')[0]} !`, {
         autoClose: 1000,
         delay: 300,
