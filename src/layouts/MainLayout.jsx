@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header } from '~/components/layout';
 
 const MainLayoutStyled = styled.div`
-  width: 1180px;
+  width: 1280px;
   margin: 0 auto;
 `;
 

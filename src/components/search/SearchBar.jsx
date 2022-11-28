@@ -9,6 +9,7 @@ const SearchBarStyled = styled.div`
   width: ${props => props.width || '265px'};
   background-color: #fff;
   overflow: hidden;
+  border-radius: 666px;
 
   input {
     display: block;
@@ -16,22 +17,23 @@ const SearchBarStyled = styled.div`
     width: 100%;
     padding: 8px 40px 8px 16px;
     border: solid 1px #cfcfcf;
-    border-radius: 8px;
+    border-radius: 666px;
   }
   input::placeholder {
     color: #cfcfcf;
   }
   input:focus {
-    border: solid 1px ${props => props.theme.color.black};
+    border: solid 1px ${props => props.theme.color.brown};
   }
   input:focus + i {
-    color: ${props => props.theme.color.black};
+    color: ${props => props.theme.color.brown};
   }
   i {
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+    font-size: 18px;
     padding: 0 12px;
     color: #cfcfcf;
   }
@@ -44,7 +46,6 @@ const SearchBarStyled = styled.div`
  */
 
 const SearchBar = ({ name = '', placeholder = '', ...props }) => {
-  console.log('again');
   return (
     <SearchBarStyled {...props}>
       <input type="text" placeholder={placeholder} name={name} />

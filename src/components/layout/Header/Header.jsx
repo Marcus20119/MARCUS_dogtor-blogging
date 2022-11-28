@@ -87,7 +87,6 @@ const Header = () => {
   const navigateTo = useNavigate();
   const { userInfo } = useAuth();
   const { show, setShow, nodeRef } = useClickOutSide();
-  console.log('show', show);
 
   return (
     <HeaderStyled>

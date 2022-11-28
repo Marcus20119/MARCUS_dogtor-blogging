@@ -53,6 +53,11 @@ const StyledSignInPage = styled.div`
       opacity: 0.8;
     }
   }
+  .sip-error {
+    font-size: 14px;
+    color: red;
+    font-weight: 500;
+  }
 `;
 
 const schema = yup.object({
@@ -93,6 +98,17 @@ const SignInPage = () => {
       });
     } catch (err) {
       console.log(err);
+      reset({
+        password: '',
+        email: '',
+      });
+      toast.error(
+        `Can not sign in because of Error: ${err.code.split('/')[1]}`,
+        {
+          autoClose: 2000,
+          delay: 300,
+        }
+      );
     }
   };
   return (

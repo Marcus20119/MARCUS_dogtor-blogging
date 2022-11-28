@@ -11,7 +11,6 @@ const AuthProvider = props => {
   const value = { userInfo, setUserInfo };
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
-      console.log('auth change');
       if (currentUser) {
         setUserInfo(currentUser);
       } else {
