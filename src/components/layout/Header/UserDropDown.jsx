@@ -1,7 +1,7 @@
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserAvatar } from '~/components/user';
+import { UserAvatar } from '~/components/module/user';
 import { useAuth } from '~/contexts/authContext';
 import { auth } from '~/firebase/firebase-config';
 
@@ -79,10 +79,17 @@ const UserDropDownStyled = styled.div`
   }
 `;
 
-const UserDropDown = ({ handleHide }) => {
+const UserDropDown = ({ setShow }) => {
   const { userInfo } = useAuth();
   const navigateTo = useNavigate();
   const userItems = [
+    {
+      name: 'Write New Post',
+      iconClass: 'bx bx-edit',
+      onClick() {
+        navigateTo('/user/add-post');
+      },
+    },
     {
       name: 'Settings & privacy',
       iconClass: 'bx bxs-cog',
@@ -95,6 +102,7 @@ const UserDropDown = ({ handleHide }) => {
       iconClass: 'bx bx-log-out',
       onClick() {
         signOut(auth);
+        navigateTo('/latest');
       },
     },
   ];
@@ -102,7 +110,12 @@ const UserDropDown = ({ handleHide }) => {
   return (
     <UserDropDownStyled>
       <div className="userDropDown-header">
-        <UserAvatar src="/imgs/user.jpg" alt="user-avatar" size="70px" />
+        <UserAvatar
+          src="/imgs/user.jpg"
+          alt="user-avatar"
+          size="70px"
+          style={{ cursor: 'default' }}
+        />
         <span className="userDropDown-header__name">
           {userInfo.displayName}
         </span>
@@ -113,7 +126,10 @@ const UserDropDown = ({ handleHide }) => {
           <div
             key={`UserDropDown-${index}`}
             className="userDropDown-tabs__item"
-            onClick={item.onClick}
+            onClick={() => {
+              item.onClick();
+              setShow(false);
+            }}
           >
             <i className={`${item.iconClass}`}></i>
             <span>{item.name}</span>

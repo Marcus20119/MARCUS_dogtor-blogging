@@ -4,7 +4,6 @@ import { useAuth } from '~/contexts/authContext';
 
 const LatestStyled = styled.div`
   width: 100%;
-  padding: 24px 0;
 `;
 
 const LatestPage = () => {

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { useController } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const InputWrapStyled = styled.div`
@@ -12,11 +12,19 @@ const InputWrapStyled = styled.div`
     width: 100%;
     border-radius: 8px;
     border: solid 1px transparent;
-    background-color: ${props => props.theme.color.skin};
+    background-color: ${props =>
+      props.type === 'secondary' ? '#cccccc50' : props.theme.color.skin};
     padding: ${props => (props.icon ? `12px 40px 12px 16px` : `12px 16px`)};
     &:focus {
       border: solid 1px ${props => props.theme.color.brown};
       background-color: ${props => props.theme.color.white};
+      ${props =>
+        props.type === 'secondary' &&
+        css`
+          background-color: ${props => props.theme.color.skin};
+          box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
+          border: solid 1px ${props => props.theme.color.brown};
+        `};
     }
     &::placeholder {
       opacity: 0.7;
@@ -52,14 +60,14 @@ const ErrorStyled = styled.span`
  * @param {string} placeholder
  */
 
-const Input = ({ control, name, id, icon, placeholder, ...props }) => {
+const Input = ({ control, name, id, icon, placeholder, type, ...props }) => {
   const {
     field,
     formState: { errors },
   } = useController({ name, control, defaultValue: '' });
   return (
     <Fragment>
-      <InputWrapStyled>
+      <InputWrapStyled type={type}>
         <input
           id={id || name}
           placeholder={placeholder || `Enter your ${name} ...`}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from '~/components/button';
 import { SearchBar } from '~/components/search';
-import { UserAvatar } from '~/components/user';
+import { UserAvatar } from '~/components/module/user';
 import { useAuth } from '~/contexts/authContext';
 import { useClickOutSide } from '~/hooks';
 import UserDropDown from './UserDropDown';
@@ -61,7 +61,7 @@ const HeaderMainSection = () => {
     <HeaderMainSectionStyled>
       <div
         className="headerMainSection-left"
-        onClick={() => navigateTo('/home')}
+        onClick={() => navigateTo('/latest')}
       >
         <img
           className="headerMainSection-left__logo"
@@ -79,14 +79,13 @@ const HeaderMainSection = () => {
               alt="user-avatar"
               onClick={() => setShow(!show)}
             />
-            {show && <UserDropDown />}
+            {show && <UserDropDown setShow={setShow} />}
           </div>
         ) : (
           <Button
             type="small"
             width="fit-content"
             height="100%"
-            // backgroundColor="#c1642f"
             onClick={() => navigateTo('/sign-in')}
             style={{ borderRadius: '666px' }}
           >

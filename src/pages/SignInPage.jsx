@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 
-import Field from '~/components/field';
-import Label from '~/components/label';
-import { Input, InputTogglePassword } from '~/components/input';
+import Field from '~/components/form/field';
+import Label from '~/components/form/label';
+import { Input, InputTogglePassword } from '~/components/form/input';
 import Button from '~/components/button';
 import { auth } from '~/firebase/firebase-config';
 

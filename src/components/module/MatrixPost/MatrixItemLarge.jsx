@@ -2,11 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MatrixItemLargeStyled = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   width: 100%;
+  cursor: pointer;
 
   .matrixItemLarge {
     &-img {
@@ -55,6 +57,32 @@ const MatrixItemLargeStyled = styled.div`
       &__author {
       }
     }
+    &-readNow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+
+      svg {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 36%;
+      }
+    }
+  }
+  &:hover {
+    .matrixItemLarge-readNow {
+      visibility: visible;
+      opacity: 0.8;
+    }
   }
 `;
 
@@ -64,6 +92,7 @@ const MatrixItemLarge = ({ className, data, ...rest }) => {
     <MatrixItemLargeStyled
       className={className}
       onClick={() => navigateTo(data.path)}
+      {...rest}
     >
       <div className="matrixItemLarge-img">
         <img src={data.img} alt={data.title} />
@@ -85,6 +114,22 @@ const MatrixItemLarge = ({ className, data, ...rest }) => {
         </svg>
 
         <span className="matrixItemLarge-info__author">{data.author}</span>
+      </div>
+      <div className="matrixItemLarge-readNow">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.25}
+          stroke="#732b16"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+            fill="#732b1630"
+          />
+        </svg>
       </div>
     </MatrixItemLargeStyled>
   );

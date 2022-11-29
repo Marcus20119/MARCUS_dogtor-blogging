@@ -26,4 +26,7 @@ export const GlobalClasses = css`
     align-items: center;
     width: 60%;
   }
+  .hidden {
+    display: none !important;
+  }
 `;

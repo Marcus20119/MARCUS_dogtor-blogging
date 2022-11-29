@@ -1,1 +1,2 @@
-export * from './MatrixPost.jsx';
+export * from './MatrixPost';
+export * from './user';

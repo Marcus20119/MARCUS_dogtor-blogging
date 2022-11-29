@@ -17,7 +17,7 @@ const AuthProvider = props => {
         setUserInfo('');
       }
     });
-  });
+  }, []);
   return <AuthContext.Provider value={value} {...props}></AuthContext.Provider>;
 };
 

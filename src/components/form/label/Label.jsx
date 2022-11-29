@@ -8,6 +8,7 @@ const LabelStyled = styled.label`
   line-height: 24px;
   letter-spacing: 0.2px;
   color: #181818;
+  font-family: ${props => props.theme.font.tertiary};
 `;
 
 /**

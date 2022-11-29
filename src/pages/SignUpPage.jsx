@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 
-import Field from '~/components/field';
-import Label from '~/components/label';
-import { Input, InputTogglePassword } from '~/components/input';
+import Field from '~/components/form/field';
+import Label from '~/components/form/label';
+import { Input, InputTogglePassword } from '~/components/form/input';
 import Button from '~/components/button';
 import { auth, db } from '~/firebase/firebase-config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';

@@ -1,7 +1,9 @@
+import { Fragment } from 'react';
 import styled from 'styled-components';
 import MatrixItemLarge from './MatrixItemLarge';
+import MatrixItemSmall from './MatrixItemSmall';
 
-const data = [
+const posts = [
   {
     title: 'This is a post title This is a post title',
     path: '/latest',
@@ -50,9 +52,6 @@ const data = [
 ];
 
 const MatrixPostStyled = styled.div`
-  width: 1280px;
-  margin: 0 auto;
-
   .matrixPost {
     display: grid;
     grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -92,17 +91,21 @@ const MatrixPost = () => {
   return (
     <MatrixPostStyled>
       <div className="matrixPost">
-        <MatrixItemLarge
-          className="matrixPostChild-1"
-          data={data[0]}
-        ></MatrixItemLarge>
-        <MatrixItemLarge
-          className="matrixPostChild-2"
-          data={data[1]}
-        ></MatrixItemLarge>
-        <div className="matrixPostChild-3">sdf</div>
-        <div className="matrixPostChild-4">sdf</div>
-        <div className="matrixPostChild-5">sdf</div>
+        {posts.map((post, index) => (
+          <Fragment key={`matrixPost-${index}`}>
+            {index <= 1 ? (
+              <MatrixItemLarge
+                className={`matrixPostChild-${index + 1}`}
+                data={post}
+              ></MatrixItemLarge>
+            ) : (
+              <MatrixItemSmall
+                className={`matrixPostChild-${index + 1}`}
+                data={post}
+              ></MatrixItemSmall>
+            )}
+          </Fragment>
+        ))}
       </div>
     </MatrixPostStyled>
   );

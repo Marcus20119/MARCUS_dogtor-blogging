@@ -1,5 +1,7 @@
+import { Fragment, useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const tabs = [
   {
@@ -14,8 +16,18 @@ const tabs = [
 
 const HeaderNavSectionStyled = styled.div`
   width: 100%;
-  background-color: rgba(90, 33, 16, 0.9);
+  background-color: #693626;
   padding: 10px 0;
+  ${props =>
+    props.isFixed &&
+    css`
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 665;
+      background-color: #693626;
+    `};
 
   .headerNavSection {
     display: flex;
@@ -56,44 +68,67 @@ const HeaderNavSectionStyled = styled.div`
     text-shadow: 0 0 1px ${props => props.theme.color.brown};
   }
 `;
+const BehindFixed = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: ${props => props.theme.color.white};
+`;
 
 const HeaderNavSection = () => {
+  const [isFixed, setIsFixed] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 86) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <HeaderNavSectionStyled>
-      <div className="headerNavSection">
-        <div className="headerNavSection__tabs-wrap">
-          {tabs.map((tab, index) => (
-            <NavLink
-              to={tab.path}
-              key={`HeaderNavSectionTab-${index}`}
-              className={({ isActive }) =>
-                isActive
-                  ? 'headerNavSection__tab headerNavSection__tab--active'
-                  : 'headerNavSection__tab'
-              }
+    <Fragment>
+      <HeaderNavSectionStyled isFixed={isFixed}>
+        <div className="headerNavSection">
+          <div className="headerNavSection__tabs-wrap">
+            {tabs.map((tab, index) => (
+              <NavLink
+                to={tab.path}
+                key={`HeaderNavSectionTab-${index}`}
+                className={({ isActive }) =>
+                  isActive
+                    ? 'headerNavSection__tab headerNavSection__tab--active'
+                    : 'headerNavSection__tab'
+                }
+              >
+                {tab.name}
+              </NavLink>
+            ))}
+          </div>
+          <div className="headerNavSection__menu-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
             >
-              {tab.name}
-            </NavLink>
-          ))}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </div>
         </div>
-        <div className="headerNavSection__menu-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </div>
-      </div>
-    </HeaderNavSectionStyled>
+      </HeaderNavSectionStyled>
+      {isFixed && <BehindFixed />}
+    </Fragment>
   );
 };
 
