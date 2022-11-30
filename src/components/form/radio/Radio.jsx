@@ -1,5 +1,6 @@
 import { useController, useWatch } from 'react-hook-form';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const RadioStyled = styled.div`
   display: flex;
@@ -36,20 +37,24 @@ const RadioStyled = styled.div`
     background-color: #cccccc50;
     border: solid 1px #cccccc;
   }
+
   .radio-item-wrap:nth-child(1)
     .radio-item_check:checked
     + .radio-item_check-alternative {
-    background-color: ${props => props.theme.color.skin};
+    background-color: ${props =>
+      props.colors ? props.colors[0] : props.theme.color.brown};
   }
   .radio-item-wrap:nth-child(2)
     .radio-item_check:checked
     + .radio-item_check-alternative {
-    background-color: ${props => props.theme.color.brown};
+    background-color: ${props =>
+      props.colors ? props.colors[1] : props.theme.color.brown};
   }
   .radio-item-wrap:nth-child(3)
     .radio-item_check:checked
     + .radio-item_check-alternative {
-    background-color: ${props => props.theme.color.black};
+    background-color: ${props =>
+      props.colors ? props.colors[2] : props.theme.color.brown};
   }
 
   .radio-item_label {
@@ -64,7 +69,14 @@ const ErrorStyled = styled.span`
   font-weight: 500;
 `;
 
-const Radio = ({ name, control, label, radios, ...props }) => {
+/**
+ * @requires
+ * @param {string} name
+ * @param {object} control - control object from react-hook-form
+ * @param {array} radios - Array of the radios
+ */
+
+const Radio = ({ name, control, radios, colors, ...props }) => {
   const {
     field,
     formState: { errors },
@@ -73,7 +85,7 @@ const Radio = ({ name, control, label, radios, ...props }) => {
   const watchRadioValue = useWatch({ name, control });
 
   return (
-    <RadioStyled>
+    <RadioStyled colors={colors}>
       <div className="radio-wrap">
         {radios.map(radio => (
           <label key={radio} className="radio-item-wrap">
@@ -98,4 +110,10 @@ const Radio = ({ name, control, label, radios, ...props }) => {
   );
 };
 
-export default Radio;
+Radio.propTypes = {
+  name: PropTypes.string.isRequired,
+  control: PropTypes.object.isRequired,
+  radios: PropTypes.array.isRequired,
+};
+
+export { Radio };

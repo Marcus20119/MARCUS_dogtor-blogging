@@ -19,7 +19,7 @@ const SelectStyled = styled.div`
     border-radius: 8px;
     border: solid 1px transparent;
     background-color: ${props =>
-      props.type === 'secondary' ? '#cccccc50' : props.theme.color.skin};
+      props.secondary ? '#cccccc50' : props.theme.color.skin};
     cursor: pointer;
 
     i {
@@ -78,7 +78,7 @@ const ErrorStyled = styled.span`
 /**
  * @param {Function} setValue
  * @param {Function} setError
- * @param {array} type - ['primary', 'secondary']
+ * @param {boolean} secondary
  * @requires
  * @param {string} name
  * @param {object} control - control object from react-hook-form
@@ -92,7 +92,7 @@ const Select = ({
   setValue,
   setError,
   defaultOption = 'Select one option...',
-  type,
+  secondary,
   options,
   ...rest
 }) => {
@@ -110,7 +110,7 @@ const Select = ({
     name,
   });
   return (
-    <SelectStyled type={type} {...rest}>
+    <SelectStyled secondary={secondary} {...rest}>
       <div ref={selectRef} className="select-wrap">
         <div className="select-default">
           <p>{selectedValue}</p>

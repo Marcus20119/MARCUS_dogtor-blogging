@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Field from '~/components/form/field';
 import { Input } from '~/components/form/input';
 import Label from '~/components/form/label';
-import Radio from '~/components/form/radio/Radio';
+import { Radio } from '~/components/form/radio';
 import { Select } from '~/components/form/select';
 
 const AddPostPageStyled = styled.div`
@@ -62,6 +62,7 @@ const AddPostPage = () => {
               control={control}
               label="Gender"
               radios={['Male', 'Female', 'Other']}
+              colors={['green', 'yellow', 'red']}
             />
           </Field>
           <Field>
@@ -81,7 +82,7 @@ const AddPostPage = () => {
                 'Back-end developer',
                 'UI, UX designer',
               ]}
-              type="secondary"
+              secondary
             ></Select>
           </Field>
         </div>

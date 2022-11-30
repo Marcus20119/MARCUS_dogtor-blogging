@@ -51,14 +51,13 @@ const ErrorStyled = styled.span`
 `;
 
 /**
- * @requires
- * @param {object} control - control from react-hook-form
- * @param {string} name - name of the input
- *
  * @param {string} id
  * @param {*} icon
  * @param {string} placeholder
  * @param {boolean} secondary
+ * @requires
+ * @param {object} control - control from react-hook-form
+ * @param {string} name - name of the input
  */
 
 const Input = ({
