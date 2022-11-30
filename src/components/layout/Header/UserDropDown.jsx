@@ -19,6 +19,7 @@ const UserDropDownStyled = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
+  min-width: 333px;
   padding: 12px 24px;
   background-color: ${props => props.theme.color.white};
   box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%),

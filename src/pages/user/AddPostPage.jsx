@@ -49,11 +49,11 @@ const AddPostPage = () => {
         <div className="addPostPage-form__filed-wrap">
           <Field>
             <Label id="title">Title</Label>
-            <Input control={control} name="title" type="secondary"></Input>
+            <Input control={control} name="title" secondary></Input>
           </Field>
           <Field>
             <Label id="slug">Slug</Label>
-            <Input control={control} name="slug" type="secondary"></Input>
+            <Input control={control} name="slug" secondary></Input>
           </Field>
           <Field>
             <Label id="status">Status</Label>
@@ -66,7 +66,7 @@ const AddPostPage = () => {
           </Field>
           <Field>
             <Label id="author">Author</Label>
-            <Input control={control} name="author" type="secondary"></Input>
+            <Input control={control} name="author" secondary></Input>
           </Field>
           <Field>
             <Label id="category">Category</Label>

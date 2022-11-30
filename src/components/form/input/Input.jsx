@@ -13,13 +13,13 @@ const InputWrapStyled = styled.div`
     border-radius: 8px;
     border: solid 1px transparent;
     background-color: ${props =>
-      props.type === 'secondary' ? '#cccccc50' : props.theme.color.skin};
+      props.secondary ? '#cccccc50' : props.theme.color.skin};
     padding: ${props => (props.icon ? `12px 40px 12px 16px` : `12px 16px`)};
     &:focus {
       border: solid 1px ${props => props.theme.color.brown};
       background-color: ${props => props.theme.color.white};
       ${props =>
-        props.type === 'secondary' &&
+        props.secondary &&
         css`
           background-color: ${props => props.theme.color.skin};
           box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
@@ -58,16 +58,25 @@ const ErrorStyled = styled.span`
  * @param {string} id
  * @param {*} icon
  * @param {string} placeholder
+ * @param {boolean} secondary
  */
 
-const Input = ({ control, name, id, icon, placeholder, type, ...props }) => {
+const Input = ({
+  control,
+  name,
+  id,
+  icon,
+  placeholder,
+  secondary,
+  ...props
+}) => {
   const {
     field,
     formState: { errors },
   } = useController({ name, control, defaultValue: '' });
   return (
     <Fragment>
-      <InputWrapStyled type={type}>
+      <InputWrapStyled secondary={secondary}>
         <input
           id={id || name}
           placeholder={placeholder || `Enter your ${name} ...`}
@@ -89,6 +98,7 @@ Input.propTypes = {
   id: PropTypes.string,
   icon: PropTypes.any,
   placeholder: PropTypes.string,
+  secondary: PropTypes.bool,
 };
 
 export { Input };
