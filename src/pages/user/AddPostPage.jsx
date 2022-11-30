@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Field from '~/components/form/field';
 import { Input } from '~/components/form/input';
 import Label from '~/components/form/label';
+import Radio from '~/components/form/radio/Radio';
 import { Select } from '~/components/form/select';
 
 const AddPostPageStyled = styled.div`
@@ -56,7 +57,12 @@ const AddPostPage = () => {
           </Field>
           <Field>
             <Label id="status">Status</Label>
-            <Input control={control} name="status" type="secondary"></Input>
+            <Radio
+              name="gender"
+              control={control}
+              label="Gender"
+              radios={['Male', 'Female', 'Other']}
+            />
           </Field>
           <Field>
             <Label id="author">Author</Label>

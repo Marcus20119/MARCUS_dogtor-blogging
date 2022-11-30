@@ -1,5 +1,6 @@
 import { useController, useWatch } from 'react-hook-form';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { useSelect } from '~/hooks';
 
 const SelectStyled = styled.div`
@@ -74,6 +75,17 @@ const ErrorStyled = styled.span`
   font-weight: 500;
 `;
 
+/**
+ * @param {Function} setValue
+ * @param {Function} setError
+ * @param {array} type - ['primary', 'secondary']
+ * @requires
+ * @param {string} name
+ * @param {object} control - control object from react-hook-form
+ * @param {string} defaultOption - placeholder of the selection
+ * @param {array} options - Array of the options
+ */
+
 const Select = ({
   name,
   control,
@@ -82,6 +94,7 @@ const Select = ({
   defaultOption = 'Select one option...',
   type,
   options,
+  ...rest
 }) => {
   const {
     formState: { errors },
@@ -97,7 +110,7 @@ const Select = ({
     name,
   });
   return (
-    <SelectStyled type={type}>
+    <SelectStyled type={type} {...rest}>
       <div ref={selectRef} className="select-wrap">
         <div className="select-default">
           <p>{selectedValue}</p>
@@ -115,6 +128,16 @@ const Select = ({
       )}
     </SelectStyled>
   );
+};
+
+Select.propTypes = {
+  name: PropTypes.string.isRequired,
+  control: PropTypes.object.isRequired,
+  setValue: PropTypes.func,
+  setError: PropTypes.func,
+  defaultOption: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['primary', 'secondary']),
+  options: PropTypes.array.isRequired,
 };
 
 export { Select };
