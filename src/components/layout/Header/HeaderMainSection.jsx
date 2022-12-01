@@ -83,7 +83,7 @@ const HeaderMainSection = () => {
           </div>
         ) : (
           <Button
-            type="small"
+            btnStyle="small"
             width="fit-content"
             height="100%"
             onClick={() => navigateTo('/sign-in')}

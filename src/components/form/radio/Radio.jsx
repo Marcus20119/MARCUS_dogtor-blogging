@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 
 const RadioStyled = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 50px;
   align-items: center;
 
   .radio-wrap {
     display: flex;
     width: 100%;
-    gap: 12px;
+    height: 50px;
+    gap: 24px;
   }
   .radio-item-wrap {
     display: flex;
@@ -20,12 +21,11 @@ const RadioStyled = styled.div`
   }
   .radio-item_check-wrap {
     position: relative;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
   .radio-item_check {
     opacity: 0;
-    visibility: hidden;
   }
   .radio-item_check-alternative {
     position: absolute;
@@ -67,6 +67,7 @@ const ErrorStyled = styled.span`
   line-height: 20px;
   color: red;
   font-weight: 500;
+  margin-right: auto;
 `;
 
 /**
@@ -83,6 +84,7 @@ const Radio = ({ name, control, radios, colors, ...props }) => {
   } = useController({ name, control, defaultValue: '' });
 
   const watchRadioValue = useWatch({ name, control });
+  console.log('name', name);
 
   return (
     <RadioStyled colors={colors}>

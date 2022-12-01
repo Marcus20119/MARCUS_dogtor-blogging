@@ -48,9 +48,10 @@ const SelectStyled = styled.div`
     border-radius: 8px;
     overflow: hidden;
     animation: increaseHeight 1s ease;
-    background-color: ${props => props.theme.color.skin};
+    background-color: #f6eede;
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
     border: solid 1px ${props => props.theme.color.brown};
+    z-index: 100;
 
     li {
       padding: 6px 8px;

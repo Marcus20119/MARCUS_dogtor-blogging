@@ -6,10 +6,15 @@ const ButtonStyled = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 20px;
+  padding: ${props => props.padding || '8px 20px'};
   border-radius: 8px;
   font-weight: 600;
-  font-size: ${props => (props.type === 'small' ? '16px' : '20px')};
+  font-size: ${props =>
+    props.btnStyle === 'small'
+      ? '16px'
+      : props.btnStyle === 'medium'
+      ? '18px'
+      : '20px'};
   letter-spacing: 1px;
   margin: 0 auto;
   min-width: fit-content;
