@@ -64,54 +64,33 @@ const AddPostPage = () => {
   });
   const [file, setFile] = useState({});
 
-  // const onSubmitHandler = async data => {
-  //   data.slug = slugify(data.slug || data.title);
-  //   data.status = postStatus[data.status.toUpperCase()];
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       resolve();
-  //       console.log(data);
-  //       // handleReset();
-  //     }, 2000);
-  //   });
-  // };
-  const onSubmitHandler = async data => {
-    data.slug = slugify(data.slug || data.title);
-    data.status = postStatus[data.status.toUpperCase()];
+  const handleUploadImage = () => {
     const storage = getStorage();
     const storageRef = ref(storage, 'images/' + file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+    let downloadURL = '';
+    // Upload image
     uploadTask.on(
       'state_changed',
-      snapshot => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-          default:
-            console('default case');
-        }
-      },
+      // Show progress
+      snapshot => {},
       error => {
         console.log(error);
       },
       async () => {
         // Upload completed successfully, now we can get the download URL
-        // getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        //   console.log('File available at', downloadURL);
-        // });
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        console.log('File available at', downloadURL);
+        downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        console.log('downloadURL', downloadURL);
       }
     );
+  };
+
+  const onSubmitHandler = async data => {
+    // Custom value
+    data.slug = slugify(data.slug || data.title);
+    data.status = postStatus[data.status.toUpperCase()];
+
+    handleUploadImage();
   };
   return (
     <AddPostPageStyled>
@@ -160,11 +139,13 @@ const AddPostPage = () => {
               control={control}
               setValue={setValue}
               setError={setError}
-              defaultOption="Select one job"
+              defaultOption="Select a category"
               options={[
-                'Front-end developer',
-                'Back-end developer',
-                'UI, UX designer',
+                'Pet Health',
+                'Mental Health',
+                'Life style',
+                'Sharing',
+                'Other',
               ]}
               secondary
             ></Select>

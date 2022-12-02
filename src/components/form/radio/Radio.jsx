@@ -84,7 +84,6 @@ const Radio = ({ name, control, radios, colors, ...props }) => {
   } = useController({ name, control, defaultValue: '' });
 
   const watchRadioValue = useWatch({ name, control });
-  console.log('name', name);
 
   return (
     <RadioStyled colors={colors}>
