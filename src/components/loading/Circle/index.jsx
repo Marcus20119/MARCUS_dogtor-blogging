@@ -1,5 +1,10 @@
 import styles from './LoadingCircle.module.css';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
+const LoadingCircleStyled = styled.div`
+  --size: ${props => `${props.size} !important` || '30px'};
+`;
 
 /**
  *
@@ -8,10 +13,10 @@ import PropTypes from 'prop-types';
 
 const LoadingCircle = ({ size }) => {
   return (
-    <div
+    <LoadingCircleStyled
       className={styles.dashedLoading}
-      style={{ '--size': `${size} !important` }}
-    ></div>
+      size={size}
+    ></LoadingCircleStyled>
   );
 };
 

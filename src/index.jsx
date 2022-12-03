@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { theme } from './utils/constants';
 import { GlobalStyles } from './styles/GlobalStyles';
 import AuthProvider from './contexts/authContext';
+import FirebaseProvider from './contexts/firebaseContext';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -18,9 +19,11 @@ root.render(
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <FirebaseProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </FirebaseProvider>
         <ToastContainer />
       </BrowserRouter>
     </ThemeProvider>

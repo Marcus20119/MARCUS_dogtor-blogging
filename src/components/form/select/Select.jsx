@@ -109,6 +109,7 @@ const Select = ({
     setValue,
     setError,
     name,
+    options,
   });
   return (
     <SelectStyled secondary={secondary} {...rest}>

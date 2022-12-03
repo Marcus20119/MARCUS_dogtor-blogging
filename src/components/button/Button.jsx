@@ -40,10 +40,14 @@ const ButtonStyled = styled.button`
  * @returns
  */
 
-const Button = ({ disabled, isSubmitting, children, ...props }) => {
-  const child = isSubmitting ? <LoadingCircle /> : children;
+const Button = ({ disabled, isSubmitting, children, btnStyle, ...props }) => {
+  const child = isSubmitting ? <LoadingCircle size="27px" /> : children;
   return (
-    <ButtonStyled disabled={disabled || isSubmitting} {...props}>
+    <ButtonStyled
+      disabled={disabled || isSubmitting}
+      btnStyle={btnStyle}
+      {...props}
+    >
       {child}
     </ButtonStyled>
   );
@@ -53,6 +57,7 @@ Button.propTypes = {
   children: PropTypes.any.isRequired,
   disabled: PropTypes.bool,
   isSubmitting: PropTypes.bool,
+  btnStyle: PropTypes.oneOf(['large', 'medium', 'small']),
 };
 
 export default Button;

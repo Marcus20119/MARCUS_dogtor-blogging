@@ -18,6 +18,10 @@ import Label from '~/components/form/label';
 import { Radio } from '~/components/form/radio';
 import { Select } from '~/components/form/select';
 import { postStatus } from '~/utils/constants';
+import { useFirebase } from '~/contexts/firebaseContext';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '~/firebase/firebase-config';
+import { useAuth } from '~/contexts/authContext';
 
 const AddPostPageStyled = styled.div`
   width: 100%;
@@ -51,6 +55,8 @@ const schema = yup.object({
 });
 
 const AddPostPage = () => {
+  const { categoriesName } = useFirebase();
+  const { userInfo } = useAuth();
   const {
     control,
     handleSubmit,
@@ -64,33 +70,53 @@ const AddPostPage = () => {
   });
   const [file, setFile] = useState({});
 
-  const handleUploadImage = () => {
-    const storage = getStorage();
-    const storageRef = ref(storage, 'images/' + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    let downloadURL = '';
-    // Upload image
-    uploadTask.on(
-      'state_changed',
-      // Show progress
-      snapshot => {},
-      error => {
-        console.log(error);
-      },
-      async () => {
-        // Upload completed successfully, now we can get the download URL
-        downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        console.log('downloadURL', downloadURL);
-      }
-    );
+  const handleUploadImage = async () => {
+    return new Promise(function (resolve, reject) {
+      const storage = getStorage();
+      const storageRef = ref(storage, 'images/' + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      let downloadURL = '';
+      // Upload image
+      uploadTask.on(
+        'state_changed',
+        // Show progress
+        snapshot => {},
+        error => {
+          console.log(error);
+          reject();
+        },
+        async () => {
+          // Upload completed successfully, now we can get the download URL
+          downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
   };
 
   const onSubmitHandler = async data => {
     // Custom value
-    data.slug = slugify(data.slug || data.title);
-    data.status = postStatus[data.status.toUpperCase()];
-
-    handleUploadImage();
+    try {
+      const { image, ...cloneData } = data;
+      cloneData.slug = slugify(data.slug || data.title);
+      cloneData.status = postStatus[data.status.toUpperCase()];
+      cloneData.downloadURl = await handleUploadImage();
+      await addDoc(collection(db, 'posts'), {
+        ...cloneData,
+        userId: userInfo.uid,
+      });
+      console.log('success');
+    } catch (err) {
+      console.log(err);
+    }
+    reset({
+      title: '',
+      image: '',
+      category: '',
+      author: '',
+      slug: '',
+      status: '',
+    });
   };
   return (
     <AddPostPageStyled>
@@ -140,13 +166,7 @@ const AddPostPage = () => {
               setValue={setValue}
               setError={setError}
               defaultOption="Select a category"
-              options={[
-                'Pet Health',
-                'Mental Health',
-                'Life style',
-                'Sharing',
-                'Other',
-              ]}
+              options={categoriesName}
               secondary
             ></Select>
           </Field>
@@ -158,10 +178,11 @@ const AddPostPage = () => {
         </div>
         <Button
           type="submit"
-          width="fit-content"
+          width="151px"
           padding="10px 32px"
           btnStyle="medium"
           style={{ margin: '0 0 0 auto' }}
+          isSubmitting={isSubmitting}
         >
           Add Post
         </Button>

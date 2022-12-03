@@ -2,8 +2,6 @@
   position: relative;
   width: var(--size);
   height: var(--size);
-  width: 30px;
-  height: 30px;
 }
 
 .dashedLoading:after,
@@ -15,8 +13,6 @@
   border-radius: 50%;
   width: var(--size);
   height: var(--size);
-  width: 30px;
-  height: 30px;
 }
 
 .dashedLoading:before {
