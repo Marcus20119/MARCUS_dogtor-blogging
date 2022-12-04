@@ -31,9 +31,11 @@ const SelectStyled = styled.div`
   @keyframes increaseHeight {
     from {
       max-height: 50px;
+      overflow: hidden;
     }
     to {
       max-height: 400px;
+      overflow: unset;
     }
   }
   .select-options {
@@ -46,7 +48,6 @@ const SelectStyled = styled.div`
     width: 100%;
     padding: 8px;
     border-radius: 8px;
-    overflow: hidden;
     animation: increaseHeight 1s ease;
     background-color: #f6eede;
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
@@ -66,6 +67,14 @@ const SelectStyled = styled.div`
       background-color: #8d351a30;
       opacity: 1;
     }
+  }
+  .select-options::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    height: 30px;
   }
 `;
 const ErrorStyled = styled.span`

@@ -45,6 +45,7 @@ const MatrixItemLargeStyled = styled.div`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      opacity: 0.8;
     }
     &-info {
       display: inline-flex;

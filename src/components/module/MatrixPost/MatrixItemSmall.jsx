@@ -19,6 +19,7 @@ const MatrixItemSmallStyled = styled.div`
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       font-size: 15px;
+      opacity: 0.8;
     }
     &-info {
       display: inline-flex;
@@ -46,7 +47,6 @@ const MatrixItemSmallStyled = styled.div`
 
   &:hover {
     opacity: 0.7;
-
     .matrixItemSmall-readNow {
       background-color: ${props => props.theme.color.brown};
       color: ${props => props.theme.color.white};

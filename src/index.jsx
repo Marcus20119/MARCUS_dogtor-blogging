@@ -12,6 +12,9 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import AuthProvider from './contexts/authContext';
 import FirebaseProvider from './contexts/firebaseContext';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+
 const root = createRoot(document.getElementById('root'));
 
 root.render(

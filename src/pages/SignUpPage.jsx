@@ -10,7 +10,7 @@ import { Input, InputTogglePassword } from '~/components/form/input';
 import Button from '~/components/button';
 import { auth, db } from '~/firebase/firebase-config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 
 const StyledSignUpPage = styled.div`
@@ -26,6 +26,7 @@ const StyledSignUpPage = styled.div`
     display: block;
     width: 10%;
     min-width: 150px;
+    margin-top: 20px;
   }
   .sup-title {
     font-size: 32px;
@@ -95,8 +96,9 @@ const SignUpPage = () => {
       await updateProfile(auth.currentUser, {
         displayName: data.fullname,
       });
+      console.log(cred.user);
       // Add user to collection
-      await addDoc(collection(db, 'users'), {
+      await setDoc(doc(db, 'users', cred.user.uid), {
         email: data.email,
         password: data.password,
         id: cred.user.uid,
@@ -110,8 +112,9 @@ const SignUpPage = () => {
         password: '',
         email: '',
       });
-      // Navigate to home
+      // Navigate to latest page
       navigateTo('/latest');
+      // Notify by showing a toast
       toast.success('Sign Up success !', {
         autoClose: 300,
         delay: 100,

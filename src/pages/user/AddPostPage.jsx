@@ -19,7 +19,7 @@ import { Radio } from '~/components/form/radio';
 import { Select } from '~/components/form/select';
 import { postStatus } from '~/utils/constants';
 import { useFirebase } from '~/contexts/firebaseContext';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 
@@ -98,12 +98,16 @@ const AddPostPage = () => {
     // Custom value
     try {
       const { image, ...cloneData } = data;
-      cloneData.slug = slugify(data.slug || data.title);
+      cloneData.slug = slugify(data.slug || data.title, {
+        remove: /[*+~.()'"!:@]/g,
+        lower: true,
+      });
       cloneData.status = postStatus[data.status.toUpperCase()];
       cloneData.downloadURl = await handleUploadImage();
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,
+        createdAt: serverTimestamp(),
       });
       console.log('success');
     } catch (err) {
