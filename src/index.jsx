@@ -22,11 +22,11 @@ root.render(
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
-        <FirebaseProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <FirebaseProvider>
             <App />
-          </AuthProvider>
-        </FirebaseProvider>
+          </FirebaseProvider>
+        </AuthProvider>
         <ToastContainer />
       </BrowserRouter>
     </ThemeProvider>

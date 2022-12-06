@@ -2,34 +2,35 @@ import { signOut } from 'firebase/auth';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '~/contexts/authContext';
+import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 import { UserAvatar } from '.';
 
-const tabs = [
+const writerTabs = [
   {
     name: 'Dashboard',
     iconClass: 'bx bx-cube',
-    path: '/user/dashboard',
+    path: '/user/writer/dashboard',
   },
   {
     name: 'All Posts',
     iconClass: 'bx bx-book-open',
-    path: '/user/post',
+    path: '/user/writer/all-posts',
   },
   {
     name: 'New Post',
     iconClass: 'bx bx-edit',
-    path: '/user/add-post',
+    path: '/user/writer/add-post',
   },
   {
     name: 'Category',
     iconClass: 'bx bx-box',
-    path: '/user/category',
+    path: '/user/writer/category',
   },
   {
     name: 'Following',
     iconClass: 'bx bx-user',
-    path: '/user/following',
+    path: '/user/writer/following',
   },
   {
     name: 'Log Out',
@@ -108,6 +109,14 @@ const UserSideBarStyled = styled.div`
 
 const UserSideBar = () => {
   const { userInfo } = useAuth();
+  const { userDocument } = useFirebase();
+
+  const tabs =
+    userDocument.role === 'admin'
+      ? writerTabs
+      : userDocument.role === 'writer'
+      ? writerTabs
+      : writerTabs;
 
   return (
     <UserSideBarStyled>

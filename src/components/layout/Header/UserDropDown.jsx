@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserAvatar } from '~/components/module/user';
 import { useAuth } from '~/contexts/authContext';
+import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 
 const UserDropDownStyled = styled.div`
@@ -83,13 +84,30 @@ const UserDropDownStyled = styled.div`
 
 const UserDropDown = ({ setShow }) => {
   const { userInfo } = useAuth();
+  const { userDocument } = useFirebase();
   const navigateTo = useNavigate();
   const userItems = [
     {
-      name: 'Write New Post',
-      iconClass: 'bx bx-edit',
+      name:
+        userDocument.role === 'admin'
+          ? 'Admin page'
+          : userDocument.role === 'writer'
+          ? 'Write New Post'
+          : 'Read List',
+      iconClass:
+        userDocument.role === 'admin'
+          ? 'bx bxs-user'
+          : userDocument.role === 'writer'
+          ? 'bx bx-edit'
+          : 'bx bx-book-reader',
       onClick() {
-        navigateTo('/user/add-post');
+        const path =
+          userDocument.role === 'admin'
+            ? '/'
+            : userDocument.role === 'writer'
+            ? '/user/writer/add-post'
+            : '/';
+        navigateTo(path);
       },
     },
     {

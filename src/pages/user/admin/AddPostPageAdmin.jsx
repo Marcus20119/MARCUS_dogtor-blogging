@@ -23,10 +23,10 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 
-const AddPostPageStyled = styled.div`
+const AddPostPageAdminStyled = styled.div`
   width: 100%;
 
-  .addPostPage-header {
+  .addPostPageAdmin-header {
     display: block;
     font-size: 40px;
     font-weight: 700;
@@ -35,7 +35,7 @@ const AddPostPageStyled = styled.div`
     color: ${props => props.theme.color.brown};
     text-shadow: 0 0 5px ${props => props.theme.color.skin};
   }
-  .addPostPage-form {
+  .addPostPageAdmin-form {
     width: 100%;
     &__filed-wrap {
       display: grid;
@@ -54,7 +54,7 @@ const schema = yup.object({
   status: yup.string().required('required'),
 });
 
-const AddPostPage = () => {
+const AddPostPageAdmin = () => {
   const { categoriesName } = useFirebase();
   const { userInfo } = useAuth();
   const {
@@ -123,13 +123,13 @@ const AddPostPage = () => {
     });
   };
   return (
-    <AddPostPageStyled>
-      <span className="addPostPage-header">Add New Post</span>
+    <AddPostPageAdminStyled>
+      <span className="addPostPageAdmin-header">Add New Post</span>
       <form
-        className="addPostPage-form"
+        className="addPostPageAdmin-form"
         onSubmit={handleSubmit(onSubmitHandler)}
       >
-        <div className="addPostPage-form__filed-wrap">
+        <div className="addPostPageAdmin-form__filed-wrap">
           <Field>
             <Label id="title">Title</Label>
             <Input control={control} name="title" secondary></Input>
@@ -191,8 +191,8 @@ const AddPostPage = () => {
           Add Post
         </Button>
       </form>
-    </AddPostPageStyled>
+    </AddPostPageAdminStyled>
   );
 };
 
-export default AddPostPage;
+export default AddPostPageAdmin;

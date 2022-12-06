@@ -79,8 +79,6 @@ const SignUpPage = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   });
-  // const { userInfo } = useAuth();
-  // console.log(userInfo);
 
   const navigateTo = useNavigate();
   // Handle submit
@@ -104,6 +102,7 @@ const SignUpPage = () => {
         id: cred.user.uid,
         fullname: data.fullname,
         createdAt: serverTimestamp(),
+        role: 'reader',
       });
 
       // Reset form

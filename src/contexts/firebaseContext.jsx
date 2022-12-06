@@ -1,31 +1,23 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { createContext } from 'react';
-import { db } from '~/firebase/firebase-config';
+import { useMultiDoc, useSingleDoc } from '~/hooks';
+import { useAuth } from './authContext';
 
 const FirebaseContext = createContext();
 
 const FirebaseProvider = props => {
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    const handleGetData = async () => {
-      const categoriesSnapshot = await getDocs(collection(db, 'categories'));
-      let categoriesData = [];
-      categoriesSnapshot.docs.forEach(doc => {
-        categoriesData.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-      setCategories(categoriesData);
-    };
-    handleGetData();
-  }, []);
+  const { userInfo } = useAuth();
+
+  // Get categories
+  const categories = useMultiDoc('categories');
   const categoriesName = categories.map(category => category.name);
+
+  // Get user document
+  const userDocument = useSingleDoc('users', userInfo.uid);
+
   return (
     <FirebaseContext.Provider
-      value={{ categories, categoriesName }}
+      value={{ categories, categoriesName, userDocument }}
       {...props}
     ></FirebaseContext.Provider>
   );
@@ -36,8 +28,8 @@ function useFirebase() {
   if (typeof context === 'undefined') {
     throw new Error('useFirebase must be used within FirebaseProvider');
   }
-  const { categories, categoriesName } = context;
-  return { categories, categoriesName };
+  const { categories, categoriesName, userDocument } = context;
+  return { categories, categoriesName, userDocument };
 }
 export default FirebaseProvider;
 export { useFirebase };

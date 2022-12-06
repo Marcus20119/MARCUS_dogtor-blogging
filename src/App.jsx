@@ -5,7 +5,13 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 const SignInPage = lazy(() => import('./pages/SignInPage'));
 const LatestPage = lazy(() => import('./pages/LatestPage'));
-const AddPostPage = lazy(() => import('./pages/user/AddPostPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const AddPostPageWriter = lazy(() =>
+  import('./pages/user/writer/AddPostPageWriter')
+);
+const AllPostsPageWriter = lazy(() =>
+  import('./pages/user/writer/AllPostsPageWriter')
+);
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
 const UserLayout = lazy(() => import('./layouts/UserLayout'));
 
@@ -20,8 +26,12 @@ function App() {
           <Route path="latest" element={<LatestPage />} />
         </Route>
         <Route path="user" element={<UserLayout />}>
-          <Route path="add-post" element={<AddPostPage />}></Route>
+          <Route path="writer">
+            <Route path="add-post" element={<AddPostPageWriter />}></Route>
+            <Route path="all-posts" element={<AllPostsPageWriter />}></Route>
+          </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );
