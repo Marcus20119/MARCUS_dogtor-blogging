@@ -10,7 +10,6 @@ import { db } from '~/firebase/firebase-config';
  */
 
 function useMultiDocsRealtime({ col = '', query = '' }) {
-  console.log('query', query);
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {

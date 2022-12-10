@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { convertDate } from '~/helpers';
 
 const ListPostItemStyled = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  cursor: pointer;
 
   .listPostItem-img {
     position: relative;
@@ -24,7 +26,8 @@ const ListPostItemStyled = styled.div`
       width: 100%;
       object-fit: contain;
       object-position: center center;
-      transform: translateY(-50%);
+      transform: translateY(-50%) scale(1);
+      transition: all ease 1s;
     }
   }
   .listPostItem-title {
@@ -53,16 +56,27 @@ const ListPostItemStyled = styled.div`
     &__author {
     }
   }
+  &:hover {
+    .listPostItem-title {
+      color: #b34321;
+    }
+    .listPostItem-img {
+      img {
+        transform: translateY(-50%) scale(1.05);
+      }
+    }
+    .listPostItem-overview,
+    .listPostItem-info {
+      opacity: 0.7;
+    }
+  }
 `;
 
 const ListPostItem = ({ post }) => {
-  const date = new Date(post.createdAt.seconds * 1000)
-    .toDateString()
-    .split(' ');
   return (
     <ListPostItemStyled>
       <div className="listPostItem-img">
-        <img src={post.downloadURl} alt={post.title} />
+        <img src={post.downloadURL} alt={post.title} />
       </div>
       <h3 className="listPostItem-title">{post.title}</h3>
       {/* <p className="listPostItem-overview">{post.overview}</p> */}
@@ -73,7 +87,9 @@ const ListPostItem = ({ post }) => {
         iure nemo perferendis!
       </p>
       <div className="listPostItem-info">
-        <span className="listPostItem-info__createdAt">{`${date[1]} ${date[2]}`}</span>
+        <span className="listPostItem-info__createdAt">
+          {convertDate(post.createdAt.seconds)}
+        </span>
         <svg
           width="6"
           height="6"

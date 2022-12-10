@@ -4,8 +4,19 @@ const TableStyled = styled.div`
   overflow-x: auto;
   background-color: white;
   border-radius: 10px;
+  box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
+  border: solid 1px #8d351a10;
+
+  table,
+  td,
+  th {
+    border-collapse: collapse;
+    font-family: ${props => props.theme.font.tertiary};
+  }
   table {
     width: 100%;
+    table-layout: fixed;
+    height: 1px;
   }
   thead {
     background-color: #f7f7f8;
@@ -13,17 +24,20 @@ const TableStyled = styled.div`
   th,
   td {
     vertical-align: middle;
-    white-space: nowrap;
+    text-align: left;
+    border-bottom: solid 1px #e5e5e9;
   }
   th {
-    padding: 20px 30px;
+    padding: 20px 15px;
     font-weight: 600;
-    text-align: left;
   }
   td {
-    padding: 15px 30px;
+    padding: 15px 15px;
   }
-  tbody {
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
   }
 `;
 

@@ -42,6 +42,7 @@ const schema = yup.object({
   slug: yup.string(),
   category: yup.string().required('required'),
   overview: yup.string().required('required'),
+  image: yup.string().required('required'),
 });
 
 const AddPostPageWriter = () => {
@@ -92,7 +93,7 @@ const AddPostPageWriter = () => {
         remove: /[*+~.()'"!:@]/g,
         lower: true,
       });
-      cloneData.downloadURl = await handleUploadImage();
+      cloneData.downloadURL = await handleUploadImage();
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,
