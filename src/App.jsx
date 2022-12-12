@@ -10,7 +10,7 @@ const AddPostPageWriter = lazy(() =>
   import('./pages/user/writer/AddPostPageWriter')
 );
 const AllPostsPageWriter = lazy(() =>
-  import('./pages/user/writer/AllPostsPageWriter')
+  import('./pages/user/writer/AllPostsPageWriter/AllPostsPageWriter')
 );
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
 const UserLayout = lazy(() => import('./layouts/UserLayout'));

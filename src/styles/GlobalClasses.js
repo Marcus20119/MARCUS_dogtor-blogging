@@ -29,4 +29,8 @@ export const GlobalClasses = css`
   .hidden {
     display: none !important;
   }
+
+  .swal2-popup .swal2-styled:focus {
+    box-shadow: none !important;
+  }
 `;

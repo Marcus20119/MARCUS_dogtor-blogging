@@ -9,6 +9,11 @@ const IconButtonStyled = styled.div`
   border-radius: 4px;
   border: solid 1px #ccc;
   padding: 6px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 const IconButton = ({ children, onClick, ...rest }) => {
@@ -19,4 +24,4 @@ const IconButton = ({ children, onClick, ...rest }) => {
   );
 };
 
-export default IconButton;
+export { IconButton };

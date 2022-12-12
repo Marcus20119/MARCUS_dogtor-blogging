@@ -14,6 +14,7 @@ import FirebaseProvider from './contexts/firebaseContext';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+// import 'sweetalert2/src/sweetalert2.scss';
 
 const root = createRoot(document.getElementById('root'));
 

@@ -1,3 +1,4 @@
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,6 @@ import { Input, InputFile } from '~/components/form/input';
 import Label from '~/components/form/label';
 import { Select } from '~/components/form/select';
 import { useFirebase } from '~/contexts/firebaseContext';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
@@ -97,6 +97,7 @@ const AddPostPageWriter = () => {
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,
+        status: 2,
         createdAt: serverTimestamp(),
       });
       console.log('success');

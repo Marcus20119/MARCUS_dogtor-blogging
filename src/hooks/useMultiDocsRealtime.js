@@ -37,7 +37,7 @@ function useMultiDocsRealtime({ col = '', query = '' }) {
         setDocs(docsData);
       });
     }
-  }, []);
+  }, [query]);
 
   return docs;
 }

@@ -7,7 +7,6 @@
 
 function convertDate(dateData, year = false) {
   const date = new Date(dateData * 1000).toDateString().split(' ');
-  console.log(date);
   if (year) {
     return `${date[1]} ${date[2]} ${date[3]}`;
   } else {

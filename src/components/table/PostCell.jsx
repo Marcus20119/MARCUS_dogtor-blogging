@@ -44,4 +44,4 @@ const PostCell = ({ postData }) => {
   );
 };
 
-export default PostCell;
+export { PostCell };
