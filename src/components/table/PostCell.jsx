@@ -38,7 +38,7 @@ const PostCell = ({ postData }) => {
       />
       <div className="postCell-info">
         <h4>{postData.title}</h4>
-        <span>{convertDate(postData.createdAt.seconds)}</span>
+        <time>{convertDate(postData.createdAt.seconds)}</time>
       </div>
     </PostCellStyled>
   );

@@ -87,9 +87,9 @@ const ListPostItem = ({ post }) => {
         iure nemo perferendis!
       </p>
       <div className="listPostItem-info">
-        <span className="listPostItem-info__createdAt">
+        <time className="listPostItem-info__createdAt">
           {convertDate(post.createdAt.seconds)}
-        </span>
+        </time>
         <svg
           width="6"
           height="6"

@@ -28,24 +28,6 @@ const AllPostsPageWriterStyled = styled.div`
 const AllPostsPageWriter = () => {
   const { userDocument, categoriesName } = useFirebase();
   const [categoryValue, setCategoryValue] = useState('');
-  let q = [];
-  if (categoryValue && categoryValue !== 'All categories') {
-    q = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      where('category', '==', categoryValue),
-      orderBy('createdAt', 'desc'),
-      limit(20)
-    );
-  } else {
-    q = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      orderBy('createdAt', 'desc'),
-      limit(20)
-    );
-  }
-  console.log('categoryValue', categoryValue);
 
   return (
     <AllPostsPageWriterStyled>
@@ -64,7 +46,7 @@ const AllPostsPageWriter = () => {
           />
         </div>
       </div>
-      <AllPostPageWriterTableSection query={q} />
+      <AllPostPageWriterTableSection categoryValue={categoryValue} />
     </AllPostsPageWriterStyled>
   );
 };

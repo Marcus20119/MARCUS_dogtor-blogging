@@ -1,10 +1,24 @@
-import { deleteDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  orderBy,
+  limit,
+  getDocs,
+  query,
+  startAfter,
+  where,
+} from 'firebase/firestore';
+import { Fragment, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import Button from '~/components/button';
 
 import { Table, IconButton, PostCell, StatusTag } from '~/components/table';
+import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
-import { useMultiDocsRealtime } from '~/hooks';
+import { useMultiDocsPagination, useQuantityOfCollection } from '~/hooks';
 import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
 
 const AllPostTableHeadStyled = styled.thead`
@@ -40,8 +54,9 @@ const AllPostTableBodyStyled = styled.tbody`
   }
 `;
 
-const AllPostPageWriterTableSection = ({ query }) => {
-  const posts = useMultiDocsRealtime({ query: query });
+const AllPostPageWriterTableSection = ({ categoryValue }) => {
+  const { userDocument } = useFirebase();
+
   const handleDeletePost = async postId => {
     Swal.fire({
       title: 'Are you sure?',
@@ -58,59 +73,138 @@ const AllPostPageWriterTableSection = ({ query }) => {
       }
     });
   };
+
+  let quantityQuery;
+  let firstQuery;
+  if (categoryValue && categoryValue !== 'All categories') {
+    quantityQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userDocument.id),
+      where('category', '==', categoryValue),
+      orderBy('createdAt', 'desc')
+    );
+
+    firstQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userDocument.id),
+      where('category', '==', categoryValue),
+      orderBy('createdAt', 'desc'),
+      limit(2)
+    );
+  } else {
+    quantityQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userDocument.id),
+      orderBy('createdAt', 'desc')
+    );
+
+    firstQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userDocument.id),
+      orderBy('createdAt', 'desc'),
+      limit(2)
+    );
+  }
+  const quantity = useQuantityOfCollection({ query: quantityQuery });
+
+  // Set first query
+
+  const [lastSnapshot, setLastSnapshot] = useState({});
+  const [nextQuery, setNextQuery] = useState();
+
+  const posts = useMultiDocsPagination({
+    firstQuery,
+    nextQuery,
+    setLastSnapshot,
+    reRenderCondition: categoryValue,
+  });
+  const handleLoadMore = () => {
+    let nextDataQuery;
+    if (categoryValue && categoryValue !== 'All categories') {
+      nextDataQuery = query(
+        collection(db, 'posts'),
+        where('userId', '==', userDocument.id),
+        where('category', '==', categoryValue),
+        orderBy('createdAt', 'desc'),
+        startAfter(lastSnapshot),
+        limit(2)
+      );
+    } else {
+      nextDataQuery = query(
+        collection(db, 'posts'),
+        where('userId', '==', userDocument.id),
+        orderBy('createdAt', 'desc'),
+        startAfter(lastSnapshot),
+        limit(2)
+      );
+    }
+    setNextQuery(nextDataQuery);
+  };
+
   return (
-    <Table>
-      <AllPostTableHeadStyled>
-        <tr className="allPage-firstRow">
-          <th>No.</th>
-          <th>Post</th>
-          <th>Author</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </AllPostTableHeadStyled>
-      <AllPostTableBodyStyled>
-        {posts &&
-          posts.length > 0 &&
-          posts.map((post, index) => (
-            <tr key={post.id}>
-              <td className="allPage-postId">
-                {index + 1 < 10 ? `0${index + 1}` : index + 1}
-              </td>
-              <td>
-                <PostCell postData={post} />
-              </td>
-              <td className="allPage-postAuthor">
-                <span>{post.author}</span>
-              </td>
-              <td className="allPage-postStatus">
-                <StatusTag status={post.status} />
-              </td>
-              <td className="allPage-postAction">
-                <div>
-                  <IconButton>
-                    <EyeIcon />
-                  </IconButton>
-                  <IconButton>
-                    <WriteIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeletePost(post.id)}>
-                    <TrashIcon />
-                  </IconButton>
-                </div>
-              </td>
-            </tr>
-          ))}
-        {!posts ||
-          (posts.length === 0 && (
-            <tr>
-              <td colSpan="5">
-                You still do not have any posts about this section yet!
-              </td>
-            </tr>
-          ))}
-      </AllPostTableBodyStyled>
-    </Table>
+    <Fragment>
+      <Table>
+        <AllPostTableHeadStyled>
+          <tr className="allPage-firstRow">
+            <th>No.</th>
+            <th>Post</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </AllPostTableHeadStyled>
+        <AllPostTableBodyStyled>
+          {posts &&
+            posts.length > 0 &&
+            posts.map((post, index) => (
+              <tr key={post.id}>
+                <td className="allPage-postId">
+                  {index + 1 < 10 ? `0${index + 1}` : index + 1}
+                </td>
+                <td>
+                  <PostCell postData={post} />
+                </td>
+                <td className="allPage-postAuthor">
+                  <span>{post.author}</span>
+                </td>
+                <td className="allPage-postStatus">
+                  <StatusTag status={post.status} />
+                </td>
+                <td className="allPage-postAction">
+                  <div>
+                    <IconButton>
+                      <EyeIcon />
+                    </IconButton>
+                    <IconButton>
+                      <WriteIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeletePost(post.id)}>
+                      <TrashIcon />
+                    </IconButton>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          {!posts ||
+            (posts.length === 0 && (
+              <tr>
+                <td colSpan="5">
+                  You still do not have any posts about this section yet!
+                </td>
+              </tr>
+            ))}
+        </AllPostTableBodyStyled>
+      </Table>
+      {posts && posts.length < quantity && (
+        <Button
+          width="150px"
+          style={{ margin: '24px auto 32px' }}
+          onClick={handleLoadMore}
+        >
+          Load More
+        </Button>
+      )}
+    </Fragment>
   );
 };
 
