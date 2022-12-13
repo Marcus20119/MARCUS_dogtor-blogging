@@ -23,24 +23,6 @@ const AllPostsPageWriterStyled = styled.div`
       min-width: 200px;
     }
   }
-  .allPage-firstRow {
-    th:nth-child(1) {
-      width: 70px;
-      text-align: center !important;
-    }
-    th:nth-child(2) {
-      width: 400px;
-    }
-  }
-  .allPage-postId {
-    text-align: center !important;
-  }
-  .allPage-postAction {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    height: 100%;
-  }
 `;
 
 const AllPostsPageWriter = () => {

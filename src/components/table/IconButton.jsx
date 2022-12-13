@@ -13,6 +13,7 @@ const IconButtonStyled = styled.div`
 
   &:hover {
     opacity: 0.9;
+    background-color: #eee;
   }
 `;
 

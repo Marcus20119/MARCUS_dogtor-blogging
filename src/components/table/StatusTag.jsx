@@ -3,11 +3,14 @@ import styled from 'styled-components';
 const StatusTagStyled = styled.div`
   span {
     display: inline-block;
-    border-radius: 10px;
-    padding: 4px 10px;
+    border-radius: 6px;
+    padding: 4px 8px;
     font-weight: 500;
     min-width: 100px;
     text-align: center;
+    font-size: 15px;
+    text-shadow: 0 0 1px currentColor;
+    letter-spacing: 0.5px;
   }
   .statusTag--Approved {
     color: #65a30d;
