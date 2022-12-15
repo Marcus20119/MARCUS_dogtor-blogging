@@ -63,7 +63,6 @@ const InputAvatarWrapStyled = styled.div`
 
 /**
  * @param {string} id
- * @param {boolean} secondary
  * @requires
  * @param {object} control - control from react-hook-form
  * @param {string} name - name of the input
@@ -71,15 +70,7 @@ const InputAvatarWrapStyled = styled.div`
  * @param {Function} setFile
  */
 
-const InputAvatar = ({
-  control,
-  name,
-  file,
-  setFile,
-  id,
-  secondary,
-  ...props
-}) => {
+const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
   const { userDocument } = useFirebase();
   const {
     field,
@@ -110,6 +101,8 @@ const InputAvatar = ({
   useEffect(() => {
     if (field.value && inputRef.current) {
       const avatarURL = URL.createObjectURL(inputRef.current.files[0]);
+      console.log('avatarURL', avatarURL);
+
       setTempAvatar(avatarURL);
       // Remove temp url from memory
       return () => URL.revokeObjectURL(tempAvatar);
@@ -118,7 +111,7 @@ const InputAvatar = ({
   }, [field.value]);
   return (
     <Fragment>
-      <InputAvatarWrapStyled secondary={secondary} ref={avatarRef}>
+      <InputAvatarWrapStyled ref={avatarRef}>
         <div className="inputAvatar-img-wrap">
           <img
             className="inputAvatar-img"
@@ -143,12 +136,11 @@ const InputAvatar = ({
 };
 
 InputAvatar.propTypes = {
-  // control: PropTypes.object.isRequired,
-  // name: PropTypes.string.isRequired,
-  // file: PropTypes.any,
-  // setFile: PropTypes.func.isRequired,
-  // id: PropTypes.string,
-  // secondary: PropTypes.bool,
+  control: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  file: PropTypes.any,
+  setFile: PropTypes.func.isRequired,
+  id: PropTypes.string,
 };
 
 export { InputAvatar };

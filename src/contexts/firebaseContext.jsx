@@ -1,4 +1,5 @@
 import { Fragment, useContext } from 'react';
+import { useEffect } from 'react';
 import { createContext } from 'react';
 import { useMultiDoc, useSingleDocRealtime } from '~/hooks';
 import { useAuth } from './authContext';
@@ -13,7 +14,15 @@ const FirebaseProvider = props => {
   const categoriesName = categories.map(category => category.name);
 
   // Get user document
-  const userDocument = useSingleDocRealtime('users', userInfo.uid);
+  const { document: userDocument, setDocument } = useSingleDocRealtime(
+    'users',
+    userInfo.uid
+  );
+  useEffect(() => {
+    if (!userInfo) {
+      setDocument({});
+    }
+  }, [userInfo]);
 
   const imgURLs = {
     userAvatar:

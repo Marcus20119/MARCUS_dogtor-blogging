@@ -111,7 +111,7 @@ const SignUpPage = () => {
         id: cred.user.uid,
         userName: data.userName,
         createdAt: serverTimestamp(),
-        avatarURL: imgURLs.avatarURL,
+        avatarURL: imgURLs.userAvatar,
         role: 'reader',
       });
 

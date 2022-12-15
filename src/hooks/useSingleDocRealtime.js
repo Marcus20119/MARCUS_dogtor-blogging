@@ -1,6 +1,7 @@
 import { onSnapshot, doc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useAuth } from '~/contexts/authContext';
 import { db } from '~/firebase/firebase-config';
 
 /**
@@ -11,10 +12,11 @@ import { db } from '~/firebase/firebase-config';
  */
 
 function useSingleDocRealtime(col = '', id = '') {
+  const { userInfo } = useAuth();
   const [document, setDocument] = useState({});
 
   useEffect(() => {
-    if (col && id) {
+    if (userInfo && col && id) {
       onSnapshot(doc(db, col, id), doc => {
         setDocument({
           id: doc.id,
@@ -22,8 +24,8 @@ function useSingleDocRealtime(col = '', id = '') {
         });
       });
     }
-  }, [col, id]);
+  }, [userInfo, col, id]);
 
-  return document;
+  return { document, setDocument };
 }
 export { useSingleDocRealtime };
