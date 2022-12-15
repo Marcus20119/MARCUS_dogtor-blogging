@@ -33,7 +33,7 @@ const PostCell = ({ postData }) => {
     <PostCellStyled>
       <img
         className="postCell-img"
-        src={postData.downloadURL}
+        src={postData.imgURL}
         alt={postData.title}
       />
       <div className="postCell-info">

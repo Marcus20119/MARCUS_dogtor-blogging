@@ -1,8 +1,8 @@
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { UserAvatar } from '~/components/module/user';
-import { useAuth } from '~/contexts/authContext';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 
@@ -83,7 +83,6 @@ const UserDropDownStyled = styled.div`
 `;
 
 const UserDropDown = ({ setShow }) => {
-  const { userInfo } = useAuth();
   const { userDocument } = useFirebase();
   const navigateTo = useNavigate();
   const userItems = [
@@ -131,15 +130,15 @@ const UserDropDown = ({ setShow }) => {
     <UserDropDownStyled>
       <div className="userDropDown-header">
         <UserAvatar
-          src="/imgs/user.jpg"
+          src={userDocument.avatarURL}
           alt="user-avatar"
           size="70px"
           style={{ cursor: 'default' }}
         />
         <span className="userDropDown-header__name">
-          {userInfo.displayName}
+          {userDocument.userName || userDocument.displayName}
         </span>
-        <span className="userDropDown-header__email">{userInfo.email}</span>
+        <span className="userDropDown-header__email">{userDocument.email}</span>
       </div>
       <div className="userDropDown-tabs">
         {userItems.map((item, index) => (

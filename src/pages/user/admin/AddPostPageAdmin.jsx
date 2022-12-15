@@ -103,7 +103,7 @@ const AddPostPageAdmin = () => {
         lower: true,
       });
       cloneData.status = postStatus[data.status.toUpperCase()];
-      cloneData.downloadURl = await handleUploadImage();
+      cloneData.imgURl = await handleUploadImage();
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,

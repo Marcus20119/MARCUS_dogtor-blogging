@@ -12,6 +12,7 @@ import { auth, db } from '~/firebase/firebase-config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
+import { useFirebase } from '~/contexts/firebaseContext';
 
 const StyledSignUpPage = styled.div`
   position: relative;
@@ -19,7 +20,7 @@ const StyledSignUpPage = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.color.white};
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
 
   .sup-dogtor-logo {
@@ -58,7 +59,11 @@ const StyledSignUpPage = styled.div`
 `;
 
 const schema = yup.object({
-  fullname: yup.string().required('Required'),
+  userName: yup
+    .string()
+    .required('Required')
+    .max(10, 'Must be less than 10 characters'),
+  email: yup.string().email().required('required'),
   password: yup
     .string()
     .required('Required')
@@ -66,10 +71,14 @@ const schema = yup.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'
     ),
-  email: yup.string().email().required('required'),
+  confirmPassword: yup
+    .string()
+    .required('Required')
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
 const SignUpPage = () => {
+  const { imgURLs } = useFirebase();
   const {
     control,
     handleSubmit,
@@ -92,7 +101,7 @@ const SignUpPage = () => {
       );
       // Update user profile
       await updateProfile(auth.currentUser, {
-        displayName: data.fullname,
+        displayName: data.userName,
       });
       console.log(cred.user);
       // Add user to collection
@@ -100,14 +109,15 @@ const SignUpPage = () => {
         email: data.email,
         password: data.password,
         id: cred.user.uid,
-        fullname: data.fullname,
+        userName: data.userName,
         createdAt: serverTimestamp(),
+        avatarURL: imgURLs.avatarURL,
         role: 'reader',
       });
 
       // Reset form
       reset({
-        fullname: '',
+        userName: '',
         password: '',
         email: '',
       });
@@ -121,6 +131,13 @@ const SignUpPage = () => {
       });
     } catch (err) {
       console.log(err);
+      toast.error(
+        `Can not sign up because of Error: ${err.code.split('/')[1]}`,
+        {
+          autoClose: 2000,
+          delay: 300,
+        }
+      );
     }
   };
 
@@ -139,8 +156,8 @@ const SignUpPage = () => {
           autoComplete="off"
         >
           <Field>
-            <Label id="fullname">Fullname</Label>
-            <Input control={control} name="fullname"></Input>
+            <Label id="userName">User Name</Label>
+            <Input control={control} name="userName"></Input>
           </Field>
           <Field>
             <Label id="email">Email Address</Label>
@@ -149,6 +166,10 @@ const SignUpPage = () => {
           <Field>
             <Label id="password">Password</Label>
             <InputTogglePassword control={control} name="password" />
+          </Field>
+          <Field>
+            <Label id="confirmPassword">Confirm Password</Label>
+            <InputTogglePassword control={control} name="confirmPassword" />
           </Field>
           <div className="sup-question">
             <span className="sup-question-black">

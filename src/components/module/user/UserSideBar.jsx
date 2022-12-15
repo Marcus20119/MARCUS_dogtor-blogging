@@ -28,9 +28,9 @@ const writerTabs = [
     path: '/user/writer/category',
   },
   {
-    name: 'Following',
+    name: 'User Info',
     iconClass: 'bx bx-user',
-    path: '/user/writer/following',
+    path: '/user/writer/user-info',
   },
   {
     name: 'Log Out',
@@ -109,7 +109,7 @@ const UserSideBarStyled = styled.div`
 
 const UserSideBar = () => {
   const { userInfo } = useAuth();
-  const { userDocument } = useFirebase();
+  const { userDocument, imgURLs } = useFirebase();
 
   const tabs =
     userDocument.role === 'admin'
@@ -122,9 +122,13 @@ const UserSideBar = () => {
     <UserSideBarStyled>
       <div className="userSidebar">
         <div className="userSidebar__header">
-          <UserAvatar src="/imgs/user.jpg" alt="user-avatar" size="40px" />
-          {userInfo?.displayName && (
-            <span>{userInfo.displayName.split(' ')[0]}</span>
+          <UserAvatar
+            src={userDocument?.avatarURL || imgURLs.userAvatar}
+            alt="user-avatar"
+            size="40px"
+          />
+          {userDocument?.userName && (
+            <span>{userDocument.userName.split(' ')[0]}</span>
           )}
         </div>
         {tabs.map((tab, index) => (

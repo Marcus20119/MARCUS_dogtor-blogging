@@ -12,6 +12,9 @@ const AddPostPageWriter = lazy(() =>
 const AllPostsPageWriter = lazy(() =>
   import('./pages/user/writer/AllPostsPageWriter/AllPostsPageWriter')
 );
+const UserInfoPageWriter = lazy(() =>
+  import('./pages/user/writer/UserInfoPageWriter')
+);
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
 const UserLayout = lazy(() => import('./layouts/UserLayout'));
 
@@ -29,6 +32,7 @@ function App() {
           <Route path="writer">
             <Route path="add-post" element={<AddPostPageWriter />}></Route>
             <Route path="all-posts" element={<AllPostsPageWriter />}></Route>
+            <Route path="user-info" element={<UserInfoPageWriter />}></Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFoundPage />} />

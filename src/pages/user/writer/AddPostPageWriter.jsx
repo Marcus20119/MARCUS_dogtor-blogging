@@ -93,7 +93,7 @@ const AddPostPageWriter = () => {
         remove: /[*+~.()'"!:@]/g,
         lower: true,
       });
-      cloneData.downloadURL = await handleUploadImage();
+      cloneData.imgURL = await handleUploadImage();
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,

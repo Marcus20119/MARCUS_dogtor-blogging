@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import Button from '~/components/button';
 import { SearchBar } from '~/components/search';
 import { UserAvatar } from '~/components/module/user';
-import { useAuth } from '~/contexts/authContext';
 import { useClickOutSide } from '~/hooks';
 import UserDropDown from './UserDropDown';
+import { useFirebase } from '~/contexts/firebaseContext';
 
 const HeaderMainSectionStyled = styled.header`
   display: flex;
@@ -54,7 +54,7 @@ const HeaderMainSectionStyled = styled.header`
 
 const HeaderMainSection = () => {
   const navigateTo = useNavigate();
-  const { userInfo } = useAuth();
+  const { userDocument } = useFirebase();
   const { show, setShow, nodeRef } = useClickOutSide();
 
   return (
@@ -72,10 +72,10 @@ const HeaderMainSection = () => {
       </div>
       <div className="headerMainSection-right">
         <SearchBar placeholder="Search posts..." width="400px" />
-        {userInfo.email ? (
+        {userDocument.email ? (
           <div ref={nodeRef} className="headerMainSection-right__user-wrapper">
             <UserAvatar
-              src="/imgs/user.jpg"
+              src={userDocument.avatarURL}
               alt="user-avatar"
               onClick={() => setShow(!show)}
             />

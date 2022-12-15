@@ -1,6 +1,6 @@
 import { Fragment, useContext } from 'react';
 import { createContext } from 'react';
-import { useMultiDoc, useSingleDoc } from '~/hooks';
+import { useMultiDoc, useSingleDocRealtime } from '~/hooks';
 import { useAuth } from './authContext';
 
 const FirebaseContext = createContext();
@@ -13,16 +13,18 @@ const FirebaseProvider = props => {
   const categoriesName = categories.map(category => category.name);
 
   // Get user document
-  const userDocument = useSingleDoc('users', userInfo.uid);
+  const userDocument = useSingleDocRealtime('users', userInfo.uid);
 
+  const imgURLs = {
+    userAvatar:
+      'https://firebasestorage.googleapis.com/v0/b/monkey-blogging-4878f.appspot.com/o/images%2Fdefault%2Fdefault-user.png?alt=media&token=6414019c-72a3-4a99-a85b-e84b55326bf4',
+  };
   return (
     <Fragment>
-      {userDocument.id && (
-        <FirebaseContext.Provider
-          value={{ categories, categoriesName, userDocument }}
-          {...props}
-        ></FirebaseContext.Provider>
-      )}
+      <FirebaseContext.Provider
+        value={{ categories, categoriesName, userDocument, imgURLs }}
+        {...props}
+      ></FirebaseContext.Provider>
     </Fragment>
   );
 };
@@ -32,8 +34,8 @@ function useFirebase() {
   if (typeof context === 'undefined') {
     throw new Error('useFirebase must be used within FirebaseProvider');
   }
-  const { categories, categoriesName, userDocument } = context;
-  return { categories, categoriesName, userDocument };
+  const { categories, categoriesName, userDocument, imgURLs } = context;
+  return { categories, categoriesName, userDocument, imgURLs };
 }
 export default FirebaseProvider;
 export { useFirebase };

@@ -76,7 +76,7 @@ const ListPostItem = ({ post }) => {
   return (
     <ListPostItemStyled>
       <div className="listPostItem-img">
-        <img src={post.downloadURL} alt={post.title} />
+        <img src={post.imgURL} alt={post.title} />
       </div>
       <h3 className="listPostItem-title">{post.title}</h3>
       {/* <p className="listPostItem-overview">{post.overview}</p> */}

@@ -18,7 +18,7 @@ const StyledSignInPage = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.color.white};
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
 
   .sip-dogtor-logo {
