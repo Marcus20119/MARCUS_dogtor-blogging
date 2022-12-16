@@ -5,12 +5,6 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import slugify from 'slugify';
 import * as yup from 'yup';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
@@ -21,6 +15,7 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
+import { uploadImage } from '~/firebase/funcs';
 
 const AddPostPageWriterStyled = styled.div`
   width: 100%;
@@ -61,46 +56,21 @@ const AddPostPageWriter = () => {
   });
   const [file, setFile] = useState({});
 
-  const handleUploadImage = async () => {
-    return new Promise(function (resolve, reject) {
-      const storage = getStorage();
-      const storageRef = ref(storage, 'images/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      let downloadURL = '';
-      // Upload image
-      uploadTask.on(
-        'state_changed',
-        // Show progress
-        snapshot => {},
-        error => {
-          console.log(error);
-          reject();
-        },
-        async () => {
-          // Upload completed successfully, now we can get the download URL
-          downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        }
-      );
-    });
-  };
-
   const onSubmitHandler = async data => {
-    // Custom value
     try {
       const { image, ...cloneData } = data;
+      // Custom value
       cloneData.slug = slugify(data.slug || data.title, {
         remove: /[*+~.()'"!:@]/g,
         lower: true,
       });
-      cloneData.imgURL = await handleUploadImage();
+      cloneData.img = await uploadImage(file);
       await addDoc(collection(db, 'posts'), {
         ...cloneData,
         userId: userInfo.uid,
         status: 2,
         createdAt: serverTimestamp(),
       });
-      console.log('success');
     } catch (err) {
       console.log(err);
     }
@@ -140,6 +110,7 @@ const AddPostPageWriter = () => {
               file={file}
               setFile={setFile}
               secondary
+              accept=".png,.jpg,.jpeg"
             ></InputFile>
           </Field>
 

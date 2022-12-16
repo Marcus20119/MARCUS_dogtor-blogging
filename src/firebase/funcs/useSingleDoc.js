@@ -11,7 +11,7 @@ import { db } from '~/firebase/firebase-config';
  * @returns
  */
 
-function useSingleDoc(col, id, signInRequired = 'true') {
+function useSingleDoc({ col, id, signInRequired = 'true' }) {
   const { userInfo } = useAuth();
   const [document, setDocument] = useState({});
 
@@ -33,6 +33,6 @@ function useSingleDoc(col, id, signInRequired = 'true') {
     }
   }, [col, id, signInRequired, userInfo]);
 
-  return document;
+  return { document, setDocument };
 }
 export { useSingleDoc };

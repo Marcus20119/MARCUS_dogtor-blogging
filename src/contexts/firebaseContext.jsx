@@ -1,7 +1,7 @@
 import { Fragment, useContext } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
-import { useMultiDoc, useSingleDocRealtime } from '~/hooks';
+import { useMultiDoc, useSingleDocRealtime } from '~/firebase/funcs';
 import { useAuth } from './authContext';
 
 const FirebaseContext = createContext();
@@ -14,14 +14,15 @@ const FirebaseProvider = props => {
   const categoriesName = categories.map(category => category.name);
 
   // Get user document
-  const { document: userDocument, setDocument } = useSingleDocRealtime(
-    'users',
-    userInfo.uid
-  );
+  const { document: userDocument, setDocument } = useSingleDocRealtime({
+    col: 'users',
+    id: userInfo.uid,
+  });
   useEffect(() => {
     if (!userInfo) {
       setDocument({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo]);
 
   const imgURLs = {

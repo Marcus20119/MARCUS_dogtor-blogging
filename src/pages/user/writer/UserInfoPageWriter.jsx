@@ -1,25 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { doc, updateDoc } from 'firebase/firestore';
-import {
-  deleteObject,
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import * as yup from 'yup';
+import { isEqual } from 'lodash';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
 import { Input, InputAvatar } from '~/components/form/input';
 import Label from '~/components/form/label';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
-import { useAuth } from '~/contexts/authContext';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
+import { deleteOldImage, uploadImage } from '~/firebase/funcs';
+import { useOutletContext } from 'react-router-dom';
 
 const UserInfoPageWriterStyled = styled.div`
   width: 100%;
@@ -55,14 +51,13 @@ const schema = yup.object({
 });
 
 const UserInfoPageWriter = () => {
-  const { userInfo } = useAuth();
-  const { userDocument, imgURLs } = useFirebase();
+  const { imgURLs } = useFirebase();
+  const userDocument = useOutletContext();
   const {
     control,
     handleSubmit,
-    setValue,
-    setError,
     formState: { isSubmitting },
+    watch,
     reset,
   } = useForm({
     resolver: yupResolver(schema),
@@ -70,68 +65,51 @@ const UserInfoPageWriter = () => {
   });
   const [file, setFile] = useState({});
 
-  const handleUploadImage = async () => {
-    return new Promise(function (resolve, reject) {
-      const storage = getStorage();
-      const storageRef = ref(storage, 'images/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      let downloadURL = '';
-      // Upload image
-      uploadTask.on(
-        'state_changed',
-        // Show progress
-        snapshot => {},
-        error => {
-          console.log(error);
-          reject();
-        },
-        async () => {
-          // Upload completed successfully, now we can get the download URL
-          downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        }
-      );
-    });
-  };
-
   const handleDeleteOldImage = async () => {
     if (
-      userDocument?.avatarURL &&
-      userDocument.avatarURL !== imgURLs.userAvatar
+      userDocument?.avatar?.URL &&
+      userDocument.avatar.URL !== imgURLs.userAvatar
     ) {
-      const imageName = /%2F(\S+)\?/gm.exec(userDocument.avatarURL)[1];
-      console.log('imageName', imageName);
-      const storage = getStorage();
-      const imageRef = ref(storage, 'images/' + imageName);
-      console.log('imageRef', imageRef);
-      await deleteObject(imageRef);
+      await deleteOldImage({ imgName: userDocument.avatar.name });
     }
   };
 
   const onSubmitHandler = async data => {
-    // Custom value
-    try {
-      console.log('lalaland');
-      console.log(data);
-      if (!data.image) {
-        const { image, ...newData } = data;
-        await updateDoc(doc(db, 'users', userDocument.id), newData);
-      } else {
-        handleDeleteOldImage();
-        const { image, ...newData } = data;
-        newData.avatarURL = await handleUploadImage();
-        await updateDoc(doc(db, 'users', userDocument.id), newData);
-        console.log(newData);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Please check all your information before doing this action!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#8d351a',
+      cancelButtonColor: '#8d351a50',
+      confirmButtonText: 'Update info',
+    }).then(async result => {
+      if (result.isConfirmed) {
+        // Handle submit form
+        try {
+          if (!data.image) {
+            const { image, ...newData } = data;
+            await updateDoc(doc(db, 'users', userDocument.id), newData);
+          } else {
+            handleDeleteOldImage();
+            const { image, ...newData } = data;
+            newData.avatar = await uploadImage(file);
+            // newData.avatar = await handleUploadImage();
+            await updateDoc(doc(db, 'users', userDocument.id), newData);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+        reset(userDocument);
+        Swal.fire('Update!', 'Your information has been updated.', 'success');
       }
-    } catch (err) {
-      console.log(err);
-    }
-    reset(userDocument);
+    });
   };
   useEffect(() => {
     reset(userDocument);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDocument]);
+
   return (
     <UserInfoPageWriterStyled>
       <UserSectionTitle>User Info</UserSectionTitle>
@@ -175,8 +153,9 @@ const UserInfoPageWriter = () => {
           btnStyle="medium"
           style={{ margin: '0 0 0 auto' }}
           isSubmitting={isSubmitting}
+          disabled={isEqual(userDocument, watch())}
         >
-          Add Post
+          Update Info
         </Button>
       </form>
     </UserInfoPageWriterStyled>

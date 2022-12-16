@@ -130,7 +130,7 @@ const UserDropDown = ({ setShow }) => {
     <UserDropDownStyled>
       <div className="userDropDown-header">
         <UserAvatar
-          src={userDocument.avatarURL}
+          src={userDocument.avatar.URL}
           alt="user-avatar"
           size="70px"
           style={{ cursor: 'default' }}

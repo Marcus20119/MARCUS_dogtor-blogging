@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { useController } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+
 import { useFirebase } from '~/contexts/firebaseContext';
 
 const InputAvatarWrapStyled = styled.div`
@@ -72,17 +73,14 @@ const InputAvatarWrapStyled = styled.div`
 
 const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
   const { userDocument } = useFirebase();
-  const {
-    field,
-    formState: { errors },
-  } = useController({ name, control, defaultValue: '' });
+  const { field } = useController({ name, control, defaultValue: '' });
 
   const inputRef = useRef();
   const avatarRef = useRef();
 
   const [tempAvatar, setTempAvatar] = useState('');
-  console.log('tempAvatar', tempAvatar);
 
+  // Handle event listener
   useEffect(() => {
     if (inputRef.current && avatarRef.current) {
       setFile(inputRef.current.files[0]);
@@ -98,12 +96,12 @@ const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field.value]);
 
+  // Create temp URL to show the temp avatar image
   useEffect(() => {
     if (field.value && inputRef.current) {
-      const avatarURL = URL.createObjectURL(inputRef.current.files[0]);
-      console.log('avatarURL', avatarURL);
+      const tempAvatarURL = URL.createObjectURL(inputRef.current.files[0]);
 
-      setTempAvatar(avatarURL);
+      setTempAvatar(tempAvatarURL);
       // Remove temp url from memory
       return () => URL.revokeObjectURL(tempAvatar);
     }
@@ -115,7 +113,10 @@ const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
         <div className="inputAvatar-img-wrap">
           <img
             className="inputAvatar-img"
-            src={tempAvatar || userDocument.avatarURL}
+            src={
+              tempAvatar ||
+              (userDocument?.avatar?.URL && userDocument.avatar.URL)
+            }
             alt={userDocument.userName}
           />
         </div>

@@ -1,11 +1,10 @@
-import { collection, query, orderBy, where, limit } from 'firebase/firestore';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { useFirebase } from '~/contexts/firebaseContext';
-import { db } from '~/firebase/firebase-config';
 import AllPostPageWriterTableSection from './AllPostPageWriterTableSection';
 
 const AllPostsPageWriterStyled = styled.div`
@@ -26,14 +25,15 @@ const AllPostsPageWriterStyled = styled.div`
 `;
 
 const AllPostsPageWriter = () => {
-  const { userDocument, categoriesName } = useFirebase();
+  const userDocument = useOutletContext();
+  const { categoriesName } = useFirebase();
   const [categoryValue, setCategoryValue] = useState('');
 
   return (
     <AllPostsPageWriterStyled>
-      {userDocument?.fullname && (
+      {userDocument?.userName && (
         <UserSectionTitle>{`${
-          userDocument.fullname.split(' ')[0]
+          userDocument.userName.split(' ')[0]
         }'s Posts`}</UserSectionTitle>
       )}
       <div className="allPage-input">

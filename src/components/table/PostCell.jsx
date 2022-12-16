@@ -11,6 +11,7 @@ const PostCellStyled = styled.div`
     width: 80px;
     aspect-ratio: 4/3;
     border-radius: 4px;
+    object-fit: cover;
   }
   .postCell-info {
     display: flex;
@@ -33,7 +34,7 @@ const PostCell = ({ postData }) => {
     <PostCellStyled>
       <img
         className="postCell-img"
-        src={postData.imgURL}
+        src={postData.img.URL}
         alt={postData.title}
       />
       <div className="postCell-info">

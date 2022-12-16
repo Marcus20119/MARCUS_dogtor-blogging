@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '~/components/layout';
 import { UserSideBar } from '~/components/module';
+import { useFirebase } from '~/contexts/firebaseContext';
 
 const UserLayoutStyled = styled.div`
   width: 100%;
@@ -24,6 +25,7 @@ const ContainerStyled = styled.div`
 `;
 
 const UserLayout = () => {
+  const { userDocument } = useFirebase();
   return (
     <UserLayoutStyled>
       <Header />
@@ -32,7 +34,7 @@ const UserLayout = () => {
           <UserSideBar />
         </div>
         <div className="userLayout-right">
-          <Outlet />
+          {userDocument?.id && <Outlet context={userDocument} />}
         </div>
       </ContainerStyled>
     </UserLayoutStyled>

@@ -11,7 +11,7 @@ import { db } from '~/firebase/firebase-config';
  * @returns
  */
 
-function useSingleDocRealtime(col = '', id = '') {
+function useSingleDocRealtime({ col = '', id = '' }) {
   const { userInfo } = useAuth();
   const [document, setDocument] = useState({});
 

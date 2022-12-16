@@ -50,7 +50,7 @@ function useMultiDocsPagination({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextQuery]);
-  return data;
+  return { data, setData };
 }
 
 export { useMultiDocsPagination };

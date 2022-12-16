@@ -75,7 +75,7 @@ const HeaderMainSection = () => {
         {userDocument.email ? (
           <div ref={nodeRef} className="headerMainSection-right__user-wrapper">
             <UserAvatar
-              src={userDocument.avatarURL}
+              src={userDocument.avatar.URL}
               alt="user-avatar"
               onClick={() => setShow(!show)}
             />

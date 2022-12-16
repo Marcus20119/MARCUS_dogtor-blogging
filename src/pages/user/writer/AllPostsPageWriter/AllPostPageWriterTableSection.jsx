@@ -4,21 +4,24 @@ import {
   doc,
   orderBy,
   limit,
-  getDocs,
   query,
   startAfter,
   where,
 } from 'firebase/firestore';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
 
 import { Table, IconButton, PostCell, StatusTag } from '~/components/table';
-import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
-import { useMultiDocsPagination, useQuantityOfCollection } from '~/hooks';
+import {
+  deleteOldImage,
+  useMultiDocsPagination,
+  useQuantityOfCollection,
+} from '~/firebase/funcs';
 import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
 
 const AllPostTableHeadStyled = styled.thead`
@@ -55,25 +58,8 @@ const AllPostTableBodyStyled = styled.tbody`
 `;
 
 const AllPostPageWriterTableSection = ({ categoryValue }) => {
-  const { userDocument } = useFirebase();
-
-  const handleDeletePost = async postId => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#8d351a',
-      cancelButtonColor: '#8d351a50',
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async result => {
-      if (result.isConfirmed) {
-        await deleteDoc(doc(db, 'posts', postId));
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-      }
-    });
-  };
-
+  const userDocument = useOutletContext();
+  // Set query base on the selected category
   let quantityQuery;
   let firstQuery;
   if (categoryValue && categoryValue !== 'All categories') {
@@ -105,14 +91,13 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       limit(2)
     );
   }
+
   const quantity = useQuantityOfCollection({ query: quantityQuery });
 
-  // Set first query
-
+  // Handle load more data
   const [lastSnapshot, setLastSnapshot] = useState({});
   const [nextQuery, setNextQuery] = useState();
-
-  const posts = useMultiDocsPagination({
+  const { data: posts, setData: setPosts } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
     setLastSnapshot,
@@ -139,6 +124,26 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       );
     }
     setNextQuery(nextDataQuery);
+  };
+
+  const handleDeletePost = async post => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#8d351a',
+      cancelButtonColor: '#8d351a50',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async result => {
+      if (result.isConfirmed) {
+        await deleteDoc(doc(db, 'posts', post.id));
+        await deleteOldImage({ imgName: post.img.name });
+        const newPosts = posts.filter(dataItem => dataItem.id !== post.id);
+        setPosts(newPosts);
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
   };
 
   return (
@@ -178,21 +183,22 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
                     <IconButton>
                       <WriteIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleDeletePost(post.id)}>
+                    <IconButton onClick={() => handleDeletePost(post)}>
                       <TrashIcon />
                     </IconButton>
                   </div>
                 </td>
               </tr>
             ))}
-          {!posts ||
-            (posts.length === 0 && (
+          {posts &&
+            posts.length === 0 &&
+            categoryValue !== 'All categories' && (
               <tr>
                 <td colSpan="5">
-                  You still do not have any posts about this section yet!
+                  You still don't have any posts about this section yet!
                 </td>
               </tr>
-            ))}
+            )}
         </AllPostTableBodyStyled>
       </Table>
       {posts && posts.length < quantity && (

@@ -11,8 +11,8 @@ const UserAvatarStyled = styled.div`
   cursor: pointer;
   img {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: ${props => props.size || '45px'};
+    height: ${props => props.size || '45px'};
     object-fit: cover;
     object-position: center center;
   }

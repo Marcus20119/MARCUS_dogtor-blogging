@@ -18,8 +18,8 @@ const ButtonStyled = styled.button`
   letter-spacing: 1px;
   margin: 0 auto;
   min-width: fit-content;
-  cursor: pointer;
-  opacity: 0.9;
+  cursor: ${props => (props.disabled ? 'default' : 'pointer')};
+  opacity: ${props => (props.disabled ? '0.7' : '0.9')};
   width: ${props => props.width || '100%'};
   height: ${props => props.height || 'unset'};
   font-family: ${props => props.theme.font.tertiary};
@@ -28,7 +28,7 @@ const ButtonStyled = styled.button`
   color: ${props => props.color || props.theme.color.white};
 
   &:hover {
-    opacity: 1;
+    opacity: ${props => (props.disabled ? '0.7' : '1')};
   }
 `;
 

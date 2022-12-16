@@ -1,7 +1,6 @@
 import { signOut } from 'firebase/auth';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth } from '~/contexts/authContext';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 import { UserAvatar } from '.';
@@ -108,7 +107,6 @@ const UserSideBarStyled = styled.div`
 `;
 
 const UserSideBar = () => {
-  const { userInfo } = useAuth();
   const { userDocument, imgURLs } = useFirebase();
 
   const tabs =
@@ -123,7 +121,7 @@ const UserSideBar = () => {
       <div className="userSidebar">
         <div className="userSidebar__header">
           <UserAvatar
-            src={userDocument?.avatarURL || imgURLs.userAvatar}
+            src={userDocument?.avatar?.URL || imgURLs.userAvatar}
             alt="user-avatar"
             size="40px"
           />
