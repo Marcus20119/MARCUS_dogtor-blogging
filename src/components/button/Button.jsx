@@ -34,7 +34,7 @@ const ButtonStyled = styled.button`
 
 /**
  *
- * @param {*} children - text or an Element inside the button
+ * @param {*} children - text or an Element inside the button component
  * @param {boolean} disabled - defined the button is disabled or not
  * @param {boolean} isSubmitting - defined the button is submitting or not
  * @param {text} btnStyle - oneOf(['large', 'medium', 'small'])
