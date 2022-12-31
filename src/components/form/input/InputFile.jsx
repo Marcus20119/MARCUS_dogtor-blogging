@@ -86,6 +86,7 @@ const InputFile = ({
   setFile,
   id,
   secondary,
+  defaultValue,
   ...props
 }) => {
   const {
@@ -116,7 +117,9 @@ const InputFile = ({
         <button type="button" className="inputFile-uploadButton">
           Upload
         </button>
-        <p className="inputFile-uploadValue">{file?.name && file.name}</p>
+        <p className="inputFile-uploadValue">
+          {defaultValue || (file?.name && file.name)}
+        </p>
       </InputWrapStyled>
       {errors?.[name]?.message && (
         <ErrorStyled>{errors[name].message}</ErrorStyled>

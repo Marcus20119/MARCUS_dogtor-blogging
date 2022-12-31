@@ -19,6 +19,11 @@ export const GlobalClasses = css`
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box;
   }
+
+  #root {
+    height: 100%;
+  }
+
   .small-container {
     display: flex;
     flex-direction: column;
@@ -32,5 +37,74 @@ export const GlobalClasses = css`
 
   .swal2-popup .swal2-styled:focus {
     box-shadow: none !important;
+  }
+
+  .entry-content,
+  .entry-content .ql-snow .ql-editor {
+    font-family: 'Epilogue', sans-serif;
+    font-size: 16px;
+    h2,
+    h3,
+    h4 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 32px;
+    }
+    h3 {
+      font-size: 26px;
+    }
+    h4 {
+      font-size: 22px;
+    }
+    p {
+      margin-bottom: 20px;
+      line-height: 2;
+    }
+    figure {
+      margin-bottom: 20px;
+    }
+    figure img {
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    figcaption {
+      text-align: center;
+      font-style: italic;
+      font-size: 14px;
+      color: #6b6b6b;
+    }
+    ul {
+      list-style-type: disc;
+    }
+    ol {
+      list-style: decimal;
+    }
+    ul,
+    ol {
+      margin-bottom: 20px;
+      padding-left: 40px;
+      margin-left: 0;
+      li {
+        margin-bottom: 10px;
+      }
+    }
+    img {
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 1023.98px) {
+      font-size: 14px;
+      h2 {
+        font-size: 26px;
+      }
+      h3 {
+        font-size: 24px;
+      }
+      h4 {
+        font-size: 20px;
+      }
+    }
   }
 `;

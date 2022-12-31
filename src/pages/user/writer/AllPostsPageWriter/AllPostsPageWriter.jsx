@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { useFirebase } from '~/contexts/firebaseContext';
-import AllPostPageWriterTableSection from './AllPostPageWriterTableSection';
+import TableSection from './TableSection';
 
 const AllPostsPageWriterStyled = styled.div`
   width: 100%;
@@ -46,7 +46,7 @@ const AllPostsPageWriter = () => {
           />
         </div>
       </div>
-      <AllPostPageWriterTableSection categoryValue={categoryValue} />
+      <TableSection categoryValue={categoryValue} />
     </AllPostsPageWriterStyled>
   );
 };

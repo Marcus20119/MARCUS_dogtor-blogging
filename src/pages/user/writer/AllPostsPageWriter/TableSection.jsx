@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { Fragment } from 'react';
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
@@ -59,6 +59,7 @@ const AllPostTableBodyStyled = styled.tbody`
 
 const AllPostPageWriterTableSection = ({ categoryValue }) => {
   const userDocument = useOutletContext();
+  const navigateTo = useNavigate();
   // Set query base on the selected category
   let quantityQuery;
   let firstQuery;
@@ -180,7 +181,11 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
                     <IconButton>
                       <EyeIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton
+                      onClick={() =>
+                        navigateTo(`/user/writer/edit-post/${post.id}`)
+                      }
+                    >
                       <WriteIcon />
                     </IconButton>
                     <IconButton onClick={() => handleDeletePost(post)}>

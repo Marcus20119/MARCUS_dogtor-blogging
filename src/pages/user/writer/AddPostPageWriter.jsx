@@ -126,7 +126,7 @@ const AddPostPageWriter = () => {
               control={control}
               setValue={setValue}
               setError={setError}
-              defaultOption="Select a category"
+              defaultoption="Select a category"
               options={categoriesName}
               secondary
             ></Select>

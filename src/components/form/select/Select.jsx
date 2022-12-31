@@ -92,7 +92,7 @@ const ErrorStyled = styled.span`
  * @requires
  * @param {string} name
  * @param {object} control - control object from react-hook-form
- * @param {string} defaultOption - placeholder of the selection
+ * @param {string} defaultoption - placeholder of the selection
  * @param {array} options - Array of the options
  */
 
@@ -101,7 +101,7 @@ const Select = ({
   control,
   setValue,
   setError,
-  defaultOption = 'Select one option...',
+  defaultoption = 'Select one option...',
   secondary,
   options,
   ...rest
@@ -113,7 +113,7 @@ const Select = ({
   const watchOptionValue = useWatch({ name, control });
 
   const { selectRef, selectedValue } = useSelect({
-    defaultOption,
+    defaultOption: defaultoption,
     watchOptionValue,
     setValue,
     setError,
@@ -146,7 +146,7 @@ Select.propTypes = {
   control: PropTypes.object.isRequired,
   setValue: PropTypes.func,
   setError: PropTypes.func,
-  defaultOption: PropTypes.string.isRequired,
+  defaultoption: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['primary', 'secondary']),
   options: PropTypes.array.isRequired,
 };

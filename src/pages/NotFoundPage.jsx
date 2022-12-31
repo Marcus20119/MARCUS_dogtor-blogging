@@ -5,7 +5,7 @@ import Button from '~/components/button';
 const NotFoundPageStyled = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: ${props => props.theme.color.skin};
 
   .nfp {

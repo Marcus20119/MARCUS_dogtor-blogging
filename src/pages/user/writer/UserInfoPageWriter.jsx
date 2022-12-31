@@ -94,7 +94,6 @@ const UserInfoPageWriter = () => {
             handleDeleteOldImage();
             const { image, ...newData } = data;
             newData.avatar = await uploadImage(file);
-            // newData.avatar = await handleUploadImage();
             await updateDoc(doc(db, 'users', userDocument.id), newData);
           }
         } catch (err) {
