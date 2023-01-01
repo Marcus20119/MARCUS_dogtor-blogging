@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { SelectNoForm } from '~/components/form/select';
@@ -26,9 +26,13 @@ const AllPostsPageWriterStyled = styled.div`
 
 const AllPostsPageWriter = () => {
   const userDocument = useOutletContext();
-  const { categoriesName } = useFirebase();
-  const [categoryValue, setCategoryValue] = useState('');
-
+  const { categoriesName, categories } = useFirebase();
+  console.log('categories', categories);
+  const [query, setQuery] = useSearchParams();
+  // Trường hợp "Food & Drink" do có ký tự đặc biệt nên cần xử lý riêng
+  const [categoryValue, setCategoryValue] = useState(
+    query.get('category') || 'All categories'
+  );
   return (
     <AllPostsPageWriterStyled>
       {userDocument?.userName && (
@@ -40,13 +44,20 @@ const AllPostsPageWriter = () => {
         <div className="allPage-input__category">
           <SelectNoForm
             name="category"
-            defaultOption="All categories"
+            defaultOption={
+              categoryValue === 'Food' ? 'Food & Drink' : categoryValue
+            }
             options={['All categories', ...categoriesName]}
             setValue={setCategoryValue}
+            navigateBasePath="/user/writer/all-posts?category="
           />
         </div>
       </div>
-      <TableSection categoryValue={categoryValue} />
+      <TableSection
+        categoryValue={
+          categoryValue === 'Food' ? 'Food & Drink' : categoryValue
+        }
+      />
     </AllPostsPageWriterStyled>
   );
 };

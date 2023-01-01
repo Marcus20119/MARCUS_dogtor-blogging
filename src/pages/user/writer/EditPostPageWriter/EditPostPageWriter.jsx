@@ -20,9 +20,9 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
-import { uploadImage, useSingleDoc } from '~/firebase/funcs';
+import { deleteOldImage, uploadImage, useSingleDoc } from '~/firebase/funcs';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const EditPostPageWriterStyled = styled.div`
@@ -49,7 +49,7 @@ const schema = yup.object({
 
 const EditPostPageWriter = () => {
   const { categoriesName } = useFirebase();
-  const { userInfo } = useAuth();
+  const navigateTo = useNavigate();
   const slug = useParams();
   const { document: postData } = useSingleDoc({
     col: 'posts',
@@ -68,15 +68,15 @@ const EditPostPageWriter = () => {
     mode: 'all',
   });
 
-  const [content, setContent] = useState();
+  const [file, setFile] = useState({});
+  const [content, setContent] = useState('');
+
   useEffect(() => {
     if (postData.id) {
       reset({ ...postData, image: '' });
       setContent(postData.content);
     }
   }, [reset, postData]);
-
-  const [file, setFile] = useState({});
 
   const onSubmitHandler = async data => {
     try {
@@ -91,14 +91,22 @@ const EditPostPageWriter = () => {
       }).then(async result => {
         if (result.isConfirmed) {
           const { image, ...cloneData } = data;
+          // Nếu thay đổi ảnh nền thì xóa ảnh cũ và up ảnh mới
           if (image) {
+            await deleteOldImage({ imgName: postData.img.name });
+            cloneData.img = await uploadImage(file);
+            await updateDoc(doc(db, 'posts', slug.id), {
+              ...cloneData,
+              content: content || 'This post has no content yet!',
+            });
           } else {
             await updateDoc(doc(db, 'posts', slug.id), {
               ...cloneData,
-              content,
+              content: content || 'This post has no content yet!',
             });
           }
           Swal.fire('Updated!', 'Your post has been updated.', 'success');
+          navigateTo('/user/writer/all-posts');
         }
       });
     } catch (err) {
@@ -133,7 +141,7 @@ const EditPostPageWriter = () => {
             </Field>
 
             <Field>
-              <Label id="image">Image</Label>
+              <Label id="image">Main Image</Label>
               <InputFile
                 control={control}
                 type="file"

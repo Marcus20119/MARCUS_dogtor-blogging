@@ -8,7 +8,7 @@ import * as yup from 'yup';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
-import { Input, InputFile } from '~/components/form/input';
+import { Input, InputFile, InputReactQuill } from '~/components/form/input';
 import Label from '~/components/form/label';
 import { Select } from '~/components/form/select';
 import { useFirebase } from '~/contexts/firebaseContext';
@@ -55,6 +55,7 @@ const AddPostPageWriter = () => {
     mode: 'all',
   });
   const [file, setFile] = useState({});
+  const [content, setContent] = useState('');
 
   const onSubmitHandler = async data => {
     try {
@@ -69,6 +70,7 @@ const AddPostPageWriter = () => {
         ...cloneData,
         userId: userInfo.uid,
         status: 2,
+        content: content || 'This post has no content yet!',
         createdAt: serverTimestamp(),
       });
     } catch (err) {
@@ -82,6 +84,7 @@ const AddPostPageWriter = () => {
       slug: '',
       overview: '',
     });
+    setContent('');
   };
   return (
     <AddPostPageWriterStyled>
@@ -102,7 +105,7 @@ const AddPostPageWriter = () => {
           </Field>
 
           <Field>
-            <Label id="image">Image</Label>
+            <Label id="image">Main Image</Label>
             <InputFile
               control={control}
               type="file"
@@ -137,6 +140,10 @@ const AddPostPageWriter = () => {
             <Input control={control} name="slug" secondary></Input>
           </Field>
         </div>
+        <Field>
+          <Label id="content">Content</Label>
+          <InputReactQuill value={content} setValue={setContent} />
+        </Field>
         <Button
           type="submit"
           width="151px"

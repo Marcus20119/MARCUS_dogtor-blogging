@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelect } from '~/hooks';
 
@@ -77,13 +78,21 @@ const SelectNoFormStyled = styled.div`
   }
 `;
 
-const SelectNoForm = ({ defaultOption, name, options, setValue }) => {
+const SelectNoForm = ({
+  defaultOption,
+  name,
+  options,
+  setValue,
+  navigateBasePath,
+}) => {
   const { selectRef, selectedValue } = useSelect({
     defaultOption,
     name,
     options,
   });
+  const navigateTo = useNavigate();
   useEffect(() => {
+    navigateTo(navigateBasePath + selectedValue);
     setValue(selectedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue]);
