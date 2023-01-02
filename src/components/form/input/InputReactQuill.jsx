@@ -9,11 +9,13 @@ Quill.register('modules/imageUploader', ImageUploader);
 
 const modules = {
   toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ font: [] }],
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote'],
-    [{ header: 1 }, { header: 2 }], // custom button values
     [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ align: [] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     ['link', 'image'],
   ],
   imageUploader: {

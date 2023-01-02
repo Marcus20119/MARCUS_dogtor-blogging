@@ -8,28 +8,48 @@ const { db } = require('~/firebase/firebase-config');
  * @returns
  */
 
-function useMultiDoc(col) {
+function useMultiDocs({ col, query }) {
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
-    const handleGetDocsData = async () => {
-      try {
-        const docsSnapshot = await getDocs(collection(db, col));
-        let docsData = [];
-        docsSnapshot.docs.forEach(doc => {
-          docsData.push({
-            id: doc.id,
-            ...doc.data(),
+    if (col) {
+      const handleGetDocsData = async () => {
+        try {
+          const docsSnapshot = await getDocs(collection(db, col));
+          let docsData = [];
+          docsSnapshot.docs.forEach(doc => {
+            docsData.push({
+              id: doc.id,
+              ...doc.data(),
+            });
           });
-        });
-        setDocs(docsData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    handleGetDocsData();
-  }, [col]);
+          setDocs(docsData);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      handleGetDocsData();
+    } else if (query) {
+      const handleGetDocsData = async () => {
+        try {
+          const docsSnapshot = await getDocs(query);
+          let docsData = [];
+          docsSnapshot.docs.forEach(doc => {
+            docsData.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+          setDocs(docsData);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      handleGetDocsData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return docs;
 }
 
-export { useMultiDoc };
+export { useMultiDocs };

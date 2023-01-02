@@ -16,6 +16,8 @@ import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { uploadImage } from '~/firebase/funcs';
+import Swal from 'sweetalert2';
+import { useScrollOnTop } from '~/hooks';
 
 const AddPostPageWriterStyled = styled.div`
   width: 100%;
@@ -41,6 +43,7 @@ const schema = yup.object({
 });
 
 const AddPostPageWriter = () => {
+  useScrollOnTop();
   const { categoriesName } = useFirebase();
   const { userInfo } = useAuth();
   const {
@@ -59,19 +62,40 @@ const AddPostPageWriter = () => {
 
   const onSubmitHandler = async data => {
     try {
-      const { image, ...cloneData } = data;
-      // Custom value
-      cloneData.slug = slugify(data.slug || data.title, {
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
-      });
-      cloneData.img = await uploadImage(file);
-      await addDoc(collection(db, 'posts'), {
-        ...cloneData,
-        userId: userInfo.uid,
-        status: 2,
-        content: content || 'This post has no content yet!',
-        createdAt: serverTimestamp(),
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Your post will be hidden before the admin approve it!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8d351a',
+        cancelButtonColor: '#8d351a50',
+        confirmButtonText: 'Yes, post it!',
+      }).then(async result => {
+        if (result.isConfirmed) {
+          const { image, ...cloneData } = data;
+          // Custom value
+          cloneData.slug =
+            slugify(data.slug || data.title, {
+              remove: /[*+~.()'"!:@?]/g,
+              lower: true,
+            }) +
+            '-' +
+            Date.now();
+          cloneData.img = await uploadImage(file);
+          await addDoc(collection(db, 'posts'), {
+            ...cloneData,
+            userId: userInfo.uid,
+            status: 2,
+            content: content || 'This post has no content yet!',
+            createdAt: serverTimestamp(),
+          });
+
+          Swal.fire(
+            'Added successfully!',
+            `You can check your post's status in "All posts" section.`,
+            'success'
+          );
+        }
       });
     } catch (err) {
       console.log(err);

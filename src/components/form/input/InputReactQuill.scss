@@ -1,13 +1,21 @@
 .quill {
   width: 100%;
   margin-bottom: 32px;
+  position: relative;
 
   .ql-toolbar.ql-snow {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    position: sticky;
+    top: 50px;
+    background-color: white;
+    z-index: 1;
   }
   .ql-container.ql-snow {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+  }
+  .ql-editor.ql-blank {
+    min-height: 150px;
   }
 }

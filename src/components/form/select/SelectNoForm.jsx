@@ -31,11 +31,11 @@ const SelectNoFormStyled = styled.div`
   @keyframes increaseHeight {
     from {
       max-height: 50px;
-      overflow: hidden;
+      overflow-y: hidden;
     }
     to {
-      max-height: 400px;
-      overflow: unset;
+      max-height: 254px;
+      overflow-y: auto;
     }
   }
   .selectNoForm-options {
@@ -46,9 +46,10 @@ const SelectNoFormStyled = styled.div`
     flex-direction: column;
     gap: 4px;
     width: 100%;
+    max-height: 254px;
     padding: 8px;
     border-radius: 8px;
-    animation: increaseHeight 1s ease;
+    animation: increaseHeight 0.7s ease forwards;
     background-color: #f6eede;
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
     border: solid 1px ${props => props.theme.color.brown};
@@ -68,13 +69,18 @@ const SelectNoFormStyled = styled.div`
       opacity: 1;
     }
   }
-  .selectNoForm-options::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    height: 30px;
+  .selectNoForm-options::-webkit-scrollbar {
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+  }
+
+  .selectNoForm-options::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #8d351a90;
+    border: solid 4px rgba(0, 0, 0, 0);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box;
   }
 `;
 

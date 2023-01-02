@@ -8,14 +8,14 @@ export const GlobalClasses = css`
     background-color: #f9f9f9;
   }
   body::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background-color: transparent;
   }
 
   body::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #a9a9a945;
+    background-color: #a9a9a990;
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box;
   }
@@ -41,7 +41,7 @@ export const GlobalClasses = css`
 
   .entry-content,
   .entry-content .ql-snow .ql-editor {
-    font-family: 'Epilogue', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
     h2,
     h3,
@@ -61,6 +61,7 @@ export const GlobalClasses = css`
     p {
       margin-bottom: 20px;
       line-height: 2;
+      text-align: justify;
     }
     figure {
       margin-bottom: 20px;
@@ -76,10 +77,10 @@ export const GlobalClasses = css`
       color: #6b6b6b;
     }
     ul {
-      list-style-type: disc;
+      list-style-type: disc !important;
     }
     ol {
-      list-style: decimal;
+      list-style: decimal !important;
     }
     ul,
     ol {
@@ -93,6 +94,7 @@ export const GlobalClasses = css`
     img {
       border-radius: 8px;
       margin-bottom: 30px;
+      margin: 0 auto;
     }
     @media screen and (max-width: 1023.98px) {
       font-size: 14px;

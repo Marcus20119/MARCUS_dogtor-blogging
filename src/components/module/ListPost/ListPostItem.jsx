@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { convertDate } from '~/helpers';
 
@@ -73,19 +74,19 @@ const ListPostItemStyled = styled.div`
 `;
 
 const ListPostItem = ({ post }) => {
+  const navigateTo = useNavigate();
+
   return (
-    <ListPostItemStyled>
+    <ListPostItemStyled
+      onClick={() => {
+        navigateTo(`/post/${post.slug}`);
+      }}
+    >
       <div className="listPostItem-img">
         <img src={post.img.URL} alt={post.title} />
       </div>
       <h3 className="listPostItem-title">{post.title}</h3>
-      {/* <p className="listPostItem-overview">{post.overview}</p> */}
-      <p className="listPostItem-overview">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta,
-        laudantium cum magni non excepturi ad ullam ratione recusandae
-        accusamus, aperiam corrupti explicabo impedit sit, nam distinctio sint
-        iure nemo perferendis!
-      </p>
+      <p className="listPostItem-overview">{post.overview}</p>
       <div className="listPostItem-info">
         <time className="listPostItem-info__createdAt">
           {convertDate(post.createdAt.seconds)}

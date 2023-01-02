@@ -9,11 +9,19 @@ const PostCellStyled = styled.div`
 
   .postCell-img {
     width: 80px;
-    aspect-ratio: 4/3;
     border-radius: 4px;
-    object-fit: cover;
+    background-color: #ccc;
+
+    img {
+      display: block;
+      background-color: #ccc;
+      aspect-ratio: 4/3;
+      border-radius: 4px;
+      object-fit: cover;
+    }
   }
   .postCell-info {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,11 +40,9 @@ const PostCellStyled = styled.div`
 const PostCell = ({ postData }) => {
   return (
     <PostCellStyled>
-      <img
-        className="postCell-img"
-        src={postData.img.URL}
-        alt={postData.title}
-      />
+      <div className="postCell-img">
+        <img src={postData.img.URL} alt={postData.title} />
+      </div>
       <div className="postCell-info">
         <h4>{postData.title}</h4>
         <time>{convertDate(postData.createdAt.seconds)}</time>

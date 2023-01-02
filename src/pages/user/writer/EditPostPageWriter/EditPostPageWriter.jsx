@@ -1,10 +1,4 @@
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from 'firebase/firestore';
+import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,12 +12,12 @@ import Label from '~/components/form/label';
 import { Select } from '~/components/form/select';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
-import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { deleteOldImage, uploadImage, useSingleDoc } from '~/firebase/funcs';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import slugify from 'slugify';
 
 const EditPostPageWriterStyled = styled.div`
   width: 100%;
@@ -95,6 +89,13 @@ const EditPostPageWriter = () => {
           if (image) {
             await deleteOldImage({ imgName: postData.img.name });
             cloneData.img = await uploadImage(file);
+            cloneData.slug =
+              slugify(data.slug || data.title, {
+                remove: /[*+~.()'"!:@?]/g,
+                lower: true,
+              }) +
+              '-' +
+              Date.now();
             await updateDoc(doc(db, 'posts', slug.id), {
               ...cloneData,
               content: content || 'This post has no content yet!',

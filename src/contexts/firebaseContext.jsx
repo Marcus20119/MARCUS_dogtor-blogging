@@ -1,7 +1,9 @@
+import { collection, query, orderBy } from 'firebase/firestore';
 import { Fragment, useContext } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
-import { useMultiDoc, useSingleDocRealtime } from '~/firebase/funcs';
+import { db } from '~/firebase/firebase-config';
+import { useMultiDocs, useSingleDocRealtime } from '~/firebase/funcs';
 import { useAuth } from './authContext';
 
 const FirebaseContext = createContext();
@@ -10,7 +12,11 @@ const FirebaseProvider = props => {
   const { userInfo } = useAuth();
 
   // Get categories
-  const categories = useMultiDoc('categories');
+  const categoriesQuery = query(
+    collection(db, 'categories'),
+    orderBy('name', 'asc')
+  );
+  const categories = useMultiDocs({ query: categoriesQuery });
   const categoriesName = categories.map(category => category.name);
 
   // Get user document
@@ -18,6 +24,7 @@ const FirebaseProvider = props => {
     col: 'users',
     id: userInfo.uid,
   });
+  console.log('userDocument', userDocument);
   useEffect(() => {
     if (!userInfo) {
       setDocument({});

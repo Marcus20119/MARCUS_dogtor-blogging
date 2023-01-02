@@ -16,20 +16,22 @@ function useSingleDoc({ col, id, signInRequired = 'true' }) {
   const [document, setDocument] = useState({});
 
   useEffect(() => {
-    if (signInRequired ? userInfo?.displayName : true) {
-      const handleGetDocumentData = async () => {
-        try {
-          const documentDoc = await getDoc(doc(db, col, id));
-          const documentData = {
-            id: documentDoc.id,
-            ...documentDoc.data(),
-          };
-          setDocument(documentData);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      handleGetDocumentData();
+    if (col && id) {
+      if (signInRequired ? userInfo?.displayName : true) {
+        const handleGetDocumentData = async () => {
+          try {
+            const documentDoc = await getDoc(doc(db, col, id));
+            const documentData = {
+              id: documentDoc.id,
+              ...documentDoc.data(),
+            };
+            setDocument(documentData);
+          } catch (err) {
+            console.log(err);
+          }
+        };
+        handleGetDocumentData();
+      }
     }
   }, [col, id, signInRequired, userInfo]);
 

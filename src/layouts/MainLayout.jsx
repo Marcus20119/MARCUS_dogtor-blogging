@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { Header } from '~/components/layout';
+import { Header, ScrollOnTop } from '~/components/layout';
 
 const MainLayoutStyled = styled.div`
   width: 100%;
@@ -18,6 +18,7 @@ const MainLayout = () => {
       <ContainerStyled>
         <Outlet />
       </ContainerStyled>
+      <ScrollOnTop />
     </MainLayoutStyled>
   );
 };

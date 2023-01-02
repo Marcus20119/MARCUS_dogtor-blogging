@@ -26,9 +26,8 @@ const AllPostsPageWriterStyled = styled.div`
 
 const AllPostsPageWriter = () => {
   const userDocument = useOutletContext();
-  const { categoriesName, categories } = useFirebase();
-  console.log('categories', categories);
-  const [query, setQuery] = useSearchParams();
+  const { categoriesName } = useFirebase();
+  const [query] = useSearchParams();
   // Trường hợp "Food & Drink" do có ký tự đặc biệt nên cần xử lý riêng
   const [categoryValue, setCategoryValue] = useState(
     query.get('category') || 'All categories'

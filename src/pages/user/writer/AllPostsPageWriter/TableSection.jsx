@@ -63,6 +63,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
   // Set query base on the selected category
   let quantityQuery;
   let firstQuery;
+  const postPerLoad = 5;
   if (categoryValue && categoryValue !== 'All categories') {
     quantityQuery = query(
       collection(db, 'posts'),
@@ -76,7 +77,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       where('userId', '==', userDocument.id),
       where('category', '==', categoryValue),
       orderBy('createdAt', 'desc'),
-      limit(2)
+      limit(postPerLoad)
     );
   } else {
     quantityQuery = query(
@@ -89,7 +90,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       collection(db, 'posts'),
       where('userId', '==', userDocument.id),
       orderBy('createdAt', 'desc'),
-      limit(2)
+      limit(postPerLoad)
     );
   }
 
@@ -113,7 +114,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
         where('category', '==', categoryValue),
         orderBy('createdAt', 'desc'),
         startAfter(lastSnapshot),
-        limit(2)
+        limit(postPerLoad)
       );
     } else {
       nextDataQuery = query(
@@ -121,7 +122,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
         where('userId', '==', userDocument.id),
         orderBy('createdAt', 'desc'),
         startAfter(lastSnapshot),
-        limit(2)
+        limit(postPerLoad)
       );
     }
     setNextQuery(nextDataQuery);
@@ -178,7 +179,11 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
                 </td>
                 <td className="allPage-postAction">
                   <div>
-                    <IconButton>
+                    <IconButton
+                      onClick={() => {
+                        navigateTo(`/post/${post.slug}`);
+                      }}
+                    >
                       <EyeIcon />
                     </IconButton>
                     <IconButton

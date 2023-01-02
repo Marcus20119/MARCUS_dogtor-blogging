@@ -6,11 +6,12 @@
  */
 
 function convertDate(dateData, year = false) {
-  const date = new Date(dateData * 1000).toDateString().split(' ');
+  const date = new Date(dateData * 1000);
+  const dateSplit = date.toDateString().split(' ');
   if (year) {
-    return `${date[1]} ${date[2]} ${date[3]}`;
+    return `${dateSplit[1]} ${dateSplit[2]}, ${date.getFullYear()}`;
   } else {
-    return `${date[1]} ${date[2]}`;
+    return `${dateSplit[1]} ${dateSplit[2]}`;
   }
 }
 

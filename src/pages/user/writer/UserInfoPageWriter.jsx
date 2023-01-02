@@ -16,6 +16,7 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { deleteOldImage, uploadImage } from '~/firebase/funcs';
 import { useOutletContext } from 'react-router-dom';
+import { useScrollOnTop } from '~/hooks';
 
 const UserInfoPageWriterStyled = styled.div`
   width: 100%;
@@ -51,6 +52,7 @@ const schema = yup.object({
 });
 
 const UserInfoPageWriter = () => {
+  useScrollOnTop();
   const { imgURLs } = useFirebase();
   const userDocument = useOutletContext();
   const {

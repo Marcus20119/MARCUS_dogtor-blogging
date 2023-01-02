@@ -72,7 +72,7 @@ const NotFoundPage = () => {
           <span>4</span>
         </div>
         <div className="nfp-text">
-          <span className="nfp-text__top">Oops! Something Went Wrong !</span>
+          <span className="nfp-text__top">Oops! Something Went Wrong!</span>
           <span className="nfp-text__bottom">
             The page you are looking for might have been removed had its name
             changed or is temporarily unavailable.

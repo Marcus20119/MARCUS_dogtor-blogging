@@ -1,4 +1,5 @@
 import { signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -85,46 +86,98 @@ const UserDropDownStyled = styled.div`
 const UserDropDown = ({ setShow }) => {
   const { userDocument } = useFirebase();
   const navigateTo = useNavigate();
-  const userItems = [
-    {
-      name:
-        userDocument.role === 'admin'
-          ? 'Admin page'
-          : userDocument.role === 'writer'
-          ? 'Write New Post'
-          : 'Read List',
-      iconClass:
-        userDocument.role === 'admin'
-          ? 'bx bxs-user'
-          : userDocument.role === 'writer'
-          ? 'bx bx-edit'
-          : 'bx bx-book-reader',
-      onClick() {
-        const path =
-          userDocument.role === 'admin'
-            ? '/'
-            : userDocument.role === 'writer'
-            ? '/user/writer/add-post'
-            : '/';
-        navigateTo(path);
-      },
-    },
-    {
-      name: 'Settings & privacy',
-      iconClass: 'bx bxs-cog',
-      onClick() {
-        navigateTo('/');
-      },
-    },
-    {
-      name: 'Log Out',
-      iconClass: 'bx bx-log-out',
-      onClick() {
-        signOut(auth);
-        navigateTo('/latest');
-      },
-    },
-  ];
+  const [userItems, setUserItems] = useState([]);
+  useEffect(() => {
+    if (userDocument?.role) {
+      let configItems = [];
+      switch (userDocument.role) {
+        case 'admin': {
+          configItems = [
+            {
+              name: 'Admin page',
+              iconClass: 'bx bxs-user',
+              onClick() {
+                navigateTo('/');
+              },
+            },
+            {
+              name: 'Settings & privacy',
+              iconClass: 'bx bxs-cog',
+              onClick() {
+                navigateTo('/');
+              },
+            },
+            {
+              name: 'Log Out',
+              iconClass: 'bx bx-log-out',
+              onClick() {
+                signOut(auth);
+                navigateTo('/latest');
+              },
+            },
+          ];
+          break;
+        }
+        case 'writer': {
+          configItems = [
+            {
+              name: 'Write New Post',
+              iconClass: 'bx bx-edit',
+              onClick() {
+                navigateTo('/user/writer/add-post');
+              },
+            },
+            {
+              name: 'My Posts',
+              iconClass: 'bx bx-book-open',
+              onClick() {
+                navigateTo('/user/writer/all-posts?category=All%20categories');
+              },
+            },
+            {
+              name: 'Log Out',
+              iconClass: 'bx bx-log-out',
+              onClick() {
+                signOut(auth);
+                navigateTo('/latest');
+              },
+            },
+          ];
+          break;
+        }
+        case 'reader': {
+          configItems = [
+            {
+              name: 'Read List',
+              iconClass: 'bx bx-book-reader',
+              onClick() {
+                navigateTo('/');
+              },
+            },
+            {
+              name: 'Settings & privacy',
+              iconClass: 'bx bxs-cog',
+              onClick() {
+                navigateTo('/');
+              },
+            },
+            {
+              name: 'Log Out',
+              iconClass: 'bx bx-log-out',
+              onClick() {
+                signOut(auth);
+                navigateTo('/latest');
+              },
+            },
+          ];
+          break;
+        }
+        default:
+          break;
+      }
+      setUserItems(configItems);
+    }
+  }, [navigateTo, userDocument]);
 
   return (
     <UserDropDownStyled>
