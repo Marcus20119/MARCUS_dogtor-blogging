@@ -124,11 +124,15 @@ const PostPageStyled = styled.div`
       font-size: 22px;
     }
     &__content {
-      li {
-        list-style: disc;
+      ul {
+        li {
+          list-style: disc;
+        }
       }
       ol {
-        list-style-type: decimal;
+        li {
+          list-style-type: decimal;
+        }
       }
     }
   }

@@ -121,7 +121,7 @@ const UserSideBar = () => {
       <div className="userSidebar">
         <div className="userSidebar__header">
           <UserAvatar
-            src={userDocument?.avatar?.URL || imgURLs.userAvatar}
+            src={userDocument?.avatar?.URL || imgURLs.transparent}
             alt="user-avatar"
             size="40px"
           />

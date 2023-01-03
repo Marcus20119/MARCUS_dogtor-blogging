@@ -14,6 +14,8 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
+import { LoadingCircle } from '~/components/loading';
+import LoadingBounce from '~/components/loading/Bounce';
 
 import { Table, IconButton, PostCell, StatusTag } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
@@ -57,7 +59,7 @@ const AllPostTableBodyStyled = styled.tbody`
   }
 `;
 
-const AllPostPageWriterTableSection = ({ categoryValue }) => {
+const TableSection = ({ categoryValue }) => {
   const userDocument = useOutletContext();
   const navigateTo = useNavigate();
   // Set query base on the selected category
@@ -99,7 +101,11 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
   // Handle load more data
   const [lastSnapshot, setLastSnapshot] = useState({});
   const [nextQuery, setNextQuery] = useState();
-  const { data: posts, setData: setPosts } = useMultiDocsPagination({
+  const {
+    data: posts,
+    setData: setPosts,
+    isLoading,
+  } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
     setLastSnapshot,
@@ -137,13 +143,29 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       confirmButtonColor: '#8d351a',
       cancelButtonColor: '#8d351a50',
       confirmButtonText: 'Yes, delete it!',
+      scrollbarPadding: false,
     }).then(async result => {
       if (result.isConfirmed) {
+        // Loading pop-up
+        Swal.fire({
+          title: 'Loading...',
+          text: 'Please wait',
+          imageUrl: 'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+          imageHeight: '60px',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          scrollbarPadding: false,
+        });
         await deleteDoc(doc(db, 'posts', post.id));
         await deleteOldImage({ imgName: post.img.name });
         const newPosts = posts.filter(dataItem => dataItem.id !== post.id);
         setPosts(newPosts);
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your file has been deleted.',
+          icon: 'success',
+          scrollbarPadding: false,
+        });
       }
     });
   };
@@ -200,6 +222,13 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
                 </td>
               </tr>
             ))}
+          {isLoading && (
+            <tr>
+              <td colSpan="5">
+                <LoadingBounce />
+              </td>
+            </tr>
+          )}
           {posts &&
             posts.length === 0 &&
             categoryValue !== 'All categories' && (
@@ -214,7 +243,7 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
       {posts && posts.length < quantity && (
         <Button
           width="150px"
-          style={{ margin: '24px auto 32px' }}
+          style={{ margin: '24px auto 0' }}
           onClick={handleLoadMore}
         >
           Load More
@@ -224,4 +253,4 @@ const AllPostPageWriterTableSection = ({ categoryValue }) => {
   );
 };
 
-export default AllPostPageWriterTableSection;
+export default TableSection;

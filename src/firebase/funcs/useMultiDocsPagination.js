@@ -8,10 +8,12 @@ function useMultiDocsPagination({
   reRenderCondition,
 }) {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // First data, run only 1 times when mounting
   useEffect(() => {
     const handleGetFirstData = async () => {
+      setIsLoading(true);
       const documentSnapshots = await getDocs(firstQuery);
       let firstData = [];
       documentSnapshots.docs.forEach(doc => {
@@ -24,6 +26,7 @@ function useMultiDocsPagination({
       setLastSnapshot(
         documentSnapshots.docs[documentSnapshots.docs.length - 1]
       );
+      setIsLoading(false);
     };
     handleGetFirstData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,6 +36,7 @@ function useMultiDocsPagination({
   useEffect(() => {
     if (nextQuery) {
       const handleGetNewData = async () => {
+        setIsLoading(true);
         const documentSnapshots = await getDocs(nextQuery);
         let newData = [...data];
         documentSnapshots.docs.forEach(doc => {
@@ -45,12 +49,13 @@ function useMultiDocsPagination({
         setLastSnapshot(
           documentSnapshots.docs[documentSnapshots.docs.length - 1]
         );
+        setIsLoading(false);
       };
       handleGetNewData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextQuery]);
-  return { data, setData };
+  return { data, setData, isLoading };
 }
 
 export { useMultiDocsPagination };

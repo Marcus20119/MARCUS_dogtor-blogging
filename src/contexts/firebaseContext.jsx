@@ -24,7 +24,6 @@ const FirebaseProvider = props => {
     col: 'users',
     id: userInfo.uid,
   });
-  console.log('userDocument', userDocument);
   useEffect(() => {
     if (!userInfo) {
       setDocument({});
@@ -35,6 +34,8 @@ const FirebaseProvider = props => {
   const imgURLs = {
     userAvatar:
       'https://firebasestorage.googleapis.com/v0/b/monkey-blogging-4878f.appspot.com/o/images%2Fdefault%2Fdefault-user.png?alt=media&token=6414019c-72a3-4a99-a85b-e84b55326bf4',
+    transparent:
+      'https://firebasestorage.googleapis.com/v0/b/monkey-blogging-4878f.appspot.com/o/images%2Fdefault%2Ftransparent.png?alt=media&token=9dc658f8-00cb-4793-986a-15ed1a12f409',
   };
   return (
     <Fragment>

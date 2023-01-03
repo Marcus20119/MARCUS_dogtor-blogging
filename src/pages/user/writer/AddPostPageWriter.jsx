@@ -51,7 +51,7 @@ const AddPostPageWriter = () => {
     handleSubmit,
     setValue,
     setError,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     reset,
   } = useForm({
     resolver: yupResolver(schema),
@@ -70,8 +70,20 @@ const AddPostPageWriter = () => {
         confirmButtonColor: '#8d351a',
         cancelButtonColor: '#8d351a50',
         confirmButtonText: 'Yes, post it!',
+        scrollbarPadding: false,
       }).then(async result => {
         if (result.isConfirmed) {
+          // Loading pop-up
+          Swal.fire({
+            title: 'Loading...',
+            text: 'Please wait',
+            imageUrl:
+              'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+            imageHeight: '60px',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            scrollbarPadding: false,
+          });
           const { image, ...cloneData } = data;
           // Custom value
           cloneData.slug =
@@ -89,33 +101,54 @@ const AddPostPageWriter = () => {
             content: content || 'This post has no content yet!',
             createdAt: serverTimestamp(),
           });
-
-          Swal.fire(
-            'Added successfully!',
-            `You can check your post's status in "All posts" section.`,
-            'success'
-          );
+          reset({
+            title: '',
+            image: '',
+            category: '',
+            author: '',
+            slug: '',
+            overview: '',
+          });
+          setContent('');
+          Swal.fire({
+            title: 'Added successfully!',
+            text: `You can check your post's status in "All posts" section.`,
+            icon: 'success',
+            scrollbarPadding: false,
+          });
         }
       });
     } catch (err) {
       console.log(err);
+      reset({
+        title: '',
+        image: '',
+        category: '',
+        author: '',
+        slug: '',
+        overview: '',
+      });
+      setContent('');
     }
-    reset({
-      title: '',
-      image: '',
-      category: '',
-      author: '',
-      slug: '',
-      overview: '',
-    });
-    setContent('');
+  };
+
+  const onErrorsHandler = async errors => {
+    try {
+      console.log('errors', errors);
+      if (errors[Object.keys(errors)[0]].ref.select) {
+        errors[Object.keys(errors)[0]].ref.select();
+      }
+      document.documentElement.scrollTop = 86;
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <AddPostPageWriterStyled>
       <UserSectionTitle>Add New Post</UserSectionTitle>
       <form
         className="addPostPageWriter-form"
-        onSubmit={handleSubmit(onSubmitHandler)}
+        onSubmit={handleSubmit(onSubmitHandler, () => onErrorsHandler(errors))}
       >
         <div className="addPostPageWriter-form__filed-wrap">
           <Field>

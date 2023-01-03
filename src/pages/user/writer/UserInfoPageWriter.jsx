@@ -85,8 +85,19 @@ const UserInfoPageWriter = () => {
       confirmButtonColor: '#8d351a',
       cancelButtonColor: '#8d351a50',
       confirmButtonText: 'Update info',
+      scrollbarPadding: false,
     }).then(async result => {
       if (result.isConfirmed) {
+        // Loading pop-up
+        Swal.fire({
+          title: 'Loading...',
+          text: 'Please wait',
+          imageUrl: 'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+          imageHeight: '60px',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          scrollbarPadding: false,
+        });
         // Handle submit form
         try {
           if (!data.image) {
@@ -102,7 +113,12 @@ const UserInfoPageWriter = () => {
           console.log(err);
         }
         reset(userDocument);
-        Swal.fire('Update!', 'Your information has been updated.', 'success');
+        Swal.fire({
+          title: 'Update!',
+          text: 'Your information has been updated.',
+          icon: 'success',
+          scrollbarPadding: false,
+        });
       }
     });
   };

@@ -39,6 +39,10 @@ export const GlobalClasses = css`
     box-shadow: none !important;
   }
 
+  body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+    overflow: unset !important;
+  }
+
   .entry-content,
   .entry-content .ql-snow .ql-editor {
     font-family: 'Poppins', sans-serif;
@@ -76,11 +80,11 @@ export const GlobalClasses = css`
       font-size: 14px;
       color: #6b6b6b;
     }
-    ul {
-      list-style-type: disc !important;
+    ul li {
+      list-style: disc !important;
     }
-    ol {
-      list-style: decimal !important;
+    ol li {
+      list-style-type: decimal !important;
     }
     ul,
     ol {
@@ -108,5 +112,16 @@ export const GlobalClasses = css`
         font-size: 20px;
       }
     }
+  }
+  .entry-content {
+    ul li {
+      padding-left: 24px;
+    }
+    ol li {
+      padding-left: 24px;
+    }
+  }
+  .ql-editor ul > li::before {
+    content: '';
   }
 `;

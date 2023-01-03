@@ -1,4 +1,4 @@
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -82,8 +82,20 @@ const EditPostPageWriter = () => {
         confirmButtonColor: '#8d351a',
         cancelButtonColor: '#8d351a50',
         confirmButtonText: 'Yes, update it!',
+        scrollbarPadding: false,
       }).then(async result => {
         if (result.isConfirmed) {
+          // Loading pop-up
+          Swal.fire({
+            title: 'Loading...',
+            text: 'Please wait',
+            imageUrl:
+              'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+            imageHeight: '60px',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            scrollbarPadding: false,
+          });
           const { image, ...cloneData } = data;
           // Nếu thay đổi ảnh nền thì xóa ảnh cũ và up ảnh mới
           if (image) {
@@ -106,7 +118,12 @@ const EditPostPageWriter = () => {
               content: content || 'This post has no content yet!',
             });
           }
-          Swal.fire('Updated!', 'Your post has been updated.', 'success');
+          Swal.fire({
+            title: 'Updated!',
+            text: 'Your post has been updated.',
+            icon: 'success',
+            scrollbarPadding: false,
+          });
           navigateTo('/user/writer/all-posts');
         }
       });

@@ -8,7 +8,9 @@ import {
 async function uploadImage(file) {
   return new Promise(function (resolve, reject) {
     const storage = getStorage();
-    const storageRef = ref(storage, 'images/' + file.name);
+    // Để tránh tình trạng đăng cùng ảnh -> dẫn đến cùng tên và không đăng lên db
+    const imageName = Date.now() + '-' + file.name;
+    const storageRef = ref(storage, 'images/' + imageName);
     const uploadTask = uploadBytesResumable(storageRef, file);
     let downloadURL = '';
     // Upload image
@@ -23,7 +25,7 @@ async function uploadImage(file) {
       async () => {
         // Upload completed successfully, now we can get the download URL
         downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        resolve({ URL: downloadURL, name: file.name });
+        resolve({ URL: downloadURL, name: imageName });
       }
     );
   });

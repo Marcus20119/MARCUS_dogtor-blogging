@@ -1,0 +1,32 @@
+@keyframes loadingBounce {
+  to {
+    opacity: 0.1;
+    transform: translateY(-1rem);
+  }
+}
+.loadingBounce {
+  &Wrap {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 12px;
+    gap: 8px;
+    &Dot {
+      width: 16px;
+      height: 16px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      animation: loadingBounce 0.6s infinite alternate;
+
+      &:nth-child(2) {
+        animation-delay: 150ms;
+      }
+      &:nth-child(3) {
+        animation-delay: 300ms;
+      }
+      &:nth-child(4) {
+        animation-delay: 450ms;
+      }
+    }
+  }
+}
