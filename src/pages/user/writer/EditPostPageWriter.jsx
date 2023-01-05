@@ -4,20 +4,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import { useEffect } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import slugify from 'slugify';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
 import { Input, InputFile, InputReactQuill } from '~/components/form/input';
 import Label from '~/components/form/label';
 import { Select } from '~/components/form/select';
-import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { deleteOldImage, uploadImage, useSingleDoc } from '~/firebase/funcs';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import slugify from 'slugify';
+import NotFoundPage from '~/pages/NotFoundPage';
 
 const EditPostPageWriterStyled = styled.div`
   width: 100%;
@@ -42,8 +42,8 @@ const schema = yup.object({
 });
 
 const EditPostPageWriter = () => {
-  const { categoriesName } = useFirebase();
   const navigateTo = useNavigate();
+  const { categoriesName, imgURLs, userDocument } = useOutletContext();
   const slug = useParams();
   const { document: postData } = useSingleDoc({
     col: 'posts',
@@ -89,8 +89,7 @@ const EditPostPageWriter = () => {
           Swal.fire({
             title: 'Loading...',
             text: 'Please wait',
-            imageUrl:
-              'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+            imageUrl: imgURLs.loading,
             imageHeight: '60px',
             showConfirmButton: false,
             allowOutsideClick: false,
@@ -139,6 +138,12 @@ const EditPostPageWriter = () => {
       overview: '',
     });
   };
+
+  // Nếu không phải là writer thì trả ra trang NotFound
+  if (userDocument.role !== 'writer') {
+    return <NotFoundPage />;
+  }
+
   return (
     <EditPostPageWriterStyled>
       <UserSectionTitle>Add New Post</UserSectionTitle>

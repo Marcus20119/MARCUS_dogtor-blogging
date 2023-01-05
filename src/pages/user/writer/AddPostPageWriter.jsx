@@ -5,22 +5,24 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import slugify from 'slugify';
 import * as yup from 'yup';
+import Swal from 'sweetalert2';
+import { useOutletContext } from 'react-router-dom';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
 import { Input, InputFile, InputReactQuill } from '~/components/form/input';
 import Label from '~/components/form/label';
 import { Select } from '~/components/form/select';
-import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { uploadImage } from '~/firebase/funcs';
-import Swal from 'sweetalert2';
 import { useScrollOnTop } from '~/hooks';
+import NotFoundPage from '~/pages/NotFoundPage';
 
 const AddPostPageWriterStyled = styled.div`
   width: 100%;
+  margin-bottom: 24px;
 
   .addPostPageWriter-form {
     width: 100%;
@@ -44,7 +46,7 @@ const schema = yup.object({
 
 const AddPostPageWriter = () => {
   useScrollOnTop();
-  const { categoriesName } = useFirebase();
+  const { categoriesName, userDocument, imgURLs } = useOutletContext();
   const { userInfo } = useAuth();
   const {
     control,
@@ -77,8 +79,7 @@ const AddPostPageWriter = () => {
           Swal.fire({
             title: 'Loading...',
             text: 'Please wait',
-            imageUrl:
-              'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+            imageUrl: imgURLs.loading,
             imageHeight: '60px',
             showConfirmButton: false,
             allowOutsideClick: false,
@@ -131,11 +132,9 @@ const AddPostPageWriter = () => {
       setContent('');
     }
   };
-
   const onErrorsHandler = async errors => {
     try {
-      console.log('errors', errors);
-      if (errors[Object.keys(errors)[0]].ref.select) {
+      if (errors[Object.keys(errors)[0]]?.ref?.select) {
         errors[Object.keys(errors)[0]].ref.select();
       }
       document.documentElement.scrollTop = 86;
@@ -143,6 +142,12 @@ const AddPostPageWriter = () => {
       console.log(err);
     }
   };
+
+  // Nếu không phải là writer thì trả ra trang NotFound
+  if (userDocument.role !== 'writer') {
+    return <NotFoundPage />;
+  }
+
   return (
     <AddPostPageWriterStyled>
       <UserSectionTitle>Add New Post</UserSectionTitle>

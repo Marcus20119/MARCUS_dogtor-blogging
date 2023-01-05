@@ -83,24 +83,24 @@ const Radio = ({ name, control, radios, colors, ...props }) => {
     formState: { errors },
   } = useController({ name, control, defaultValue: '' });
 
-  const watchRadioValue = useWatch({ name, control });
+  const watchRadioValue = Number(useWatch({ name, control }));
 
   return (
     <RadioStyled colors={colors}>
       <div className="radio-wrap">
         {radios.map(radio => (
-          <label key={radio} className="radio-item-wrap">
+          <label key={radio.name} className="radio-item-wrap">
             <div className="radio-item_check-wrap">
               <input
                 type="radio"
                 className="radio-item_check"
-                checked={watchRadioValue === radio}
+                checked={watchRadioValue === radio.value}
                 {...props}
-                {...{ ...field, value: radio }}
+                {...{ ...field, value: radio.value }}
               />
               <div className="radio-item_check-alternative"></div>
             </div>
-            <span className="radio-item_label">{radio}</span>
+            <span className="radio-item_label">{radio.name}</span>
           </label>
         ))}
       </div>

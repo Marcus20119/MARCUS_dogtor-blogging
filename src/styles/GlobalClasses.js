@@ -121,7 +121,8 @@ export const GlobalClasses = css`
       padding-left: 24px;
     }
   }
-  .ql-editor ul > li::before {
+  .ql-editor ul > li::before,
+  .ql-editor ol > li::before {
     content: '';
   }
 `;

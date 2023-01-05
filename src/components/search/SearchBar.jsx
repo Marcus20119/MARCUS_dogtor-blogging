@@ -45,10 +45,22 @@ const SearchBarStyled = styled.div`
  * @param {string} placeholder
  */
 
-const SearchBar = ({ name = '', placeholder = '', ...props }) => {
+const SearchBar = ({
+  name = '',
+  placeholder = '',
+  defaultValue = '',
+  onChange = () => {},
+  ...props
+}) => {
   return (
     <SearchBarStyled {...props}>
-      <input type="text" placeholder={placeholder} name={name} />
+      <input
+        type="text"
+        placeholder={placeholder}
+        name={name}
+        onChange={onChange}
+        defaultValue={defaultValue}
+      />
       <i className="bx bx-search"></i>
     </SearchBarStyled>
   );

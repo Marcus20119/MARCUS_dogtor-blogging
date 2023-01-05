@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Header } from '~/components/layout';
+import { Header } from '~/layouts/Header';
 
 const LoadingPageStyled = styled.div`
   width: 100%;

@@ -74,4 +74,7 @@ export const ResetClasses = css`
     -moz-appearance: none;
     outline: none;
   }
+  a:-webkit-any-link {
+    color: unset;
+  }
 `;

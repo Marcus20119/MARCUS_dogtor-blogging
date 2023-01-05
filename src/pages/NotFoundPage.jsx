@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import Button from '~/components/button';
 
 const NotFoundPageStyled = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 100%;
-  background: ${props => props.theme.color.skin};
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: #f6eede;
 
   .nfp {
     position: absolute;

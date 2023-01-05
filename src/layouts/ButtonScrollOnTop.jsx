@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const ScrollOnTopStyled = styled.div`
+const ButtonScrollOnTopStyled = styled.div`
   position: fixed;
   bottom: 30px;
   right: 35px;
@@ -13,7 +13,7 @@ const ScrollOnTopStyled = styled.div`
   height: 50px;
   border-radius: 50%;
   background-color: ${props => props.theme.color.brown};
-  color: ${props => props.theme.color.skin};
+  color: ${props => props.theme.color.skin} !important;
   font-size: 30px;
   cursor: pointer;
   opacity: 0.95;
@@ -23,7 +23,7 @@ const ScrollOnTopStyled = styled.div`
   }
 `;
 
-const ScrollOnTop = () => {
+const ButtonScrollOnTop = () => {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -47,12 +47,15 @@ const ScrollOnTop = () => {
   return (
     <Fragment>
       {show && (
-        <ScrollOnTopStyled onClick={handleScrollOnTop}>
+        <ButtonScrollOnTopStyled
+          onClick={handleScrollOnTop}
+          title="Scroll to top"
+        >
           <i className="bx bx-up-arrow-alt"></i>
-        </ScrollOnTopStyled>
+        </ButtonScrollOnTopStyled>
       )}
     </Fragment>
   );
 };
 
-export { ScrollOnTop };
+export { ButtonScrollOnTop };

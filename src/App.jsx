@@ -5,26 +5,37 @@ import LoadingPage from './pages/LoadingPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 
-// const SignUpPage = lazy(() => import('./pages/SignUpPage'));
-// const LoadingPage = lazy(() => import('./pages/LoadingPage'));
-// const SignInPage = lazy(() => import('./pages/SignInPage'));
+// Layout
+const MainLayout = lazy(() => import('./layouts/MainLayout'));
+const UserLayout = lazy(() => import('./layouts/UserLayout'));
+
+// Common
 const LatestPage = lazy(() => import('./pages/LatestPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-const PostPage = lazy(() => import('./pages/PostPage'));
-const AddPostPageWriter = lazy(() =>
-  import('./pages/user/writer/AddPostPageWriter')
+const PostPage = lazy(() => import('./pages/post/PostPage'));
+const UserInfoPage = lazy(() => import('./pages/user/UserInfoPage'));
+
+// Admin
+const MangePostsPageAdmin = lazy(() =>
+  import('./pages/user/admin/ManagePostsPageAdmin/ManagePostsPageAdmin')
 );
+const ManageUsersPageAdmin = lazy(() =>
+  import('./pages/user/admin/ManageUsersPageAdmin/ManageUsersPageAdmin')
+);
+const EditPostPageAdmin = lazy(() =>
+  import('./pages/user/admin/EditPostPageAdmin')
+);
+
+// Writer
 const AllPostsPageWriter = lazy(() =>
   import('./pages/user/writer/AllPostsPageWriter/AllPostsPageWriter')
 );
-const UserInfoPageWriter = lazy(() =>
-  import('./pages/user/writer/UserInfoPageWriter')
+const AddPostPageWriter = lazy(() =>
+  import('./pages/user/writer/AddPostPageWriter')
 );
 const EditPostPageWriter = lazy(() =>
-  import('./pages/user/writer/EditPostPageWriter/EditPostPageWriter')
+  import('./pages/user/writer/EditPostPageWriter')
 );
-const MainLayout = lazy(() => import('./layouts/MainLayout'));
-const UserLayout = lazy(() => import('./layouts/UserLayout'));
 
 function App() {
   return (
@@ -34,10 +45,16 @@ function App() {
         <Route path="/sign-in" element={<SignInPage />}></Route>
 
         <Route path="/user" element={<UserLayout />}>
+          <Route path="admin">
+            <Route path="all-posts" element={<MangePostsPageAdmin />}></Route>
+            <Route path="all-users" element={<ManageUsersPageAdmin />}></Route>
+            <Route path="edit-post/:id" element={<EditPostPageAdmin />}></Route>
+            <Route path="user-info" element={<UserInfoPage />}></Route>
+          </Route>
           <Route path="writer">
-            <Route path="add-post" element={<AddPostPageWriter />}></Route>
             <Route path="all-posts" element={<AllPostsPageWriter />}></Route>
-            <Route path="user-info" element={<UserInfoPageWriter />}></Route>
+            <Route path="add-post" element={<AddPostPageWriter />}></Route>
+            <Route path="user-info" element={<UserInfoPage />}></Route>
             <Route
               path="edit-post/:id"
               element={<EditPostPageWriter />}

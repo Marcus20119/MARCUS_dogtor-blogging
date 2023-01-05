@@ -6,22 +6,21 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { isEqual } from 'lodash';
+import { useOutletContext } from 'react-router-dom';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
 import { Input, InputAvatar } from '~/components/form/input';
 import Label from '~/components/form/label';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
-import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { deleteOldImage, uploadImage } from '~/firebase/funcs';
-import { useOutletContext } from 'react-router-dom';
 import { useScrollOnTop } from '~/hooks';
 
-const UserInfoPageWriterStyled = styled.div`
+const UserInfoPageStyled = styled.div`
   width: 100%;
 
-  .userInfoPageWriter-form {
+  .userInfoPage-form {
     width: 100%;
 
     &__main-wrap {
@@ -51,10 +50,9 @@ const schema = yup.object({
     .max(10, 'Must be a valid phone number'),
 });
 
-const UserInfoPageWriter = () => {
+const UserInfoPage = () => {
   useScrollOnTop();
-  const { imgURLs } = useFirebase();
-  const userDocument = useOutletContext();
+  const { userDocument, imgURLs } = useOutletContext();
   const {
     control,
     handleSubmit,
@@ -92,7 +90,7 @@ const UserInfoPageWriter = () => {
         Swal.fire({
           title: 'Loading...',
           text: 'Please wait',
-          imageUrl: 'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+          imageUrl: imgURLs.loading,
           imageHeight: '60px',
           showConfirmButton: false,
           allowOutsideClick: false,
@@ -112,7 +110,6 @@ const UserInfoPageWriter = () => {
         } catch (err) {
           console.log(err);
         }
-        reset(userDocument);
         Swal.fire({
           title: 'Update!',
           text: 'Your information has been updated.',
@@ -128,13 +125,13 @@ const UserInfoPageWriter = () => {
   }, [userDocument]);
 
   return (
-    <UserInfoPageWriterStyled>
+    <UserInfoPageStyled>
       <UserSectionTitle>User Info</UserSectionTitle>
       <form
-        className="userInfoPageWriter-form"
+        className="userInfoPage-form"
         onSubmit={handleSubmit(onSubmitHandler)}
       >
-        <div className="userInfoPageWriter-form__main-wrap">
+        <div className="userInfoPage-form__main-wrap">
           <InputAvatar
             control={control}
             type="file"
@@ -142,7 +139,7 @@ const UserInfoPageWriter = () => {
             file={file}
             setFile={setFile}
           />
-          <div className="userInfoPageWriter-form__filed-wrap">
+          <div className="userInfoPage-form__filed-wrap">
             <Field>
               <Label id="fullName">Full Name</Label>
               <Input control={control} name="fullName" secondary></Input>
@@ -175,8 +172,8 @@ const UserInfoPageWriter = () => {
           Update Info
         </Button>
       </form>
-    </UserInfoPageWriterStyled>
+    </UserInfoPageStyled>
   );
 };
 
-export default UserInfoPageWriter;
+export default UserInfoPage;

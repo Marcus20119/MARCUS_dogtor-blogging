@@ -10,14 +10,19 @@ import {
 } from 'firebase/firestore';
 import { Fragment } from 'react';
 import { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
-import { LoadingCircle } from '~/components/loading';
 import LoadingBounce from '~/components/loading/Bounce';
 
-import { Table, IconButton, PostCell, StatusTag } from '~/components/table';
+import {
+  Table,
+  IconLink,
+  IconButton,
+  PostCell,
+  StatusTag,
+} from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
   deleteOldImage,
@@ -26,7 +31,7 @@ import {
 } from '~/firebase/funcs';
 import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
 
-const AllPostTableHeadStyled = styled.thead`
+const AllPostAdminTableHeadStyled = styled.thead`
   .allPage-firstRow {
     th:nth-child(1) {
       width: 70px;
@@ -37,7 +42,7 @@ const AllPostTableHeadStyled = styled.thead`
     }
   }
 `;
-const AllPostTableBodyStyled = styled.tbody`
+const AllPostAdminTableBodyStyled = styled.tbody`
   .allPage-postId {
     text-align: center !important;
   }
@@ -59,41 +64,74 @@ const AllPostTableBodyStyled = styled.tbody`
   }
 `;
 
-const TableSection = ({ categoryValue }) => {
-  const userDocument = useOutletContext();
-  const navigateTo = useNavigate();
+const TableSectionAdmin = ({ categoryValue, searchValue }) => {
+  const { imgURLs } = useOutletContext();
   // Set query base on the selected category
   let quantityQuery;
   let firstQuery;
   const postPerLoad = 5;
-  if (categoryValue && categoryValue !== 'All categories') {
-    quantityQuery = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      where('category', '==', categoryValue),
-      orderBy('createdAt', 'desc')
-    );
+  // Kiểm tra có querySearch thì mới lọc theo querySearch còn không thì lọc theo category
+  if (searchValue) {
+    if (categoryValue && categoryValue !== 'All categories') {
+      quantityQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', categoryValue),
+        where('title', '>=', searchValue),
+        where('title', '<=', searchValue + 'utf8'),
+        orderBy('title', 'desc')
+      );
 
-    firstQuery = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      where('category', '==', categoryValue),
-      orderBy('createdAt', 'desc'),
-      limit(postPerLoad)
-    );
+      firstQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', categoryValue),
+        where('title', '>=', searchValue),
+        where('title', '<=', searchValue + 'utf8'),
+        orderBy('title', 'desc'),
+        limit(postPerLoad)
+      );
+    } else {
+      quantityQuery = query(
+        collection(db, 'posts'),
+        where('title', '>=', searchValue),
+        where('title', '<=', searchValue + 'utf8'),
+        orderBy('title', 'desc')
+      );
+
+      firstQuery = query(
+        collection(db, 'posts'),
+        where('title', '>=', searchValue),
+        where('title', '<=', searchValue + 'utf8'),
+        orderBy('title', 'desc'),
+        limit(postPerLoad)
+      );
+    }
   } else {
-    quantityQuery = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      orderBy('createdAt', 'desc')
-    );
+    if (categoryValue && categoryValue !== 'All categories') {
+      console.log('getQuery');
+      quantityQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', categoryValue),
+        orderBy('createdAt', 'desc')
+      );
 
-    firstQuery = query(
-      collection(db, 'posts'),
-      where('userId', '==', userDocument.id),
-      orderBy('createdAt', 'desc'),
-      limit(postPerLoad)
-    );
+      firstQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', categoryValue),
+        orderBy('createdAt', 'desc'),
+        limit(postPerLoad)
+      );
+    } else {
+      quantityQuery = query(
+        collection(db, 'posts'),
+        orderBy('createdAt', 'desc')
+      );
+
+      firstQuery = query(
+        collection(db, 'posts'),
+        orderBy('createdAt', 'desc'),
+        limit(postPerLoad)
+      );
+    }
   }
 
   const quantity = useQuantityOfCollection({ query: quantityQuery });
@@ -109,27 +147,48 @@ const TableSection = ({ categoryValue }) => {
     firstQuery,
     nextQuery,
     setLastSnapshot,
-    reRenderCondition: categoryValue,
+    reRenderCondition: [categoryValue, searchValue],
   });
   const handleLoadMore = () => {
     let nextDataQuery;
-    if (categoryValue && categoryValue !== 'All categories') {
-      nextDataQuery = query(
-        collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
-        where('category', '==', categoryValue),
-        orderBy('createdAt', 'desc'),
-        startAfter(lastSnapshot),
-        limit(postPerLoad)
-      );
+    if (searchValue) {
+      if (categoryValue && categoryValue !== 'All categories') {
+        nextDataQuery = query(
+          collection(db, 'posts'),
+          where('category', '==', categoryValue),
+          where('title', '>=', searchValue),
+          where('title', '<=', searchValue + 'utf8'),
+          orderBy('title', 'desc'),
+          startAfter(lastSnapshot),
+          limit(postPerLoad)
+        );
+      } else {
+        nextDataQuery = query(
+          collection(db, 'posts'),
+          where('title', '>=', searchValue),
+          where('title', '<=', searchValue + 'utf8'),
+          orderBy('title', 'desc'),
+          startAfter(lastSnapshot),
+          limit(postPerLoad)
+        );
+      }
     } else {
-      nextDataQuery = query(
-        collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
-        orderBy('createdAt', 'desc'),
-        startAfter(lastSnapshot),
-        limit(postPerLoad)
-      );
+      if (categoryValue && categoryValue !== 'All categories') {
+        nextDataQuery = query(
+          collection(db, 'posts'),
+          where('category', '==', categoryValue),
+          orderBy('createdAt', 'desc'),
+          startAfter(lastSnapshot),
+          limit(postPerLoad)
+        );
+      } else {
+        nextDataQuery = query(
+          collection(db, 'posts'),
+          orderBy('createdAt', 'desc'),
+          startAfter(lastSnapshot),
+          limit(postPerLoad)
+        );
+      }
     }
     setNextQuery(nextDataQuery);
   };
@@ -150,7 +209,7 @@ const TableSection = ({ categoryValue }) => {
         Swal.fire({
           title: 'Loading...',
           text: 'Please wait',
-          imageUrl: 'https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif',
+          imageUrl: imgURLs.loading,
           imageHeight: '60px',
           showConfirmButton: false,
           allowOutsideClick: false,
@@ -173,7 +232,7 @@ const TableSection = ({ categoryValue }) => {
   return (
     <Fragment>
       <Table>
-        <AllPostTableHeadStyled>
+        <AllPostAdminTableHeadStyled>
           <tr className="allPage-firstRow">
             <th>No.</th>
             <th>Post</th>
@@ -181,8 +240,8 @@ const TableSection = ({ categoryValue }) => {
             <th>Status</th>
             <th>Actions</th>
           </tr>
-        </AllPostTableHeadStyled>
-        <AllPostTableBodyStyled>
+        </AllPostAdminTableHeadStyled>
+        <AllPostAdminTableBodyStyled>
           {posts &&
             posts.length > 0 &&
             posts.map((post, index) => (
@@ -201,20 +260,12 @@ const TableSection = ({ categoryValue }) => {
                 </td>
                 <td className="allPage-postAction">
                   <div>
-                    <IconButton
-                      onClick={() => {
-                        navigateTo(`/post/${post.slug}`);
-                      }}
-                    >
+                    <IconLink navigatePath={`/post/${post.slug}`}>
                       <EyeIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() =>
-                        navigateTo(`/user/writer/edit-post/${post.id}`)
-                      }
-                    >
+                    </IconLink>
+                    <IconLink navigatePath={`/user/admin/edit-post/${post.id}`}>
                       <WriteIcon />
-                    </IconButton>
+                    </IconLink>
                     <IconButton onClick={() => handleDeletePost(post)}>
                       <TrashIcon />
                     </IconButton>
@@ -234,11 +285,13 @@ const TableSection = ({ categoryValue }) => {
             categoryValue !== 'All categories' && (
               <tr>
                 <td colSpan="5">
-                  You still don't have any posts about this section yet!
+                  {searchValue
+                    ? 'No post was found! Try another keyword'
+                    : `You still don't have any posts about this section yet!`}
                 </td>
               </tr>
             )}
-        </AllPostTableBodyStyled>
+        </AllPostAdminTableBodyStyled>
       </Table>
       {posts && posts.length < quantity && (
         <Button
@@ -253,4 +306,4 @@ const TableSection = ({ categoryValue }) => {
   );
 };
 
-export default TableSection;
+export default TableSectionAdmin;

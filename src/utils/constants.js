@@ -13,8 +13,8 @@ export const theme = {
   },
 };
 
-export const postStatus = {
-  APPROVED: 1,
-  PENDING: 2,
-  REJECTED: 3,
-};
+export const postStatus = [
+  { name: 'Approved', value: 1 },
+  { name: 'pending', value: 2 },
+  { name: 'rejected', value: 3 },
+];

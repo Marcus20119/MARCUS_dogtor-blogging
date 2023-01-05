@@ -94,26 +94,19 @@ const UserDropDown = ({ setShow }) => {
         case 'admin': {
           configItems = [
             {
-              name: 'Admin page',
-              iconClass: 'bx bxs-user',
-              onClick() {
-                navigateTo('/');
-              },
+              name: 'Manage Users',
+              iconClass: 'bx bxs-group',
+              navigatePath: '/user/admin/all-users',
             },
             {
-              name: 'Settings & privacy',
-              iconClass: 'bx bxs-cog',
-              onClick() {
-                navigateTo('/');
-              },
+              name: 'Manage Posts',
+              iconClass: 'bx bxs-book-content',
+              navigatePath: '/user/admin/all-posts',
             },
             {
               name: 'Log Out',
               iconClass: 'bx bx-log-out',
-              onClick() {
-                signOut(auth);
-                navigateTo('/latest');
-              },
+              navigatePath: '/latest',
             },
           ];
           break;
@@ -123,24 +116,17 @@ const UserDropDown = ({ setShow }) => {
             {
               name: 'Write New Post',
               iconClass: 'bx bx-edit',
-              onClick() {
-                navigateTo('/user/writer/add-post');
-              },
+              navigatePath: '/user/writer/add-post',
             },
             {
               name: 'My Posts',
               iconClass: 'bx bx-book-open',
-              onClick() {
-                navigateTo('/user/writer/all-posts?category=All%20categories');
-              },
+              navigatePath: '/user/writer/all-posts?category=All%20categories',
             },
             {
               name: 'Log Out',
               iconClass: 'bx bx-log-out',
-              onClick() {
-                signOut(auth);
-                navigateTo('/latest');
-              },
+              navigatePath: '/latest',
             },
           ];
           break;
@@ -150,24 +136,17 @@ const UserDropDown = ({ setShow }) => {
             {
               name: 'Read List',
               iconClass: 'bx bx-book-reader',
-              onClick() {
-                navigateTo('/');
-              },
+              navigatePath: '/',
             },
             {
               name: 'Settings & privacy',
               iconClass: 'bx bxs-cog',
-              onClick() {
-                navigateTo('/');
-              },
+              navigatePath: '/',
             },
             {
               name: 'Log Out',
               iconClass: 'bx bx-log-out',
-              onClick() {
-                signOut(auth);
-                navigateTo('/latest');
-              },
+              navigatePath: '/latest',
             },
           ];
           break;
@@ -195,17 +174,22 @@ const UserDropDown = ({ setShow }) => {
       </div>
       <div className="userDropDown-tabs">
         {userItems.map((item, index) => (
-          <div
+          <a
             key={`UserDropDown-${index}`}
+            href={item.navigatePath}
             className="userDropDown-tabs__item"
-            onClick={() => {
-              item.onClick();
+            onClick={e => {
+              e.preventDefault();
+              navigateTo(item.navigatePath);
               setShow(false);
+              if (item.name === 'Log Out') {
+                signOut(auth);
+              }
             }}
           >
             <i className={`${item.iconClass}`}></i>
             <span>{item.name}</span>
-          </div>
+          </a>
         ))}
       </div>
     </UserDropDownStyled>

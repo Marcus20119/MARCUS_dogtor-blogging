@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { convertDate } from '~/helpers';
 
-const ListPostItemStyled = styled.div`
+const ListPostItemStyled = styled.a`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -78,9 +78,11 @@ const ListPostItem = ({ post }) => {
 
   return (
     <ListPostItemStyled
-      onClick={() => {
+      onClick={e => {
+        e.preventDefault();
         navigateTo(`/post/${post.slug}`);
       }}
+      href={`/post/${post.slug}`}
     >
       <div className="listPostItem-img">
         <img src={post.img.URL} alt={post.title} />

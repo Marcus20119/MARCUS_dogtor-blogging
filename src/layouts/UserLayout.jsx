@@ -1,14 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { Header } from '~/components/layout';
 import { UserSideBar } from '~/components/module';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { ButtonScrollOnTop } from './ButtonScrollOnTop';
+import Footer from './Footer';
+import { Header } from './Header';
 
 const UserLayoutStyled = styled.div`
   width: 100%;
 `;
 const ContainerStyled = styled.div`
   width: 1280px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 24px 0;
 
@@ -25,7 +28,7 @@ const ContainerStyled = styled.div`
 `;
 
 const UserLayout = () => {
-  const { userDocument } = useFirebase();
+  const { userDocument, categories, categoriesName, imgURLs } = useFirebase();
   return (
     <UserLayoutStyled>
       <Header />
@@ -34,9 +37,15 @@ const UserLayout = () => {
           <UserSideBar />
         </div>
         <div className="userLayout-right">
-          {userDocument?.id && <Outlet context={userDocument} />}
+          {userDocument?.id && (
+            <Outlet
+              context={{ userDocument, categories, categoriesName, imgURLs }}
+            />
+          )}
         </div>
       </ContainerStyled>
+      <ButtonScrollOnTop />
+      <Footer />
     </UserLayoutStyled>
   );
 };

@@ -5,6 +5,52 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 import { UserAvatar } from '.';
 
+const adminTabs = [
+  {
+    name: 'Dashboard',
+    iconClass: 'bx bx-cube',
+    path: '/user/admin/dashboard',
+  },
+  {
+    name: 'Manage Posts',
+    iconClass: 'bx bx-book-open',
+    path: '/user/admin/all-posts?category=All%20categories&search=',
+  },
+  {
+    name: 'Manage Users',
+    iconClass: 'bx bx-group',
+    path: '/user/admin/all-users',
+  },
+  {
+    name: 'Manage Category',
+    iconClass: 'bx bx-box',
+    path: '/user/admin/category',
+  },
+  {
+    name: 'Add New Post',
+    iconClass: 'bx bx-edit',
+    path: '/user/admin/add-post',
+  },
+  {
+    name: 'Add New User',
+    iconClass: 'bx bx-user-plus',
+    path: '/user/admin/add-user',
+  },
+  {
+    name: 'User Info',
+    iconClass: 'bx bx-user',
+    path: '/user/admin/user-info',
+  },
+  {
+    name: 'Log Out',
+    iconClass: 'bx bx-log-out-circle',
+    path: '/latest',
+    onClick() {
+      signOut(auth);
+    },
+  },
+];
+
 const writerTabs = [
   {
     name: 'Dashboard',
@@ -14,7 +60,7 @@ const writerTabs = [
   {
     name: 'All Posts',
     iconClass: 'bx bx-book-open',
-    path: '/user/writer/all-posts',
+    path: '/user/writer/all-posts?category=All%20categories&search=',
   },
   {
     name: 'New Post',
@@ -111,7 +157,7 @@ const UserSideBar = () => {
 
   const tabs =
     userDocument.role === 'admin'
-      ? writerTabs
+      ? adminTabs
       : userDocument.role === 'writer'
       ? writerTabs
       : writerTabs;

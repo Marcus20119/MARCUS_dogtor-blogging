@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelect } from '~/hooks';
 
@@ -84,34 +83,31 @@ const SelectNoFormStyled = styled.div`
   }
 `;
 
-const SelectNoForm = ({
-  defaultOption,
-  name,
-  options,
-  setValue,
-  navigateBasePath,
-}) => {
+const SelectNoForm = ({ defaultOption, name, options, setValue }) => {
   const { selectRef, selectedValue } = useSelect({
     defaultOption,
     name,
     options,
   });
-  const navigateTo = useNavigate();
   useEffect(() => {
-    navigateTo(navigateBasePath + selectedValue);
-    setValue(selectedValue);
+    // navigateTo(navigateBasePath + selectedValue);
+    setValue(selectedValue === 'Food & Drink' ? 'Food n Drink' : selectedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue]);
   return (
     <SelectNoFormStyled>
       <div ref={selectRef} className="selectNoForm-wrap">
         <div className="selectNoForm-default">
-          <p>{selectedValue}</p>
+          <p>
+            {selectedValue === 'Food n Drink' ? 'Food & Drink' : selectedValue}
+          </p>
           <i className="bx bxs-down-arrow"></i>
         </div>
         <ul className="selectNoForm-options hidden">
           {options.map(option => (
-            <li key={option}>{option}</li>
+            <li key={option}>
+              {option === 'Food n Drink' ? 'Food & Drink' : option}
+            </li>
           ))}
         </ul>
       </div>

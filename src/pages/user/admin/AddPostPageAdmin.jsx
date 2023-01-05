@@ -1,4 +1,6 @@
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
@@ -18,10 +20,9 @@ import Label from '~/components/form/label';
 import { Radio } from '~/components/form/radio';
 import { Select } from '~/components/form/select';
 import { postStatus } from '~/utils/constants';
-import { useFirebase } from '~/contexts/firebaseContext';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
+import NotFoundPage from '~/pages/NotFoundPage';
 
 const AddPostPageAdminStyled = styled.div`
   width: 100%;
@@ -55,7 +56,7 @@ const schema = yup.object({
 });
 
 const AddPostPageAdmin = () => {
-  const { categoriesName } = useFirebase();
+  const { categoriesName, userDocument } = useOutletContext();
   const { userInfo } = useAuth();
   const {
     control,
@@ -122,6 +123,12 @@ const AddPostPageAdmin = () => {
       status: '',
     });
   };
+
+  // Nếu không phải là admin thì trả ra trang NotFound
+  if (userDocument.role !== 'admin') {
+    return <NotFoundPage />;
+  }
+
   return (
     <AddPostPageAdminStyled>
       <span className="addPostPageAdmin-header">Add New Post</span>

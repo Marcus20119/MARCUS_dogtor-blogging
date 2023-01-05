@@ -30,7 +30,7 @@ function useMultiDocsPagination({
     };
     handleGetFirstData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reRenderCondition]);
+  }, [...reRenderCondition]);
 
   // Update whenever load more button is clicked
   useEffect(() => {

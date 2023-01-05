@@ -19,6 +19,10 @@ import { db } from '~/firebase/firebase-config';
 import { useMultiDocs, useSingleDoc } from '~/firebase/funcs';
 import { Fragment } from 'react';
 import { convertDate, convertTime } from '~/helpers';
+import { useEffect } from 'react';
+import ButtonEditPost from './ButtonEditPost';
+import { useFirebase } from '~/contexts/firebaseContext';
+import { useScrollOnTop } from '~/hooks';
 
 const PostPageStyled = styled.div`
   .postPage-header {
@@ -139,7 +143,9 @@ const PostPageStyled = styled.div`
 `;
 
 const PostPage = () => {
+  useScrollOnTop();
   const { slug } = useParams();
+  const { userDocument } = useFirebase();
   const postQuery = query(collection(db, 'posts'), where('slug', '==', slug));
   const getData = useMultiDocs({ query: postQuery });
   // Vì dùng hàm getDocs nên dữ liệu trả về nằm trong mảng
@@ -148,14 +154,23 @@ const PostPage = () => {
     col: 'users',
     id: postData?.userId ? postData.userId : '',
   });
+
+  useEffect(() => {
+    if (postData?.title) {
+      document.title = postData.title;
+    }
+  }, [postData]);
+
   return (
     <PostPageStyled>
-      <div className="postPage">
-        {postData && (
-          <Fragment>
+      {postData && (
+        <Fragment>
+          <div className="postPage">
             <div className="postPage-header">
               <span className="postPage-header__category">
-                {postData.category.toUpperCase()}
+                {postData.category === 'Food n Drink'
+                  ? 'FOOD & DRINK'
+                  : postData.category.toUpperCase()}
               </span>
               <h1 className="postPage-header__title">{postData.title}</h1>
               <div className="postPage-header__meta">
@@ -206,10 +221,15 @@ const PostPage = () => {
                 </div>
               </div>
             </div>
-          </Fragment>
-        )}
-        <div className="postPage-subSection"></div>
-      </div>
+            <div className="postPage-subSection"></div>
+          </div>
+          {userDocument?.id && userDocument.id === postData.userId && (
+            <ButtonEditPost
+              navigatePath={`/user/writer/edit-post/${postData.id}`}
+            />
+          )}
+        </Fragment>
+      )}
     </PostPageStyled>
   );
 };

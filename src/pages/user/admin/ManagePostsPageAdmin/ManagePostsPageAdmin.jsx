@@ -1,5 +1,6 @@
 import { debounce } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import {
   useNavigate,
   useOutletContext,
@@ -11,16 +12,16 @@ import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { SearchBar } from '~/components/search';
 import NotFoundPage from '~/pages/NotFoundPage';
-import TableSectionWriter from './TableSectionWriter';
+import TableSectionAdmin from './TableSectionAdmin';
 
-const AllPostsPageWriterStyled = styled.div`
+const ManagePostsPageAdminStyled = styled.div`
   width: 100%;
   margin-bottom: 32px;
 
   .allPage-input {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: stretch;
     gap: 24px;
     width: 100%;
     margin-bottom: 24px;
@@ -32,33 +33,33 @@ const AllPostsPageWriterStyled = styled.div`
   }
 `;
 
-const AllPostsPageWriter = () => {
+const ManagePostsPageAdmin = () => {
   const navigateTo = useNavigate();
   const { categoriesName, userDocument } = useOutletContext();
   const [query] = useSearchParams();
   const [categoryValue, setCategoryValue] = useState(
-    !query.get('category') ? 'All categories' : query.get('category')
+    query.get('category') || 'All categories'
   );
 
-  const [searchValue, setSearchValue] = useState(query.get('search'));
+  const [searchValue, setSearchValue] = useState(query.get('search') || '');
   const handleSetSearchValue = debounce(e => {
     setSearchValue(e.target.value);
   }, 500);
 
   useEffect(() => {
     navigateTo({
-      pathname: '/user/writer/all-posts',
+      pathname: '/user/admin/all-posts',
       search: `?category=${categoryValue}&search=${searchValue}`,
     });
   }, [categoryValue, navigateTo, searchValue]);
 
-  // Nếu không phải là writer thì trả ra trang NotFound
-  if (userDocument.role !== 'writer') {
+  // Nếu không phải là admin thì trả ra trang NotFound
+  if (userDocument.role !== 'admin') {
     return <NotFoundPage />;
   }
 
   return (
-    <AllPostsPageWriterStyled>
+    <ManagePostsPageAdminStyled>
       {userDocument?.userName && (
         <UserSectionTitle>{`${
           userDocument.userName.split(' ')[0]
@@ -83,12 +84,13 @@ const AllPostsPageWriter = () => {
           />
         </div>
       </div>
-      <TableSectionWriter
+
+      <TableSectionAdmin
         categoryValue={categoryValue}
         searchValue={searchValue}
       />
-    </AllPostsPageWriterStyled>
+    </ManagePostsPageAdminStyled>
   );
 };
 
-export default AllPostsPageWriter;
+export default ManagePostsPageAdmin;
