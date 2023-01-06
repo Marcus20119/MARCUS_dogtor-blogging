@@ -63,6 +63,7 @@ const ManageUsersPageAdmin = () => {
             defaultOption={roleValue}
             options={['All roles', 'admin', 'writer', 'reader']}
             setValue={setRoleValue}
+            isScroll={false}
           />
         </div>
       </div>

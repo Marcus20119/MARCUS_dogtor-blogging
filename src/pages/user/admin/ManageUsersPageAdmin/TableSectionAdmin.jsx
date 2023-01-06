@@ -8,6 +8,7 @@ import {
   startAfter,
   where,
 } from 'firebase/firestore';
+import { upperFirst } from 'lodash';
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
@@ -22,6 +23,7 @@ import {
   IconButton,
   PostCell,
   StatusTag,
+  UserCell,
 } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
@@ -145,7 +147,7 @@ const TableSectionAdmin = ({ roleValue }) => {
     setNextQuery(nextDataQuery);
   };
 
-  const handleDeleteUser = async post => {
+  const handleDeleteUser = async user => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -167,13 +169,15 @@ const TableSectionAdmin = ({ roleValue }) => {
           allowOutsideClick: false,
           scrollbarPadding: false,
         });
-        await deleteDoc(doc(db, 'users', post.id));
-        await deleteOldImage({ imgName: post.img.name });
-        const newUsers = users.filter(dataItem => dataItem.id !== post.id);
+        await deleteDoc(doc(db, 'users', user.id));
+        if (user.avatar.name !== 'default-user.png') {
+          await deleteOldImage({ imgName: user.avatar.name });
+        }
+        const newUsers = users.filter(dataItem => dataItem.id !== user.id);
         setUsers(newUsers);
         Swal.fire({
           title: 'Deleted!',
-          text: 'Your file has been deleted.',
+          text: 'This user has been deleted.',
           icon: 'success',
           scrollbarPadding: false,
         });
@@ -204,7 +208,7 @@ const TableSectionAdmin = ({ roleValue }) => {
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </td>
                 <td className="allUser-userCell">
-                  {/* <PostCell postData={user} /> */}
+                  <UserCell userData={user} />
                 </td>
                 <td className="allPage-userId" title={user.id}>
                   <p>{user.id}</p>
@@ -213,19 +217,16 @@ const TableSectionAdmin = ({ roleValue }) => {
                   <p>{user.email}</p>
                 </td>
                 <td className="allPage-userTel" title={user.phoneNumber}>
-                  <p>{user.phoneNumber}</p>
+                  <p>{user.phoneNumber || '...'}</p>
                 </td>
                 <td className="allPage-userRole">
-                  {/* <StatusTag status={user.status} /> */}
+                  <p>{upperFirst(user.role)}</p>
                 </td>
                 <td className="allPage-userActions">
                   <div>
-                    {/* <IconLink navigatePath={`/post/${user.slug}`}>
-                      <EyeIcon />
-                    </IconLink>
-                    <IconLink navigatePath={`/user/admin/edit-post/${user.id}`}>
+                    <IconLink navigatePath={`/user/admin/edit-user/${user.id}`}>
                       <WriteIcon />
-                    </IconLink> */}
+                    </IconLink>
                     <IconButton onClick={() => handleDeleteUser(user)}>
                       <TrashIcon />
                     </IconButton>

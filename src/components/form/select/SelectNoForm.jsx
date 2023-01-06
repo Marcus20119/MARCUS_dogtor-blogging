@@ -1,5 +1,6 @@
+import { lowerCase, upperFirst } from 'lodash';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useSelect } from '~/hooks';
 
 const SelectNoFormStyled = styled.div`
@@ -68,45 +69,74 @@ const SelectNoFormStyled = styled.div`
       opacity: 1;
     }
   }
-  .selectNoForm-options::-webkit-scrollbar {
-    width: 18px;
-    height: 18px;
-    background-color: transparent;
-  }
+  ${props =>
+    props.isScroll &&
+    css`
+      .selectNoForm-options::-webkit-scrollbar {
+        width: 18px;
+        height: 18px;
+        background-color: transparent;
+      }
 
-  .selectNoForm-options::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #8d351a90;
-    border: solid 4px rgba(0, 0, 0, 0);
-    -webkit-background-clip: padding-box; /* for Safari */
-    background-clip: padding-box;
-  }
+      .selectNoForm-options::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #8d351a90;
+        border: solid 4px rgba(0, 0, 0, 0);
+        -webkit-background-clip: padding-box; /* for Safari */
+        background-clip: padding-box;
+      }
+      
+    `};
+  ${props => !props.isScroll &&};
 `;
 
-const SelectNoForm = ({ defaultOption, name, options, setValue }) => {
+const SelectNoForm = ({
+  defaultOption,
+  name,
+  options,
+  setValue,
+  isScroll = true,
+}) => {
   const { selectRef, selectedValue } = useSelect({
     defaultOption,
     name,
     options,
   });
   useEffect(() => {
-    // navigateTo(navigateBasePath + selectedValue);
-    setValue(selectedValue === 'Food & Drink' ? 'Food n Drink' : selectedValue);
+    let selectedValueFixed = '';
+    switch (selectedValue) {
+      case 'Food & Drink': {
+        selectedValueFixed = 'Food n Drink';
+        break;
+      }
+      case 'Admin':
+      case 'Writer':
+      case 'Reader': {
+        selectedValueFixed = lowerCase(selectedValue);
+        break;
+      }
+      default: {
+        selectedValueFixed = selectedValue;
+      }
+    }
+    setValue(selectedValueFixed);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue]);
   return (
-    <SelectNoFormStyled>
+    <SelectNoFormStyled isScroll={isScroll}>
       <div ref={selectRef} className="selectNoForm-wrap">
         <div className="selectNoForm-default">
           <p>
-            {selectedValue === 'Food n Drink' ? 'Food & Drink' : selectedValue}
+            {selectedValue === 'Food n Drink'
+              ? 'Food & Drink'
+              : upperFirst(selectedValue)}
           </p>
           <i className="bx bxs-down-arrow"></i>
         </div>
         <ul className="selectNoForm-options hidden">
           {options.map(option => (
             <li key={option}>
-              {option === 'Food n Drink' ? 'Food & Drink' : option}
+              {option === 'Food n Drink' ? 'Food & Drink' : upperFirst(option)}
             </li>
           ))}
         </ul>
