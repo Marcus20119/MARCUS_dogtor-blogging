@@ -34,6 +34,7 @@ const UserDropDownStyled = styled.div`
   z-index: 666;
 
   .userDropDown-header {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,6 +81,33 @@ const UserDropDownStyled = styled.div`
       background-color: #eee;
       border-radius: 8px;
     }
+  }
+  /* Arrow */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: 15px;
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    transform: rotate(45deg);
+    background-color: ${props => props.theme.color.white};
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%),
+      0px 2px 6px 2px rgb(60 64 67 / 15%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 10px;
+    display: block;
+    width: 50px;
+    height: 30px;
+    background-color: ${props => props.theme.color.white};
+    z-index: 1;
   }
 `;
 

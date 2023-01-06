@@ -236,14 +236,14 @@ const TableSectionAdmin = ({ roleValue }) => {
             ))}
           {isLoading && (
             <tr>
-              <td colSpan="5">
+              <td colSpan="7">
                 <LoadingBounce />
               </td>
             </tr>
           )}
           {users && users.length === 0 && roleValue !== 'All categories' && (
             <tr>
-              <td colSpan="5">No user was found!</td>
+              <td colSpan="7">No user was found!</td>
             </tr>
           )}
         </AllUsersAdminTableBodyStyled>

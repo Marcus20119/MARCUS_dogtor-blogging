@@ -25,6 +25,9 @@ const ManageUsersPageAdmin = lazy(() =>
 const EditPostPageAdmin = lazy(() =>
   import('./pages/user/admin/EditPostPageAdmin')
 );
+const EditUserPageAdmin = lazy(() =>
+  import('./pages/user/admin/EditUserPageAdmin')
+);
 
 // Writer
 const AllPostsPageWriter = lazy(() =>
@@ -49,6 +52,7 @@ function App() {
             <Route path="all-posts" element={<MangePostsPageAdmin />}></Route>
             <Route path="all-users" element={<ManageUsersPageAdmin />}></Route>
             <Route path="edit-post/:id" element={<EditPostPageAdmin />}></Route>
+            <Route path="edit-user/:id" element={<EditUserPageAdmin />}></Route>
             <Route path="user-info" element={<UserInfoPage />}></Route>
           </Route>
           <Route path="writer">

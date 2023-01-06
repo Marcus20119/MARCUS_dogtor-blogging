@@ -85,9 +85,14 @@ const SelectNoFormStyled = styled.div`
         -webkit-background-clip: padding-box; /* for Safari */
         background-clip: padding-box;
       }
-      
     `};
-  ${props => !props.isScroll &&};
+  ${props =>
+    !props.isScroll &&
+    css`
+      .selectNoForm-options {
+        overflow-y: hidden !important;
+      }
+    `};
 `;
 
 const SelectNoForm = ({
