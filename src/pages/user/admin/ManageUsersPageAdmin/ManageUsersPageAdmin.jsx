@@ -51,11 +51,7 @@ const ManageUsersPageAdmin = () => {
 
   return (
     <ManageUsersPageAdminStyled>
-      {userDocument?.userName && (
-        <UserSectionTitle>{`${
-          userDocument.userName.split(' ')[0]
-        }'s Posts`}</UserSectionTitle>
-      )}
+      {userDocument?.userName && <UserSectionTitle>All Users</UserSectionTitle>}
       <div className="allPage-input">
         <div className="allPage-input__category">
           <SelectNoForm

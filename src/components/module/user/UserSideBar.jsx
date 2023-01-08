@@ -24,7 +24,7 @@ const adminTabs = [
   {
     name: 'Manage Category',
     iconClass: 'bx bx-box',
-    path: '/user/admin/category',
+    path: '/user/admin/all-categories',
   },
   {
     name: 'Add New Post',

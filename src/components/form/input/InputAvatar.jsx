@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { CameraIcon, PhotoIcon } from '~/icons';
 import { useClickOutSide } from '~/hooks';
+import { useOutletContext } from 'react-router-dom';
 
 const InputAvatarWrapStyled = styled.div`
   position: relative;
@@ -179,8 +180,16 @@ const InputAvatarSeePhotoStyled = styled.div`
  * @param {Function} setFile
  */
 
-const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
-  const { userDocument } = useFirebase();
+const InputAvatar = ({
+  control,
+  name,
+  file,
+  setFile,
+  id,
+  userDocument,
+  ...props
+}) => {
+  const { imgURLs } = useOutletContext();
   const { field } = useController({ name, control, defaultValue: '' });
 
   const inputRef = useRef();
@@ -247,9 +256,14 @@ const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
             className="inputAvatar-img"
             src={
               tempAvatar ||
-              (userDocument?.avatar?.URL && userDocument.avatar.URL)
+              (userDocument?.avatar?.URL && userDocument.avatar.URL) ||
+              imgURLs.userAvatar
             }
-            alt={userDocument.userName}
+            alt={
+              tempAvatar ||
+              (userDocument?.avatar?.URL && userDocument.avatar.URL) ||
+              imgURLs.userAvatar
+            }
             onClick={() => setShow(!show)}
           />
           {show && (
@@ -291,9 +305,14 @@ const InputAvatar = ({ control, name, file, setFile, id, ...props }) => {
           <img
             src={
               tempAvatar ||
-              (userDocument?.avatar?.URL && userDocument.avatar.URL)
+              (userDocument?.avatar?.URL && userDocument.avatar.URL) ||
+              imgURLs.userAvatar
             }
-            alt={userDocument.userName}
+            alt={
+              tempAvatar ||
+              (userDocument?.avatar?.URL && userDocument.avatar.URL) ||
+              imgURLs.userAvatar
+            }
           />
           <i className="bx bx-x" onClick={() => setShowAvatar(false)}></i>
         </InputAvatarSeePhotoStyled>

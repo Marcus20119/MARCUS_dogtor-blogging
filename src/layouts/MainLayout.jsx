@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { ButtonScrollOnTop } from './ButtonScrollOnTop';
@@ -15,6 +16,9 @@ const ContainerStyled = styled.div`
 `;
 
 const MainLayout = () => {
+  useEffect(() => {
+    document.title = 'Dogtor Blogging';
+  }, []);
   return (
     <MainLayoutStyled>
       <Header />

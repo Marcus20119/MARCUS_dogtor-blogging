@@ -98,15 +98,12 @@ const UserInfoPage = () => {
         });
         // Handle submit form
         try {
-          if (!data.image) {
-            const { image, ...newData } = data;
-            await updateDoc(doc(db, 'users', userDocument.id), newData);
-          } else {
+          const { image, ...newData } = data;
+          if (data.image) {
             handleDeleteOldImage();
-            const { image, ...newData } = data;
             newData.avatar = await uploadImage(file);
-            await updateDoc(doc(db, 'users', userDocument.id), newData);
           }
+          await updateDoc(doc(db, 'users', userDocument.id), newData);
         } catch (err) {
           console.log(err);
         }
@@ -132,13 +129,16 @@ const UserInfoPage = () => {
         onSubmit={handleSubmit(onSubmitHandler)}
       >
         <div className="userInfoPage-form__main-wrap">
-          <InputAvatar
-            control={control}
-            type="file"
-            name="image"
-            file={file}
-            setFile={setFile}
-          />
+          {userDocument && (
+            <InputAvatar
+              control={control}
+              type="file"
+              name="image"
+              file={file}
+              setFile={setFile}
+              userDocument={userDocument}
+            />
+          )}
           <div className="userInfoPage-form__filed-wrap">
             <Field>
               <Label id="fullName">Full Name</Label>

@@ -7,9 +7,9 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { MatrixPost } from '~/components/module';
 import { ListPost } from '~/components/module/ListPost';
-import { useAuth } from '~/contexts/authContext';
 import { db } from '~/firebase/firebase-config';
 
 const LatestStyled = styled.div`
@@ -20,7 +20,9 @@ const LatestStyled = styled.div`
 `;
 
 const LatestPage = () => {
-  const { userInfo } = useAuth();
+  useEffect(() => {
+    document.title = 'Dogtor Blogging';
+  }, []);
   const [posts, setPosts] = useState();
 
   useEffect(() => {

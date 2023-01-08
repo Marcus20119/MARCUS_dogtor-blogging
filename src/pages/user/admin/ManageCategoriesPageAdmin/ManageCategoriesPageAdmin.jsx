@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '~/components/button';
 
 import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
@@ -14,7 +15,7 @@ import { SearchBar } from '~/components/search';
 import NotFoundPage from '~/pages/NotFoundPage';
 import TableSectionAdmin from './TableSectionAdmin';
 
-const ManagePostsPageAdminStyled = styled.div`
+const ManageCategoriesPageAdminStyled = styled.div`
   width: 100%;
   margin-bottom: 32px;
 
@@ -33,7 +34,7 @@ const ManagePostsPageAdminStyled = styled.div`
   }
 `;
 
-const ManagePostsPageAdmin = () => {
+const ManageCategoriesPageAdmin = () => {
   const navigateTo = useNavigate();
   const { categoriesName, userDocument } = useOutletContext();
   const [query] = useSearchParams();
@@ -46,12 +47,12 @@ const ManagePostsPageAdmin = () => {
     setSearchValue(e.target.value);
   }, 500);
 
-  useEffect(() => {
-    navigateTo({
-      pathname: '/user/admin/all-posts',
-      search: `?category=${categoryValue}&search=${searchValue}`,
-    });
-  }, [categoryValue, navigateTo, searchValue]);
+  // useEffect(() => {
+  //   navigateTo({
+  //     pathname: '/user/admin/all-posts',
+  //     search: `?category=${categoryValue}&search=${searchValue}`,
+  //   });
+  // }, [categoryValue, navigateTo, searchValue]);
 
   // Nếu không phải là admin thì trả ra trang NotFound
   if (userDocument.role !== 'admin') {
@@ -59,34 +60,23 @@ const ManagePostsPageAdmin = () => {
   }
 
   return (
-    <ManagePostsPageAdminStyled>
-      {userDocument?.userName && <UserSectionTitle>All Posts</UserSectionTitle>}
+    <ManageCategoriesPageAdminStyled>
+      {userDocument?.userName && (
+        <UserSectionTitle>All Categories</UserSectionTitle>
+      )}
       <div className="allPage-input">
-        <SearchBar
-          name="searchQuery"
-          placeholder="Search your post..."
-          onChange={handleSetSearchValue}
-          defaultValue={searchValue}
-          width="unset"
-          height="unset"
-          style={{ flex: 1 }}
-        />
         <div className="allPage-input__category">
-          <SelectNoForm
-            name="category"
-            defaultOption={categoryValue}
-            options={['All categories', ...categoriesName]}
-            setValue={setCategoryValue}
-          />
+          <Button
+          // onClick={handleLoadMore}
+          >
+            Create New Category
+          </Button>
         </div>
       </div>
 
-      <TableSectionAdmin
-        categoryValue={categoryValue}
-        searchValue={searchValue}
-      />
-    </ManagePostsPageAdminStyled>
+      <TableSectionAdmin />
+    </ManageCategoriesPageAdminStyled>
   );
 };
 
-export default ManagePostsPageAdmin;
+export default ManageCategoriesPageAdmin;

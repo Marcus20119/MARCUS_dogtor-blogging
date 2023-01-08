@@ -107,7 +107,6 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
     }
   } else {
     if (categoryValue && categoryValue !== 'All categories') {
-      console.log('getQuery');
       quantityQuery = query(
         collection(db, 'posts'),
         where('category', '==', categoryValue),
@@ -260,13 +259,19 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
                 </td>
                 <td className="allPage-postAction">
                   <div>
-                    <IconLink navigatePath={`/post/${post.slug}`}>
+                    <IconLink navigatePath={`/post/${post.slug}`} title="view">
                       <EyeIcon />
                     </IconLink>
-                    <IconLink navigatePath={`/user/admin/edit-post/${post.id}`}>
+                    <IconLink
+                      navigatePath={`/user/admin/edit-post/${post.id}`}
+                      title="edit"
+                    >
                       <WriteIcon />
                     </IconLink>
-                    <IconButton onClick={() => handleDeletePost(post)}>
+                    <IconButton
+                      onClick={() => handleDeletePost(post)}
+                      title="delete"
+                    >
                       <TrashIcon />
                     </IconButton>
                   </div>

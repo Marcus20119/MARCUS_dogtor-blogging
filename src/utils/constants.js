@@ -15,6 +15,12 @@ export const theme = {
 
 export const postStatus = [
   { name: 'Approved', value: 1 },
-  { name: 'pending', value: 2 },
-  { name: 'rejected', value: 3 },
+  { name: 'Pending', value: 2 },
+  { name: 'Rejected', value: 3 },
+];
+
+export const userRoles = [
+  { name: 'Admin', value: 'admin' },
+  { name: 'Writer', value: 'writer' },
+  { name: 'Reader', value: 'reader' },
 ];

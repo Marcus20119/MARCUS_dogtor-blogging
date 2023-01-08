@@ -1,3 +1,5 @@
+import { upperFirst } from 'lodash';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserSideBar } from '~/components/module';
@@ -29,6 +31,12 @@ const ContainerStyled = styled.div`
 
 const UserLayout = () => {
   const { userDocument, categories, categoriesName, imgURLs } = useFirebase();
+  useEffect(() => {
+    if (userDocument?.role) {
+      console.log('rerender');
+      document.title = `${upperFirst(userDocument.role)}'s Site`;
+    }
+  }, [userDocument.role]);
   return (
     <UserLayoutStyled>
       <Header />

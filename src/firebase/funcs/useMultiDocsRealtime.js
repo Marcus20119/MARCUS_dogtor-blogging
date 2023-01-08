@@ -37,6 +37,7 @@ function useMultiDocsRealtime({ col = '', query = '' }) {
         setDocs(docsData);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return docs;

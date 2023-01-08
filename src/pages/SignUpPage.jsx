@@ -103,7 +103,6 @@ const SignUpPage = () => {
       await updateProfile(auth.currentUser, {
         displayName: data.userName,
       });
-      console.log(cred.user);
       // Add user to collection
       await setDoc(doc(db, 'users', cred.user.uid), {
         email: data.email,

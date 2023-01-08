@@ -270,15 +270,19 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
                 </td>
                 <td className="allPage-postAction">
                   <div>
-                    <IconLink navigatePath={`/post/${post.slug}`}>
+                    <IconLink navigatePath={`/post/${post.slug}`} title="view">
                       <EyeIcon />
                     </IconLink>
                     <IconLink
                       navigatePath={`/user/writer/edit-post/${post.id}`}
+                      title="edit"
                     >
                       <WriteIcon />
                     </IconLink>
-                    <IconButton onClick={() => handleDeletePost(post)}>
+                    <IconButton
+                      onClick={() => handleDeletePost(post)}
+                      title="delete"
+                    >
                       <TrashIcon />
                     </IconButton>
                   </div>

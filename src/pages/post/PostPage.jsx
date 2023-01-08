@@ -223,9 +223,16 @@ const PostPage = () => {
             </div>
             <div className="postPage-subSection"></div>
           </div>
-          {userDocument?.id && userDocument.id === postData.userId && (
+          {userDocument?.id &&
+            userDocument.role === 'writer' &&
+            userDocument.id === postData.userId && (
+              <ButtonEditPost
+                navigatePath={`/user/writer/edit-post/${postData.id}`}
+              />
+            )}
+          {userDocument?.id && userDocument.role === 'admin' && (
             <ButtonEditPost
-              navigatePath={`/user/writer/edit-post/${postData.id}`}
+              navigatePath={`/user/admin/edit-post/${postData.id}`}
             />
           )}
         </Fragment>

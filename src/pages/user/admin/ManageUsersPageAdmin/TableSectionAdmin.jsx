@@ -224,10 +224,16 @@ const TableSectionAdmin = ({ roleValue }) => {
                 </td>
                 <td className="allPage-userActions">
                   <div>
-                    <IconLink navigatePath={`/user/admin/edit-user/${user.id}`}>
+                    <IconLink
+                      navigatePath={`/user/admin/edit-user/${user.id}`}
+                      title="edit"
+                    >
                       <WriteIcon />
                     </IconLink>
-                    <IconButton onClick={() => handleDeleteUser(user)}>
+                    <IconButton
+                      onClick={() => handleDeleteUser(user)}
+                      title="delete"
+                    >
                       <TrashIcon />
                     </IconButton>
                   </div>

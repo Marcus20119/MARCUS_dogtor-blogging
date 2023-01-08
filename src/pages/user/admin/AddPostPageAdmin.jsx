@@ -1,41 +1,31 @@
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import slugify from 'slugify';
 import * as yup from 'yup';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
+import Swal from 'sweetalert2';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import Button from '~/components/button';
 import Field from '~/components/form/field';
-import { Input, InputFile } from '~/components/form/input';
+import { Input, InputFile, InputReactQuill } from '~/components/form/input';
 import Label from '~/components/form/label';
-import { Radio } from '~/components/form/radio';
 import { Select } from '~/components/form/select';
-import { postStatus } from '~/utils/constants';
 import { db } from '~/firebase/firebase-config';
 import { useAuth } from '~/contexts/authContext';
+import UserSectionTitle from '~/components/module/user/UserSectionTitle';
+import { uploadImage } from '~/firebase/funcs';
+import { useScrollOnTop } from '~/hooks';
 import NotFoundPage from '~/pages/NotFoundPage';
+import { Radio } from '~/components/form/radio';
+import { postStatus } from '~/utils/constants';
 
 const AddPostPageAdminStyled = styled.div`
   width: 100%;
+  margin-bottom: 24px;
 
-  .addPostPageAdmin-header {
-    display: block;
-    font-size: 40px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    font-family: ${props => props.theme.font.tertiary};
-    color: ${props => props.theme.color.brown};
-    text-shadow: 0 0 5px ${props => props.theme.color.skin};
-  }
   .addPostPageAdmin-form {
     width: 100%;
     &__filed-wrap {
@@ -52,89 +42,106 @@ const schema = yup.object({
   author: yup.string().required('required'),
   slug: yup.string(),
   category: yup.string().required('required'),
-  status: yup.string().required('required'),
+  overview: yup.string().required('required'),
+  image: yup.string().required('required'),
+  status: yup
+    .number()
+    .oneOf([1, 2, 3], 'Must be one of the following number: 1, 2 or 3')
+    .required('Required'),
 });
 
 const AddPostPageAdmin = () => {
-  const { categoriesName, userDocument } = useOutletContext();
+  useScrollOnTop();
+  const navigateTo = useNavigate();
+  const { categoriesName, userDocument, imgURLs } = useOutletContext();
   const { userInfo } = useAuth();
   const {
     control,
     handleSubmit,
     setValue,
     setError,
-    formState: { isSubmitting },
-    reset,
+    formState: { isSubmitting, errors },
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'all',
   });
   const [file, setFile] = useState({});
-
-  const handleUploadImage = async () => {
-    return new Promise(function (resolve, reject) {
-      const storage = getStorage();
-      const storageRef = ref(storage, 'images/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      let downloadURL = '';
-      // Upload image
-      uploadTask.on(
-        'state_changed',
-        // Show progress
-        snapshot => {},
-        error => {
-          console.log(error);
-          reject();
-        },
-        async () => {
-          // Upload completed successfully, now we can get the download URL
-          downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        }
-      );
-    });
-  };
+  const [content, setContent] = useState('');
 
   const onSubmitHandler = async data => {
-    // Custom value
     try {
-      const { image, ...cloneData } = data;
-      cloneData.slug = slugify(data.slug || data.title, {
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Your post will be hidden before the admin approve it!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8d351a',
+        cancelButtonColor: '#8d351a50',
+        confirmButtonText: 'Yes, post it!',
+        scrollbarPadding: false,
+      }).then(async result => {
+        if (result.isConfirmed) {
+          // Loading pop-up
+          Swal.fire({
+            title: 'Loading...',
+            text: 'Please wait',
+            imageUrl: imgURLs.loading,
+            imageHeight: '60px',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            scrollbarPadding: false,
+          });
+          const { image, ...cloneData } = data;
+          // Custom value
+          cloneData.slug =
+            slugify(data.slug || data.title, {
+              remove: /[*+~.()'"!:@?]/g,
+              lower: true,
+            }) +
+            '-' +
+            Date.now();
+          cloneData.img = await uploadImage(file);
+          await addDoc(collection(db, 'posts'), {
+            ...cloneData,
+            userId: userInfo.uid,
+            content: content || 'This post has no content yet!',
+            createdAt: serverTimestamp(),
+          });
+          navigateTo('/user/admin/all-posts?category=All%20categories&search=');
+          Swal.fire({
+            title: 'Added successfully!',
+            text: `You can check your post's status in "All posts" section.`,
+            icon: 'success',
+            scrollbarPadding: false,
+          });
+        }
       });
-      cloneData.status = postStatus[data.status.toUpperCase()];
-      cloneData.imgURl = await handleUploadImage();
-      await addDoc(collection(db, 'posts'), {
-        ...cloneData,
-        userId: userInfo.uid,
-        createdAt: serverTimestamp(),
-      });
-      console.log('success');
     } catch (err) {
       console.log(err);
     }
-    reset({
-      title: '',
-      image: '',
-      category: '',
-      author: '',
-      slug: '',
-      status: '',
-    });
+  };
+  const onErrorsHandler = async errors => {
+    try {
+      if (errors[Object.keys(errors)[0]]?.ref?.select) {
+        errors[Object.keys(errors)[0]].ref.select();
+      }
+      document.documentElement.scrollTop = 86;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  // Nếu không phải là admin thì trả ra trang NotFound
+  // Nếu không phải là Admin thì trả ra trang NotFound
   if (userDocument.role !== 'admin') {
     return <NotFoundPage />;
   }
 
   return (
     <AddPostPageAdminStyled>
-      <span className="addPostPageAdmin-header">Add New Post</span>
+      <UserSectionTitle>Add New Post</UserSectionTitle>
       <form
         className="addPostPageAdmin-form"
-        onSubmit={handleSubmit(onSubmitHandler)}
+        onSubmit={handleSubmit(onSubmitHandler, () => onErrorsHandler(errors))}
       >
         <div className="addPostPageAdmin-form__filed-wrap">
           <Field>
@@ -148,7 +155,7 @@ const AddPostPageAdmin = () => {
           </Field>
 
           <Field>
-            <Label id="image">Image</Label>
+            <Label id="image">Main Image</Label>
             <InputFile
               control={control}
               type="file"
@@ -156,17 +163,13 @@ const AddPostPageAdmin = () => {
               file={file}
               setFile={setFile}
               secondary
+              accept=".png,.jpg,.jpeg"
             ></InputFile>
           </Field>
 
           <Field>
-            <Label id="status">Status</Label>
-            <Radio
-              name="status"
-              control={control}
-              radios={['Approved', 'Pending', 'Reject']}
-              colors={['#a3e635', '#fde047', '#ef4444']}
-            />
+            <Label id="overview">Overview</Label>
+            <Input control={control} name="overview" secondary></Input>
           </Field>
 
           <Field>
@@ -176,7 +179,7 @@ const AddPostPageAdmin = () => {
               control={control}
               setValue={setValue}
               setError={setError}
-              defaultOption="Select a category"
+              defaultoption="Select a category"
               options={categoriesName}
               secondary
             ></Select>
@@ -186,7 +189,20 @@ const AddPostPageAdmin = () => {
             <Label id="slug">Slug</Label>
             <Input control={control} name="slug" secondary></Input>
           </Field>
+          <Field>
+            <Label id="status">Status</Label>
+            <Radio
+              control={control}
+              name="status"
+              radios={postStatus}
+              colors={['#65a30d', '#eab308', '#ef4444']}
+            />
+          </Field>
         </div>
+        <Field>
+          <Label id="content">Content</Label>
+          <InputReactQuill value={content} setValue={setContent} />
+        </Field>
         <Button
           type="submit"
           width="151px"

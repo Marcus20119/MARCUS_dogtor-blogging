@@ -59,9 +59,13 @@ const HeaderMainSection = () => {
 
   return (
     <HeaderMainSectionStyled>
-      <div
+      <a
+        href="/latest"
         className="headerMainSection-left"
-        onClick={() => navigateTo('/latest')}
+        onClick={e => {
+          e.preventDefault();
+          navigateTo('/latest');
+        }}
       >
         <img
           className="headerMainSection-left__logo"
@@ -69,7 +73,7 @@ const HeaderMainSection = () => {
           alt="dogtor-logo"
         />
         <div className="headerMainSection-left__title">Dogtor Blogging</div>
-      </div>
+      </a>
       <div className="headerMainSection-right">
         <SearchBar placeholder="Search posts..." width="400px" />
         {userDocument.email ? (

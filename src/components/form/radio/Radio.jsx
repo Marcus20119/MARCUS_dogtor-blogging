@@ -83,7 +83,7 @@ const Radio = ({ name, control, radios, colors, ...props }) => {
     formState: { errors },
   } = useController({ name, control, defaultValue: '' });
 
-  const watchRadioValue = Number(useWatch({ name, control }));
+  const watchRadioValue = useWatch({ name, control });
 
   return (
     <RadioStyled colors={colors}>
@@ -94,7 +94,8 @@ const Radio = ({ name, control, radios, colors, ...props }) => {
               <input
                 type="radio"
                 className="radio-item_check"
-                checked={watchRadioValue === radio.value}
+                // eslint-disable-next-line eqeqeq
+                checked={watchRadioValue == radio.value}
                 {...props}
                 {...{ ...field, value: radio.value }}
               />
