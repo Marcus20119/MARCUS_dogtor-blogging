@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { convertDate } from '~/helpers';
 
-const MatrixItemLargeStyled = styled.div`
+const MatrixItemLargeStyled = styled.a`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -20,9 +21,8 @@ const MatrixItemLargeStyled = styled.div`
       overflow: hidden;
       img {
         position: absolute;
+        height: 100%;
         top: 50%;
-        right: 0;
-        bottom: 0;
         left: 0;
         display: block;
         object-fit: cover;
@@ -78,22 +78,27 @@ const MatrixItemLargeStyled = styled.div`
   }
 `;
 
-const MatrixItemLarge = ({ className, data, ...rest }) => {
+const MatrixItemLarge = ({ className, post, ...rest }) => {
   const navigateTo = useNavigate();
+
   return (
     <MatrixItemLargeStyled
       className={className}
-      onClick={() => navigateTo(data.path)}
+      onClick={e => {
+        e.preventDefault();
+        navigateTo(`/post/${post.slug}`);
+      }}
+      href={`/post/${post.slug}`}
       {...rest}
     >
       <div className="matrixItemLarge-img">
-        <img src={data.img} alt={data.title} />
+        <img src={post.img.URL} alt={post.title} />
       </div>
-      <h3 className="matrixItemLarge-title">{data.title}</h3>
-      <p className="matrixItemLarge-overview">{data.overview}</p>
+      <h3 className="matrixItemLarge-title">{post.title}</h3>
+      <p className="matrixItemLarge-overview">{post.overview}</p>
       <div className="matrixItemLarge-info">
         <span className="matrixItemLarge-info__createdAt">
-          {data.createdAt}
+          {convertDate(post.createdAt.seconds)}
         </span>
         <svg
           width="6"
@@ -105,7 +110,7 @@ const MatrixItemLarge = ({ className, data, ...rest }) => {
           <circle cx="3" cy="3" r="3" fill="#585858" />
         </svg>
 
-        <span className="matrixItemLarge-info__author">{data.author}</span>
+        <span className="matrixItemLarge-info__author">{post.author}</span>
       </div>
     </MatrixItemLargeStyled>
   );

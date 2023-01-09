@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useEffect } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import slugify from 'slugify';
 
@@ -44,7 +44,6 @@ const schema = yup.object({
 });
 
 const EditPostPageAdmin = () => {
-  const navigateTo = useNavigate();
   const { categoriesName, imgURLs, userDocument } = useOutletContext();
   const slug = useParams();
   const { document: postData } = useSingleDoc({
@@ -103,13 +102,15 @@ const EditPostPageAdmin = () => {
             await deleteOldImage({ imgName: postData.img.name });
             cloneData.img = await uploadImage(file);
           }
-          cloneData.slug =
-            slugify(data.slug || data.title, {
-              remove: /[*+~.()'"!:@?]/g,
-              lower: true,
-            }) +
-            '-' +
-            Date.now();
+          if (cloneData.slug !== postData.slug) {
+            cloneData.slug =
+              slugify(data.slug || data.title, {
+                remove: /[*+~.()'"!:@?]/g,
+                lower: true,
+              }) +
+              '-' +
+              Date.now();
+          }
           cloneData.status = Number(cloneData.status);
           await updateDoc(doc(db, 'posts', slug.id), {
             ...cloneData,
@@ -122,20 +123,13 @@ const EditPostPageAdmin = () => {
             icon: 'success',
             scrollbarPadding: false,
           });
-          navigateTo('/user/admin/all-posts');
+          // navigateTo('/user/admin/all-posts');
+          window.history.back();
         }
       });
     } catch (err) {
       console.log(err);
     }
-    reset({
-      title: '',
-      image: '',
-      category: '',
-      author: '',
-      slug: '',
-      overview: '',
-    });
   };
   // Nếu không phải là writer thì trả ra trang NotFound
   if (userDocument.role !== 'admin') {
@@ -143,7 +137,7 @@ const EditPostPageAdmin = () => {
   }
   return (
     <EditPostPageAdminStyled>
-      <UserSectionTitle>Add New Post</UserSectionTitle>
+      <UserSectionTitle>Edit Post</UserSectionTitle>
       {postData?.id && (
         <form
           className="editPostPageAdmin-form"

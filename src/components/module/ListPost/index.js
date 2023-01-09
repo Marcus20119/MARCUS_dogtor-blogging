@@ -1,1 +1,1 @@
-export * from './ListPost.jsx';
+export * from './ListPost';

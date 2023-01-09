@@ -15,14 +15,14 @@ const ContainerStyled = styled.div`
   padding: 24px 0;
 `;
 
-const MainLayout = () => {
+const MainLayout = ({ isFull = false }) => {
   useEffect(() => {
     document.title = 'Dogtor Blogging';
   }, []);
   return (
     <MainLayoutStyled>
       <Header />
-      <ContainerStyled>
+      <ContainerStyled isFull={isFull}>
         <Outlet />
       </ContainerStyled>
       <ButtonScrollOnTop />

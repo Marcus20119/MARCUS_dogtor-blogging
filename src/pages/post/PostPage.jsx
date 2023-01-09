@@ -1,4 +1,4 @@
-import { collection, query, where } from 'firebase/firestore';
+import { collection, doc, query, updateDoc, where } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import parse from 'html-react-parser';
@@ -156,9 +156,21 @@ const PostPage = () => {
   });
 
   useEffect(() => {
+    const handleAddQuantityOfView = async () => {
+      await updateDoc(doc(db, 'posts', postData.id), {
+        ...postData,
+        quantityView: postData?.quantityView ? postData?.quantityView + 1 : 1,
+      });
+    };
     if (postData?.title) {
+      // Set lại title cho page
       document.title = postData.title;
+      // Nếu truy cập vào bài post không phải mình viết thì +1
+      if (postData.userId !== userDocument.id) {
+        handleAddQuantityOfView();
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postData]);
 
   return (

@@ -17,21 +17,14 @@ import Swal from 'sweetalert2';
 import Button from '~/components/button';
 import LoadingBounce from '~/components/loading/Bounce';
 
-import {
-  Table,
-  IconLink,
-  IconButton,
-  PostCell,
-  StatusTag,
-  UserCell,
-} from '~/components/table';
+import { Table, IconLink, IconButton, UserCell } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
   deleteOldImage,
   useMultiDocsPagination,
   useQuantityOfCollection,
 } from '~/firebase/funcs';
-import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
+import { TrashIcon, WriteIcon } from '~/icons';
 
 const AllUsersAdminTableHeadStyled = styled.thead`
   .allPage-firstRow {

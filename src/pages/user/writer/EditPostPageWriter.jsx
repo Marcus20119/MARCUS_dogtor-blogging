@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useEffect } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import slugify from 'slugify';
 
@@ -42,7 +42,6 @@ const schema = yup.object({
 });
 
 const EditPostPageWriter = () => {
-  const navigateTo = useNavigate();
   const { categoriesName, imgURLs, userDocument } = useOutletContext();
   const slug = useParams();
   const { document: postData } = useSingleDoc({
@@ -100,6 +99,8 @@ const EditPostPageWriter = () => {
           if (image) {
             await deleteOldImage({ imgName: postData.img.name });
             cloneData.img = await uploadImage(file);
+          }
+          if (cloneData.slug !== postData.slug) {
             cloneData.slug =
               slugify(data.slug || data.title, {
                 remove: /[*+~.()'"!:@?]/g,
@@ -107,23 +108,19 @@ const EditPostPageWriter = () => {
               }) +
               '-' +
               Date.now();
-            await updateDoc(doc(db, 'posts', slug.id), {
-              ...cloneData,
-              content: content || 'This post has no content yet!',
-            });
-          } else {
-            await updateDoc(doc(db, 'posts', slug.id), {
-              ...cloneData,
-              content: content || 'This post has no content yet!',
-            });
           }
+          cloneData.status = Number(cloneData.status);
+          await updateDoc(doc(db, 'posts', slug.id), {
+            ...cloneData,
+            content: content || 'This post has no content yet!',
+          });
           Swal.fire({
             title: 'Updated!',
             text: 'Your post has been updated.',
             icon: 'success',
             scrollbarPadding: false,
           });
-          navigateTo('/user/writer/all-posts');
+          window.history.back();
         }
       });
     } catch (err) {

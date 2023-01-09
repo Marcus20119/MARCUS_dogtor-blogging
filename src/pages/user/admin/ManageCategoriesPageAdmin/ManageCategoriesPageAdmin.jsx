@@ -1,17 +1,8 @@
-import { debounce } from 'lodash';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import {
-  useNavigate,
-  useOutletContext,
-  useSearchParams,
-} from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '~/components/button';
 
-import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
-import { SearchBar } from '~/components/search';
 import NotFoundPage from '~/pages/NotFoundPage';
 import TableSectionAdmin from './TableSectionAdmin';
 
@@ -35,24 +26,7 @@ const ManageCategoriesPageAdminStyled = styled.div`
 `;
 
 const ManageCategoriesPageAdmin = () => {
-  const navigateTo = useNavigate();
-  const { categoriesName, userDocument } = useOutletContext();
-  const [query] = useSearchParams();
-  const [categoryValue, setCategoryValue] = useState(
-    query.get('category') || 'All categories'
-  );
-
-  const [searchValue, setSearchValue] = useState(query.get('search') || '');
-  const handleSetSearchValue = debounce(e => {
-    setSearchValue(e.target.value);
-  }, 500);
-
-  // useEffect(() => {
-  //   navigateTo({
-  //     pathname: '/user/admin/all-posts',
-  //     search: `?category=${categoryValue}&search=${searchValue}`,
-  //   });
-  // }, [categoryValue, navigateTo, searchValue]);
+  const { userDocument } = useOutletContext();
 
   // Nếu không phải là admin thì trả ra trang NotFound
   if (userDocument.role !== 'admin') {

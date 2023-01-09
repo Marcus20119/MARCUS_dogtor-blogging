@@ -1,35 +1,11 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  orderBy,
-  limit,
-  query,
-  startAfter,
-  where,
-} from 'firebase/firestore';
 import { Fragment } from 'react';
-import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
-import Button from '~/components/button';
-import LoadingBounce from '~/components/loading/Bounce';
 
-import {
-  Table,
-  IconLink,
-  IconButton,
-  PostCell,
-  StatusTag,
-} from '~/components/table';
-import { db } from '~/firebase/firebase-config';
-import {
-  deleteOldImage,
-  useMultiDocsPagination,
-  useQuantityOfCollection,
-} from '~/firebase/funcs';
-import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
+import LoadingBounce from '~/components/loading/Bounce';
+import { Table, IconLink, IconButton } from '~/components/table';
+import { TrashIcon, WriteIcon } from '~/icons';
 
 const AllPostAdminTableHeadStyled = styled.thead`
   .allPage-firstRow {
@@ -66,12 +42,10 @@ const AllPostAdminTableBodyStyled = styled.tbody`
   }
 `;
 
-const TableSectionAdmin = ({ categoryValue, searchValue }) => {
-  const { imgURLs, categories: initialCategories } = useOutletContext();
+const TableSectionAdmin = () => {
+  const { categories } = useOutletContext();
 
-  const [categories, setCategories] = useState(initialCategories);
-
-  const handleDeleteCategory = async category => {
+  const handleDeleteCategory = async () => {
     Swal.fire({
       title: `You shouldn't do this!`,
       text: 'This action will cause a huge damage to your data!',
@@ -80,7 +54,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
       cancelButtonColor: '#8d351a50',
     });
   };
-  const handleEditCategory = async category => {
+  const handleEditCategory = async () => {
     Swal.fire({
       title: `You shouldn't do this!`,
       text: 'This action will cause a huge damage to your data!',

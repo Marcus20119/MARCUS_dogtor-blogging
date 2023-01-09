@@ -1,65 +1,19 @@
 import { Fragment } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import MatrixItemLarge from './MatrixItemLarge';
 import MatrixItemSmall from './MatrixItemSmall';
-
-const posts = [
-  {
-    title: 'This is a post title This is a post title',
-    path: '/latest',
-    img: '/imgs/post-img.jpg',
-    author: 'Marcus Freeman',
-    createdAt: 'Mar 4th',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laboriosam libero modi, nemo adipisci iusto vel laborum similique numquam omnis in aspernatur est ullam ratione impedit porro labore, harum a?',
-  },
-  {
-    title: 'This is a post title This is a post title',
-    path: '/latest',
-    img: '/imgs/post-img.jpg',
-    author: 'Marcus Freeman',
-    createdAt: 'Mar 4th',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laboriosam libero modi, nemo adipisci iusto vel laborum similique numquam omnis in aspernatur est ullam ratione impedit porro labore, harum a?',
-  },
-  {
-    title: 'This is a post title This is a post title',
-    path: '/latest',
-    img: '/imgs/post-img.jpg',
-    author: 'Marcus Freeman',
-    createdAt: 'Mar 4th',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laboriosam libero modi, nemo adipisci iusto vel laborum similique numquam omnis in aspernatur est ullam ratione impedit porro labore, harum a?',
-  },
-  {
-    title: 'This is a post title This is a post title',
-    path: '/latest',
-    img: '/imgs/post-img.jpg',
-    author: 'Marcus Freeman',
-    createdAt: 'Mar 4th',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laboriosam libero modi, nemo adipisci iusto vel laborum similique numquam omnis in aspernatur est ullam ratione impedit porro labore, harum a?',
-  },
-  {
-    title: 'This is a post title This is a post title',
-    path: '/latest',
-    img: '/imgs/post-img.jpg',
-    author: 'Marcus Freeman',
-    createdAt: 'Mar 4th',
-    overview:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat laboriosam libero modi, nemo adipisci iusto vel laborum similique numquam omnis in aspernatur est ullam ratione impedit porro labore, harum a?',
-  },
-];
 
 const MatrixPostStyled = styled.div`
   .matrixPost {
     display: grid;
     grid-template-columns: repeat(8, minmax(0, 1fr));
     grid-template-rows: repeat(3, minmax(0, 1fr));
+
     grid-template-areas:
       'h1 h1 h1 h2 h2 h2 h3 h3'
       'h1 h1 h1 h2 h2 h2 h4 h4'
       'h1 h1 h1 h2 h2 h2 h5 h5';
+
     gap: 16px;
     width: 100%;
   }
@@ -87,21 +41,21 @@ const MatrixPostStyled = styled.div`
   }
 `;
 
-const MatrixPost = () => {
+const MatrixPost = ({ posts, type = '1' }) => {
   return (
-    <MatrixPostStyled>
+    <MatrixPostStyled type={type}>
       <div className="matrixPost">
         {posts.map((post, index) => (
           <Fragment key={`matrixPost-${index}`}>
             {index <= 1 ? (
               <MatrixItemLarge
                 className={`matrixPostChild-${index + 1}`}
-                data={post}
+                post={post}
               ></MatrixItemLarge>
             ) : (
               <MatrixItemSmall
                 className={`matrixPostChild-${index + 1}`}
-                data={post}
+                post={post}
               ></MatrixItemSmall>
             )}
           </Fragment>

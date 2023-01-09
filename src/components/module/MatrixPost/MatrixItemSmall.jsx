@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { convertDate } from '~/helpers';
 
-const MatrixItemSmallStyled = styled.div`
+const MatrixItemSmallStyled = styled.a`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -12,6 +13,10 @@ const MatrixItemSmallStyled = styled.div`
 
   .matrixItemSmall {
     &-title {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
     &-overview {
       overflow: hidden;
@@ -46,7 +51,16 @@ const MatrixItemSmallStyled = styled.div`
   }
 
   &:hover {
-    opacity: 0.7;
+    .matrixItemSmall {
+      &-title {
+        color: #b34321;
+      }
+      &-overview,
+      &-info,
+      &-readNow {
+        opacity: 0.7;
+      }
+    }
     .matrixItemSmall-readNow {
       background-color: ${props => props.theme.color.brown};
       color: ${props => props.theme.color.white};
@@ -54,19 +68,23 @@ const MatrixItemSmallStyled = styled.div`
   }
 `;
 
-const MatrixItemSmall = ({ className, data, ...rest }) => {
+const MatrixItemSmall = ({ className, post, ...rest }) => {
   const navigateTo = useNavigate();
   return (
     <MatrixItemSmallStyled
       className={className}
-      onClick={() => navigateTo(data.path)}
+      onClick={e => {
+        e.preventDefault();
+        navigateTo(`/post/${post.slug}`);
+      }}
+      href={`/post/${post.slug}`}
       {...rest}
     >
-      <h3 className="matrixItemSmall-title">{data.title}</h3>
-      <p className="matrixItemSmall-overview">{data.overview}</p>
+      <h3 className="matrixItemSmall-title">{post.title}</h3>
+      <p className="matrixItemSmall-overview">{post.overview}</p>
       <div className="matrixItemSmall-info">
         <span className="matrixItemSmall-info__createdAt">
-          {data.createdAt}
+          {convertDate(post.createdAt.seconds)}
         </span>
         <svg
           width="6"
@@ -77,7 +95,7 @@ const MatrixItemSmall = ({ className, data, ...rest }) => {
         >
           <circle cx="3" cy="3" r="3" fill="#585858" />
         </svg>
-        <span className="matrixItemSmall-info__author">{data.author}</span>
+        <span className="matrixItemSmall-info__author">{post.author}</span>
       </div>
       <span className="matrixItemSmall-readNow">Read Now</span>
     </MatrixItemSmallStyled>
