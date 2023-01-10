@@ -6,6 +6,7 @@ import { ListPost, MatrixPost, SwiperPost } from '~/components/module';
 import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
+import { useScrollOnTop } from '~/hooks';
 
 const PopularStyled = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ const dogHealthQueryPopular = query(
 );
 
 const PopularPage = () => {
+  useScrollOnTop();
   useEffect(() => {
     document.title = 'Dogtor Blogging';
   }, []);
