@@ -8,7 +8,7 @@ const { db } = require('~/firebase/firebase-config');
  * @returns
  */
 
-function useMultiDocs({ col, query }) {
+function useMultiDocs({ col, query, renderCondition = [] }) {
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function useMultiDocs({ col, query }) {
       handleGetDocsData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [...renderCondition]);
   return docs;
 }
 

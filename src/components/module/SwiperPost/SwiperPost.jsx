@@ -95,7 +95,7 @@ const SwiperPost = ({ posts, title }) => {
   const prevRef = useRef();
   return (
     <SwiperPostStyled>
-      <h3 className="swiperPost-title">{title}</h3>
+      <h2 className="swiperPost-title">{title}</h2>
       <div className="swiperPost-gap">
         <i className="bx bxs-star"></i>
         <i className="bx bxs-star"></i>

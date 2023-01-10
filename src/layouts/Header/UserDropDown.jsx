@@ -122,14 +122,14 @@ const UserDropDown = ({ setShow }) => {
         case 'admin': {
           configItems = [
             {
-              name: 'Manage Users',
-              iconClass: 'bx bxs-group',
-              navigatePath: '/user/admin/all-users',
-            },
-            {
               name: 'Manage Posts',
               iconClass: 'bx bxs-book-content',
               navigatePath: '/user/admin/all-posts',
+            },
+            {
+              name: 'Manage Users',
+              iconClass: 'bx bxs-group',
+              navigatePath: '/user/admin/all-users',
             },
             {
               name: 'Log Out',

@@ -33,7 +33,6 @@ const UserLayout = () => {
   const { userDocument, categories, categoriesName, imgURLs } = useFirebase();
   useEffect(() => {
     if (userDocument?.role) {
-      console.log('rerender');
       document.title = `${upperFirst(userDocument.role)}'s Site`;
     }
   }, [userDocument.role]);

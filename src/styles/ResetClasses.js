@@ -11,10 +11,10 @@ export const ResetClasses = css`
     margin: 0;
   }
 
-  html,
+  /* html,
   body {
     height: 100%;
-  }
+  } */
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

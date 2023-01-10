@@ -36,6 +36,7 @@ const SwiperPostItemStyled = styled.a`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    padding: 0 1px;
   }
   .swiperPostItem-overview {
     overflow: hidden;
@@ -45,6 +46,7 @@ const SwiperPostItemStyled = styled.a`
     opacity: 0.8;
     font-size: 14px;
     margin: 2px 0;
+    padding: 0 1px;
   }
   .swiperPostItem-info {
     display: inline-flex;
@@ -52,6 +54,8 @@ const SwiperPostItemStyled = styled.a`
     gap: 8px;
     font-weight: 500;
     font-size: 14px;
+    padding: 0 1px;
+
     &__createdAt {
     }
     &__author {

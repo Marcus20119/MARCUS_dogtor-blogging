@@ -7,7 +7,7 @@ import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 
-const LatestStyled = styled.div`
+const PopularStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,7 +15,7 @@ const LatestStyled = styled.div`
   gap: 60px;
   width: 100%;
 
-  .latestPage-listSection {
+  .popularPage-listSection {
     display: flex;
     align-items: flex-start;
     gap: 36px;
@@ -29,75 +29,77 @@ const LatestStyled = styled.div`
     }
   }
 `;
-const newestQueryLatest = query(
+const newestQueryPopular = query(
   collection(db, 'posts'),
   where('status', '==', 1),
-  orderBy('createdAt', 'desc'),
+  orderBy('quantityView', 'desc'),
   limit(5)
 );
-const sharingQueryLatest = query(
+const mentalHealthQueryPopular = query(
   collection(db, 'posts'),
   where('status', '==', 1),
-  where('category', '==', 'Sharing'),
-  orderBy('createdAt', 'desc'),
+  where('category', '==', 'Mental Health'),
+  orderBy('quantityView', 'desc'),
   limit(10)
 );
-const foodNDrinkQueryLatest = query(
+const foodNDrinkQueryPopular = query(
   collection(db, 'posts'),
   where('status', '==', 1),
   where('category', '==', 'Food n Drink'),
-  orderBy('createdAt', 'desc'),
+  orderBy('quantityView', 'desc'),
   limit(5)
 );
-const catHealthQueryLatest = query(
+const dogHealthQueryPopular = query(
   collection(db, 'posts'),
   where('status', '==', 1),
-  where('category', '==', 'Cat Health'),
-  orderBy('createdAt', 'desc'),
+  where('category', '==', 'Dog Health'),
+  orderBy('quantityView', 'desc'),
   limit(3)
 );
 
-const LatestPage = () => {
+const PopularPage = () => {
   useEffect(() => {
     document.title = 'Dogtor Blogging';
   }, []);
 
-  const newestPosts = useMultiDocs({ query: newestQueryLatest });
-  const sharingPosts = useMultiDocs({ query: sharingQueryLatest });
-  const foodNDrinkPosts = useMultiDocs({
-    query: foodNDrinkQueryLatest,
+  const newestPosts = useMultiDocs({ query: newestQueryPopular });
+  const mentalHealthPosts = useMultiDocs({
+    query: mentalHealthQueryPopular,
   });
-  const catHealthPosts = useMultiDocs({ query: catHealthQueryLatest });
+  const foodNDrinkPosts = useMultiDocs({
+    query: foodNDrinkQueryPopular,
+  });
+  const dogHealthPosts = useMultiDocs({ query: dogHealthQueryPopular });
 
   return (
-    <LatestStyled>
+    <PopularStyled>
       {newestPosts && newestPosts.length > 0 && (
         <MatrixPost posts={newestPosts} />
       )}
-      {sharingPosts && sharingPosts.length > 0 && (
-        <SwiperPost posts={sharingPosts} title="SHARING" />
+      {mentalHealthPosts && mentalHealthPosts.length > 0 && (
+        <SwiperPost posts={mentalHealthPosts} title="MENTAL HEALTH" />
       )}
       {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
         <MatrixPost posts={foodNDrinkPosts} type={2} />
       )}
       {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
-        <div className="latestPage-listSection">
-          <div className="latestPage-listSection__main">
+        <div className="popularPage-listSection">
+          <div className="popularPage-listSection__main">
             <ListPost
-              orderByField="createdAt"
-              orderByType="asc"
+              orderByField="quantityView"
+              orderByType="desc"
               postPerLoad={10}
             />
           </div>
-          <div className="latestPage-listSection__sub">
-            {catHealthPosts && catHealthPosts.length > 0 && (
-              <SidePost posts={catHealthPosts} title="Cat Health" />
+          <div className="popularPage-listSection__sub">
+            {dogHealthPosts && dogHealthPosts.length > 0 && (
+              <SidePost posts={dogHealthPosts} title="Dog Health" />
             )}
           </div>
         </div>
       )}
-    </LatestStyled>
+    </PopularStyled>
   );
 };
 
-export default LatestPage;
+export default PopularPage;

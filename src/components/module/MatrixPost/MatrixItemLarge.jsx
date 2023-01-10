@@ -40,6 +40,7 @@ const MatrixItemLargeStyled = styled.a`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      padding: 0 1px;
     }
     &-overview {
       overflow: hidden;
@@ -47,12 +48,14 @@ const MatrixItemLargeStyled = styled.a`
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       opacity: 0.8;
+      padding: 0 1px;
     }
     &-info {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-weight: 500;
+      padding: 0 1px;
 
       &__createdAt {
       }

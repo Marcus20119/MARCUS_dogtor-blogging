@@ -153,7 +153,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     firstQuery,
     nextQuery,
     setLastSnapshot,
-    reRenderCondition: categoryValue,
+    reRenderCondition: [categoryValue],
   });
   const handleLoadMore = () => {
     let nextDataQuery;

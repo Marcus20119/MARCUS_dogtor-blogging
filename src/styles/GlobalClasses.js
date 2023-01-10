@@ -20,9 +20,9 @@ export const GlobalClasses = css`
     background-clip: padding-box;
   }
 
-  #root {
+  /* #root {
     height: 100%;
-  }
+  } */
 
   .small-container {
     display: flex;
@@ -93,6 +93,7 @@ export const GlobalClasses = css`
       margin-left: 0;
       li {
         margin-bottom: 10px;
+        text-align: justify;
       }
     }
     img {

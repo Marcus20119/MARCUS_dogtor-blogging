@@ -1,16 +1,17 @@
 import { Suspense } from 'react';
 import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+// import createHistory from 'history/createBrowserHistory';
+
+import MainLayout from './layouts/MainLayout';
+import UserLayout from './layouts/UserLayout';
 import LoadingPage from './pages/LoadingPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 
-// Layout
-const MainLayout = lazy(() => import('./layouts/MainLayout'));
-const UserLayout = lazy(() => import('./layouts/UserLayout'));
-
 // Common
 const LatestPage = lazy(() => import('./pages/LatestPage'));
+const PopularPage = lazy(() => import('./pages/PopularPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const PostPage = lazy(() => import('./pages/post/PostPage'));
 const UserInfoPage = lazy(() => import('./pages/user/UserInfoPage'));
@@ -85,6 +86,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route path="" element={<Navigate replace to="/latest" />} />
           <Route path="latest" element={<LatestPage />} />
+          <Route path="popular" element={<PopularPage />} />
           <Route path="post/:slug" element={<PostPage />} />
         </Route>
 
