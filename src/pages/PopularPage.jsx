@@ -52,7 +52,7 @@ const foodNDrinkQueryPopular = query(
 );
 const dogHealthQueryPopular = query(
   collection(db, 'posts'),
-  where('status', '==', 1),
+  where('status', '==', 1), 
   where('category', '==', 'Dog Health'),
   orderBy('quantityView', 'desc'),
   limit(3)
