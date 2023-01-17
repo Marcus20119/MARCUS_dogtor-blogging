@@ -13,6 +13,7 @@ import SignUpPage from './pages/SignUpPage';
 const LatestPage = lazy(() => import('./pages/LatestPage'));
 const PopularPage = lazy(() => import('./pages/PopularPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
 const PostPage = lazy(() => import('./pages/post/PostPage'));
 const UserInfoPage = lazy(() => import('./pages/user/UserInfoPage'));
 
@@ -39,6 +40,9 @@ const AddPostPageAdmin = lazy(() =>
 );
 const AddUserPageAdmin = lazy(() =>
   import('./pages/user/admin/AddUserPageAdmin')
+);
+const AddCategoryPageAdmin = lazy(() =>
+  import('./pages/user/admin/AddCategoryPageAdmin')
 );
 
 // Writer
@@ -71,6 +75,10 @@ function App() {
             <Route path="edit-user/:id" element={<EditUserPageAdmin />}></Route>
             <Route path="add-post" element={<AddPostPageAdmin />}></Route>
             <Route path="add-user" element={<AddUserPageAdmin />}></Route>
+            <Route
+              path="add-category"
+              element={<AddCategoryPageAdmin />}
+            ></Route>
             <Route path="user-info" element={<UserInfoPage />}></Route>
           </Route>
           <Route path="writer">
@@ -88,6 +96,7 @@ function App() {
           <Route path="latest" element={<LatestPage />} />
           <Route path="popular" element={<PopularPage />} />
           <Route path="post/:slug" element={<PostPage />} />
+          <Route path="search" element={<SearchPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

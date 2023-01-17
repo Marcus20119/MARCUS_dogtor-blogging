@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import {
   FacebookShareButton,
   EmailShareButton,
@@ -11,6 +13,7 @@ import {
   TwitterIcon,
 } from 'react-share';
 import styled from 'styled-components';
+import { useFirebase } from '~/contexts/firebaseContext';
 import { useSingleDoc } from '~/firebase/funcs';
 import { convertDate, convertTime } from '~/helpers';
 
@@ -67,6 +70,7 @@ const PostPageHeaderStyled = styled.div`
         color: ${props => props.theme.color.white};
         border-radius: 4px;
         padding: 4px 8px;
+        cursor: pointer;
       }
     }
     &-breakLine {
@@ -110,6 +114,29 @@ const PostPageHeader = ({ postData }) => {
     col: 'users',
     id: postData?.userId ? postData.userId : '',
   });
+  const facebookRef = useRef();
+  const { userDocument } = useFirebase();
+  const [quantityLiked, setQuantityLiked] = useState(
+    postData?.usersLiked ? postData.usersLiked.length : 0
+  );
+  console.log('quantityLiked', quantityLiked);
+  const [isCurrentUserLike, setIsCurrentUserLike] = useState(
+    (postData?.usersLiked &&
+      userDocument?.id &&
+      postData.usersLiked.some(id => id === userDocument.id)) ||
+      false
+  );
+  console.log('isCurrentUserLike', isCurrentUserLike);
+
+  const handleSetLike = () => {
+    if (isCurrentUserLike) {
+      setQuantityLiked(prev => prev - 1);
+    } else {
+      setQuantityLiked(prev => prev + 1);
+    }
+    setIsCurrentUserLike(!isCurrentUserLike);
+  };
+
   return (
     <PostPageHeaderStyled>
       <span className="postPage-header__category">
@@ -121,16 +148,21 @@ const PostPageHeader = ({ postData }) => {
       <div className="postPage-header__meta">
         <div className="meta__social">
           <div className="meta__social-left">
-            <button className="meta__social-left-like">
+            <button className="meta__social-left-like" onClick={handleSetLike}>
               <i className="bx bxs-like"></i>
               <span>Like</span>
-              <span>69</span>
+              <span>{quantityLiked}</span>
             </button>
-            <button className="meta__social-left-share">Share</button>
+            <button
+              className="meta__social-left-share"
+              onClick={() => facebookRef.current.click()}
+            >
+              Share
+            </button>
           </div>
           <div className="meta__social-breakLine">&nbsp;</div>
           <div className="meta__social-right">
-            <FacebookShareButton url={window.location.href}>
+            <FacebookShareButton ref={facebookRef} url={window.location.href}>
               <FacebookIcon size={32} round />
             </FacebookShareButton>
             <EmailShareButton url={window.location.href}>

@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '~/components/button';
 
@@ -27,6 +27,7 @@ const ManageCategoriesPageAdminStyled = styled.div`
 
 const ManageCategoriesPageAdmin = () => {
   const { userDocument } = useOutletContext();
+  const navigateTo = useNavigate();
 
   // Nếu không phải là admin thì trả ra trang NotFound
   if (userDocument.role !== 'admin') {
@@ -41,7 +42,9 @@ const ManageCategoriesPageAdmin = () => {
       <div className="allPage-input">
         <div className="allPage-input__category">
           <Button
-          // onClick={handleLoadMore}
+            onClick={() => {
+              navigateTo('/user/admin/add-category');
+            }}
           >
             Create New Category
           </Button>

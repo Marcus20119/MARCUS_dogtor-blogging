@@ -285,17 +285,15 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
               </td>
             </tr>
           )}
-          {posts &&
-            posts.length === 0 &&
-            categoryValue !== 'All categories' && (
-              <tr>
-                <td colSpan="5">
-                  {searchValue
-                    ? 'No post was found! Try another keyword'
-                    : `You still don't have any posts about this section yet!`}
-                </td>
-              </tr>
-            )}
+          {!isLoading && posts && posts.length === 0 && (
+            <tr>
+              <td colSpan="5">
+                {searchValue
+                  ? 'No post was found! Try another keyword'
+                  : `You still don't have any posts about this section yet!`}
+              </td>
+            </tr>
+          )}
         </AllPostAdminTableBodyStyled>
       </Table>
       {posts && posts.length < quantity && (

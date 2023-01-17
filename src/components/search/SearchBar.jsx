@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useRef } from 'react';
+import { forwardRef } from 'react';
 
 const SearchBarStyled = styled.div`
   position: relative;
@@ -45,30 +47,39 @@ const SearchBarStyled = styled.div`
  * @param {string} placeholder
  */
 
-const SearchBar = ({
-  name = '',
-  placeholder = '',
-  defaultValue = '',
-  onChange = () => {},
-  ...props
-}) => {
-  return (
-    <SearchBarStyled {...props}>
-      <input
-        type="text"
-        placeholder={placeholder}
-        name={name}
-        onChange={onChange}
-        defaultValue={defaultValue}
-      />
-      <i className="bx bx-search"></i>
-    </SearchBarStyled>
-  );
-};
+const SearchBar = forwardRef(
+  (
+    {
+      name = '',
+      placeholder = '',
+      defaultValue = '',
+      onChange = () => {},
+      ...props
+    },
+    ref
+  ) => {
+    const alternativeRef = useRef();
+    return (
+      <SearchBarStyled {...props}>
+        <input
+          ref={ref || alternativeRef}
+          type="text"
+          placeholder={placeholder}
+          name={name}
+          onChange={onChange}
+          defaultValue={defaultValue}
+          autoComplete="off"
+        />
+        <i className="bx bx-search"></i>
+      </SearchBarStyled>
+    );
+  }
+);
 
 SearchBar.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
+  defaultValue: PropTypes.string,
 };
 
 export { SearchBar };

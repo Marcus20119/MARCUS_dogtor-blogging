@@ -12,6 +12,10 @@ const tabs = [
     name: 'Popular',
     path: '/popular',
   },
+  {
+    name: 'Favorite',
+    path: '/favorite',
+  },
 ];
 
 const HeaderNavSectionStyled = styled.div`

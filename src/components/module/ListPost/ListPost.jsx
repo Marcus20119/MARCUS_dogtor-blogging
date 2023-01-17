@@ -32,6 +32,7 @@ const ListPostStyled = styled.div`
 const ListPost = ({
   whereField,
   whereValue,
+  searchQuery,
   orderByField = 'createdAt',
   orderByType = 'desc',
   postPerLoad = 5,
@@ -39,6 +40,7 @@ const ListPost = ({
   let quantityQuery;
   let firstQuery;
 
+  // Nếu filter theo field
   if (whereField) {
     quantityQuery = query(
       collection(db, 'posts'),
@@ -51,6 +53,21 @@ const ListPost = ({
       where('status', '==', 1),
       where(whereField, '==', whereValue),
       orderBy(orderByField, orderByType),
+      limit(postPerLoad)
+    );
+    // Nếu filter theo search
+  } else if (searchQuery) {
+    quantityQuery = query(
+      collection(db, 'posts'),
+      where('status', '==', 1),
+      where('title', '>=', searchQuery),
+      where('title', '<=', searchQuery + 'utf8')
+    );
+    firstQuery = query(
+      collection(db, 'posts'),
+      where('status', '==', 1),
+      where('title', '>=', searchQuery),
+      where('title', '<=', searchQuery + 'utf8'),
       limit(postPerLoad)
     );
   } else {
@@ -75,7 +92,7 @@ const ListPost = ({
     firstQuery,
     nextQuery,
     setLastSnapshot,
-    reRenderCondition: [],
+    reRenderCondition: [searchQuery],
   });
 
   const handleLoadMore = () => {
@@ -86,6 +103,15 @@ const ListPost = ({
         where('status', '==', 1),
         where(whereField, '==', whereValue),
         orderBy(orderByField, orderByType),
+        startAfter(lastSnapshot),
+        limit(postPerLoad)
+      );
+    } else if (searchQuery) {
+      nextDataQuery = query(
+        collection(db, 'posts'),
+        where('status', '==', 1),
+        where('title', '>=', searchQuery),
+        where('title', '<=', searchQuery + 'utf8'),
         startAfter(lastSnapshot),
         limit(postPerLoad)
       );
@@ -111,6 +137,9 @@ const ListPost = ({
           ))}
       </div>
       {isLoading && <LoadingBounce />}
+      {query && (!posts || posts.length === 0) && (
+        <span>No post was found! Try another keyword</span>
+      )}
       {posts && posts.length < quantity && (
         <Button
           width="150px"

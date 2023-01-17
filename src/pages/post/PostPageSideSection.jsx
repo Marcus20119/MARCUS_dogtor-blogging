@@ -6,7 +6,6 @@ import { useMultiDocs } from '~/firebase/funcs';
 
 const PostPageSideSection = ({ postData, renderCondition }) => {
   const postsSideSectionQuery = useMemo(() => {
-    console.log('rerender', postData.id);
     return query(
       collection(db, 'posts'),
       where('status', '==', 1),
@@ -21,7 +20,6 @@ const PostPageSideSection = ({ postData, renderCondition }) => {
     query: postsSideSectionQuery,
     renderCondition: [postsSideSectionQuery],
   });
-  console.log('posts', posts);
 
   return <SidePost posts={posts} title="RELEVANT" />;
 };

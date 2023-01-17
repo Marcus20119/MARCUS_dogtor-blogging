@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Button from '~/components/button';
@@ -7,6 +7,9 @@ import { UserAvatar } from '~/components/module/user';
 import { useClickOutSide } from '~/hooks';
 import UserDropDown from './UserDropDown';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect } from 'react';
 
 const HeaderMainSectionStyled = styled.header`
   display: flex;
@@ -56,6 +59,39 @@ const HeaderMainSection = () => {
   const navigateTo = useNavigate();
   const { userDocument } = useFirebase();
   const { show, setShow, nodeRef } = useClickOutSide();
+  const { pathname } = useLocation();
+  const [query] = useSearchParams();
+  const [historyNum, setHistoryNum] = useState(
+    query.get('layoutSearch') ? 1 : 0
+  );
+
+  const handleSetLayoutSearchValue = debounce(e => {
+    if (e.target.value) {
+      navigateTo(`/search?layoutSearch=${e.target.value}`);
+      setHistoryNum(prev => prev + 1);
+    } else {
+      console.log(historyNum);
+      window.history.go(-historyNum);
+      setHistoryNum(0);
+    }
+  }, 500);
+
+  // Reset value khi đổi route
+  const forceResetValue = pathname !== '/search';
+  const searchRef = useRef();
+  useEffect(() => {
+    if (searchRef.current && forceResetValue) {
+      searchRef.current.value = '';
+      setHistoryNum(0);
+    }
+  }, [forceResetValue]);
+
+  // Auto focus
+  useEffect(() => {
+    if (searchRef?.current?.value) {
+      searchRef.current.focus();
+    }
+  }, []);
 
   return (
     <HeaderMainSectionStyled>
@@ -75,7 +111,14 @@ const HeaderMainSection = () => {
         <div className="headerMainSection-left__title">Dogtor Blogging</div>
       </a>
       <div className="headerMainSection-right">
-        <SearchBar placeholder="Search posts..." width="400px" />
+        <SearchBar
+          ref={searchRef}
+          name="layoutSearchQuery"
+          placeholder="Search posts..."
+          defaultValue={query.get('layoutSearch')}
+          width="400px"
+          onChange={handleSetLayoutSearchValue}
+        />
         {userDocument.email ? (
           <div ref={nodeRef} className="headerMainSection-right__user-wrapper">
             <UserAvatar
