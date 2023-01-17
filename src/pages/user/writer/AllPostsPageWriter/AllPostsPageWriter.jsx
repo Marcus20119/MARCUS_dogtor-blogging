@@ -40,7 +40,7 @@ const AllPostsPageWriter = () => {
     !query.get('category') ? 'All categories' : query.get('category')
   );
 
-  const [searchValue, setSearchValue] = useState(query.get('search'));
+  const [searchValue, setSearchValue] = useState(query.get('search') || '');
   const handleSetSearchValue = debounce(e => {
     setSearchValue(e.target.value);
   }, 500);

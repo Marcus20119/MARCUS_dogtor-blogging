@@ -99,6 +99,8 @@ const AddPostPageWriter = () => {
             ...cloneData,
             userId: userInfo.uid,
             status: 2,
+            quantityView: 0,
+            usersLiked: [],
             content: content || 'This post has no content yet!',
             createdAt: serverTimestamp(),
           });
@@ -113,7 +115,7 @@ const AddPostPageWriter = () => {
           setContent('');
           Swal.fire({
             title: 'Added successfully!',
-            text: `You can check your post's status in "All posts" section.`,
+            text: `You can check your post's status in "My Posts" section.`,
             icon: 'success',
             scrollbarPadding: false,
           });

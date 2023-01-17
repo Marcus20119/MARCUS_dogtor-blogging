@@ -1,3 +1,4 @@
+import { doc, updateDoc } from 'firebase/firestore';
 import { useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
@@ -14,6 +15,7 @@ import {
 } from 'react-share';
 import styled from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { db } from '~/firebase/firebase-config';
 import { useSingleDoc } from '~/firebase/funcs';
 import { convertDate, convertTime } from '~/helpers';
 
@@ -116,24 +118,87 @@ const PostPageHeader = ({ postData }) => {
   });
   const facebookRef = useRef();
   const { userDocument } = useFirebase();
+
+  // Handle like post
+  /**
+   * Dùng state số lượng like để hiển thị phần giao diện còn cho chạy ẩn phía background
+   * Dùng thêm 1 state disable để disable đi button cho đến khi phía background chạy xong để tránh tình trạng lost update
+   * Background sẽ cập nhật 2 collection:
+   * - user: cập nhật id post mà user like
+   * - post: cập nhật id của user đã like post này
+   *  */
   const [quantityLiked, setQuantityLiked] = useState(
     postData?.usersLiked ? postData.usersLiked.length : 0
   );
-  console.log('quantityLiked', quantityLiked);
   const [isCurrentUserLike, setIsCurrentUserLike] = useState(
     (postData?.usersLiked &&
       userDocument?.id &&
-      postData.usersLiked.some(id => id === userDocument.id)) ||
+      postData.usersLiked.includes(userDocument.id)) ||
       false
   );
   console.log('isCurrentUserLike', isCurrentUserLike);
+  const [forceDisable, setForceDisable] = useState(false);
+
+  const handleUpdateUser = async () => {
+    let newPostsLiked;
+    if (userDocument?.postsLiked && userDocument.postsLiked.length > 0) {
+      newPostsLiked = [...userDocument.postsLiked];
+      if (isCurrentUserLike) {
+        newPostsLiked = newPostsLiked.filter(id => id !== postData.id);
+      } else {
+        newPostsLiked.push(postData.id);
+      }
+    } else {
+      if (isCurrentUserLike) {
+        newPostsLiked = [];
+      } else {
+        newPostsLiked = [postData.id];
+      }
+    }
+    await updateDoc(doc(db, 'users', userDocument.id), {
+      ...userDocument,
+      postsLiked: newPostsLiked,
+    });
+  };
+
+  const handleUpdatePost = async () => {
+    let newUsersLiked;
+    if (postData?.usersLiked && postData.usersLiked.length > 0) {
+      newUsersLiked = [...postData.usersLiked];
+
+      if (isCurrentUserLike) {
+        newUsersLiked = newUsersLiked.filter(id => id !== userDocument.id);
+      } else {
+        newUsersLiked.push(userDocument.id);
+      }
+    } else {
+      if (isCurrentUserLike) {
+        newUsersLiked = [];
+      } else {
+        newUsersLiked = [userDocument.id];
+      }
+    }
+    await updateDoc(doc(db, 'posts', postData.id), {
+      ...postData,
+      usersLiked: newUsersLiked,
+    });
+  };
 
   const handleSetLike = () => {
+    const handleUpdate = async () => {
+      setForceDisable(true);
+      await handleUpdateUser();
+      handleUpdatePost();
+      setForceDisable(false);
+    };
+
     if (isCurrentUserLike) {
       setQuantityLiked(prev => prev - 1);
     } else {
       setQuantityLiked(prev => prev + 1);
     }
+    handleUpdate();
+
     setIsCurrentUserLike(!isCurrentUserLike);
   };
 
@@ -148,7 +213,11 @@ const PostPageHeader = ({ postData }) => {
       <div className="postPage-header__meta">
         <div className="meta__social">
           <div className="meta__social-left">
-            <button className="meta__social-left-like" onClick={handleSetLike}>
+            <button
+              className="meta__social-left-like"
+              onClick={handleSetLike}
+              disabled={forceDisable}
+            >
               <i className="bx bxs-like"></i>
               <span>Like</span>
               <span>{quantityLiked}</span>

@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+/**
+ *
+ */
+
 function useClickOutSide(dom = 'button') {
   const [show, setShow] = useState(false);
   const nodeRef = useRef(null);

@@ -109,6 +109,7 @@ const SignUpPage = () => {
         password: data.password,
         id: cred.user.uid,
         userName: data.userName,
+        postsLiked: [],
         createdAt: serverTimestamp(),
         avatar: { URL: imgURLs.userAvatar, name: 'default-user.png' },
         role: 'reader',

@@ -112,6 +112,7 @@ const EditPostPageWriter = () => {
           cloneData.status = Number(cloneData.status);
           await updateDoc(doc(db, 'posts', slug.id), {
             ...cloneData,
+            status: 2,
             content: content || 'This post has no content yet!',
           });
           Swal.fire({

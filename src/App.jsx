@@ -12,6 +12,7 @@ import SignUpPage from './pages/SignUpPage';
 // Common
 const LatestPage = lazy(() => import('./pages/LatestPage'));
 const PopularPage = lazy(() => import('./pages/PopularPage'));
+const FavoritePage = lazy(() => import('./pages/FavoritePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const PostPage = lazy(() => import('./pages/post/PostPage'));
@@ -95,6 +96,7 @@ function App() {
           <Route path="" element={<Navigate replace to="/latest" />} />
           <Route path="latest" element={<LatestPage />} />
           <Route path="popular" element={<PopularPage />} />
+          <Route path="favorite" element={<FavoritePage />} />
           <Route path="post/:slug" element={<PostPage />} />
           <Route path="search" element={<SearchPage />} />
         </Route>

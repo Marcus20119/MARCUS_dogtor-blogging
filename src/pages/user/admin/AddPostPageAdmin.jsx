@@ -104,6 +104,8 @@ const AddPostPageAdmin = () => {
           await addDoc(collection(db, 'posts'), {
             ...cloneData,
             userId: userInfo.uid,
+            quantityView: 0,
+            usersLiked: [],
             content: content || 'This post has no content yet!',
             createdAt: serverTimestamp(),
           });

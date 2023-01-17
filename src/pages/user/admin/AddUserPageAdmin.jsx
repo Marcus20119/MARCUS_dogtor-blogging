@@ -140,6 +140,7 @@ const AddUserPageAdmin = () => {
             userName: data.userName,
             fullName: data.fullName,
             phoneNumber: data.phoneNumber,
+            postsLiked: [],
             createdAt: serverTimestamp(),
             avatar: img || {
               URL: imgURLs.userAvatar,

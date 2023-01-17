@@ -58,7 +58,7 @@ const writerTabs = [
     path: '/user/writer/dashboard',
   },
   {
-    name: 'All Posts',
+    name: 'My Posts',
     iconClass: 'bx bx-book-open',
     path: '/user/writer/all-posts?category=All%20categories&search=',
   },
@@ -99,8 +99,8 @@ const UserSideBarStyled = styled.div`
     padding: 16px 8px;
     border-radius: 8px;
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
-    border: solid 1px #8d351a10;
     border-radius: 8px;
+    border: solid 1px #8d351a10;
     background-color: ${props => props.theme.color.skin};
     font-family: ${props => props.theme.font.tertiary};
 

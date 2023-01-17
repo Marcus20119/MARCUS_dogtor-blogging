@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import LoadingBounce from '~/components/loading/Bounce';
 import { Header } from '~/layouts/Header';
 
 const LoadingPageStyled = styled.div`
   width: 100%;
+  height: 110vh;
 
   .loadingPage-loadingSection {
     width: 100%;
@@ -12,6 +14,15 @@ const LoadingPageStyled = styled.div`
 `;
 
 const LoadingPage = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      document.documentElement.scrollTop = 0;
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <LoadingPageStyled>
       <Header />

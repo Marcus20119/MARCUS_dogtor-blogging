@@ -77,7 +77,7 @@ const EditPostPageAdmin = () => {
     try {
       Swal.fire({
         title: 'Update this post?',
-        text: `This action will change your post's status to "Pending"!`,
+        text: `This action will affect this post immediately!`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#8d351a',

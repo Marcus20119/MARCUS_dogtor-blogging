@@ -12,7 +12,6 @@ import Field from '~/components/form/field';
 import { Input } from '~/components/form/input';
 import Label from '~/components/form/label';
 import { db } from '~/firebase/firebase-config';
-import { useAuth } from '~/contexts/authContext';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { useScrollOnTop } from '~/hooks';
 import NotFoundPage from '~/pages/NotFoundPage';
@@ -34,6 +33,10 @@ const AddCategoryPageAdminStyled = styled.div`
 `;
 const schema = yup.object({
   name: yup.string().required('Required'),
+  group: yup
+    .string()
+    .required('Required')
+    .matches(/^\d+$/, 'The field should have digits only'),
   slug: yup.string(),
 });
 
@@ -83,6 +86,7 @@ const AddCategoryPageAdmin = () => {
             Date.now();
           await addDoc(collection(db, 'categories'), {
             ...data,
+            group: Number(data.group),
             createdAt: serverTimestamp(),
           });
           navigateTo('/user/admin/all-categories');
@@ -130,6 +134,11 @@ const AddCategoryPageAdmin = () => {
           </Field>
 
           <Field>
+            <Label id="group">Group</Label>
+            <Input control={control} name="group" secondary></Input>
+          </Field>
+
+          <Field>
             <Label id="slug">Slug</Label>
             <Input control={control} name="slug" secondary></Input>
           </Field>
@@ -142,7 +151,7 @@ const AddCategoryPageAdmin = () => {
           style={{ margin: '0 0 0 auto' }}
           isSubmitting={isSubmitting}
         >
-          Add Post
+          Add Category
         </Button>
       </form>
     </AddCategoryPageAdminStyled>

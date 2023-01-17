@@ -18,7 +18,7 @@ export const ResetClasses = css`
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
   }
 
   img,
@@ -76,5 +76,8 @@ export const ResetClasses = css`
   }
   a:-webkit-any-link {
     color: unset;
+  }
+  img::selection {
+    outline: none !important;
   }
 `;
