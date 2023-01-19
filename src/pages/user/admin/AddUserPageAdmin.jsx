@@ -157,6 +157,7 @@ const AddUserPageAdmin = () => {
           text: 'New User has been created.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });
@@ -164,7 +165,7 @@ const AddUserPageAdmin = () => {
 
   return (
     <AddUserPageAdminStyled>
-      <UserSectionTitle>User Info</UserSectionTitle>
+      <UserSectionTitle>Add New User</UserSectionTitle>
       <form
         className="addUserPage-form"
         onSubmit={handleSubmit(onSubmitHandler)}
@@ -181,12 +182,22 @@ const AddUserPageAdmin = () => {
           <div className="addUserPage-form__filed-wrap">
             <Field>
               <Label id="fullName">Full Name</Label>
-              <Input control={control} name="fullName" secondary></Input>
+              <Input
+                control={control}
+                name="fullName"
+                placeholder="Enter your full name ..."
+                secondary
+              ></Input>
             </Field>
 
             <Field>
               <Label id="userName">User Name</Label>
-              <Input control={control} name="userName" secondary></Input>
+              <Input
+                control={control}
+                name="userName"
+                placeholder="Enter your user name ..."
+                secondary
+              ></Input>
             </Field>
             <Field>
               <Label id="email">Email</Label>

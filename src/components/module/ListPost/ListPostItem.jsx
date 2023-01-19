@@ -22,6 +22,7 @@ const ListPostItemStyled = styled.a`
   .listPostItem {
     &-img {
       width: 160px;
+      height: 120px;
       border-radius: 4px;
       background-color: #ccc;
       overflow: hidden;

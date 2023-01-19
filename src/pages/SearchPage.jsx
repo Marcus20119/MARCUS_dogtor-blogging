@@ -15,7 +15,12 @@ const SearchPage = () => {
 
   return (
     <SearchPageStyled>
-      {layoutSearchValue && <ListPost searchQuery={layoutSearchValue} />}
+      {layoutSearchValue && (
+        <ListPost
+          searchQuery={layoutSearchValue}
+          reRenderCondition={layoutSearchValue}
+        />
+      )}
     </SearchPageStyled>
   );
 };

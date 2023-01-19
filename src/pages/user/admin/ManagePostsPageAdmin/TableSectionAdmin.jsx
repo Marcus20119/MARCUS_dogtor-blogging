@@ -223,6 +223,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
           text: 'Your file has been deleted.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });

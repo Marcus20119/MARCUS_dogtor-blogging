@@ -15,7 +15,9 @@ const PopularPage = lazy(() => import('./pages/PopularPage'));
 const FavoritePage = lazy(() => import('./pages/FavoritePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
+const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const PostPage = lazy(() => import('./pages/post/PostPage'));
+const FavoritePostsPage = lazy(() => import('./pages/user/FavoritePostsPage'));
 const UserInfoPage = lazy(() => import('./pages/user/UserInfoPage'));
 
 // Admin
@@ -61,18 +63,18 @@ function App() {
   return (
     <Suspense fallback={<LoadingPage />}>
       <Routes>
-        <Route path="/sign-up" element={<SignUpPage />}></Route>
-        <Route path="/sign-in" element={<SignInPage />}></Route>
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/sign-in" element={<SignInPage />} />
 
         <Route path="/user" element={<UserLayout />}>
           <Route path="admin">
-            <Route path="all-posts" element={<MangePostsPageAdmin />}></Route>
-            <Route path="all-users" element={<ManageUsersPageAdmin />}></Route>
+            <Route path="all-posts" element={<MangePostsPageAdmin />} />
+            <Route path="all-users" element={<ManageUsersPageAdmin />} />
             <Route
               path="all-categories"
               element={<ManageCategoriesPageAdmin />}
-            ></Route>
-            <Route path="edit-post/:id" element={<EditPostPageAdmin />}></Route>
+            />
+            <Route path="edit-post/:id" element={<EditPostPageAdmin />} />
             <Route path="edit-user/:id" element={<EditUserPageAdmin />}></Route>
             <Route path="add-post" element={<AddPostPageAdmin />}></Route>
             <Route path="add-user" element={<AddUserPageAdmin />}></Route>
@@ -80,16 +82,14 @@ function App() {
               path="add-category"
               element={<AddCategoryPageAdmin />}
             ></Route>
-            <Route path="user-info" element={<UserInfoPage />}></Route>
+            <Route path="favorite-posts" element={<FavoritePostsPage />} />
+            <Route path="user-info" element={<UserInfoPage />} />
           </Route>
           <Route path="writer">
-            <Route path="all-posts" element={<AllPostsPageWriter />}></Route>
-            <Route path="add-post" element={<AddPostPageWriter />}></Route>
-            <Route path="user-info" element={<UserInfoPage />}></Route>
-            <Route
-              path="edit-post/:id"
-              element={<EditPostPageWriter />}
-            ></Route>
+            <Route path="all-posts" element={<AllPostsPageWriter />} />
+            <Route path="add-post" element={<AddPostPageWriter />} />
+            <Route path="user-info" element={<UserInfoPage />} />
+            <Route path="edit-post/:id" element={<EditPostPageWriter />} />
           </Route>
         </Route>
         <Route path="/" element={<MainLayout />}>
@@ -98,6 +98,7 @@ function App() {
           <Route path="popular" element={<PopularPage />} />
           <Route path="favorite" element={<FavoritePage />} />
           <Route path="post/:slug" element={<PostPage />} />
+          <Route path="category/:slug" element={<CategoryPage />} />
           <Route path="search" element={<SearchPage />} />
         </Route>
 

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
 
@@ -60,13 +61,21 @@ const footerLinks = [
 
 const Footer = () => {
   const { categories } = useFirebase();
+  const navigateTo = useNavigate();
   return (
     <FooterStyled>
       <div className="footer-wrap">
         <div className="footer-category">
           {categories &&
             categories.map(category => (
-              <a key={category.id} href="/" onClick={e => e.preventDefault()}>
+              <a
+                key={category.id}
+                href={`/category/${category.slug}`}
+                onClick={e => {
+                  e.preventDefault();
+                  navigateTo(`/category/${category.slug}`);
+                }}
+              >
                 {category.name === 'Food n Drink'
                   ? 'Food & Drink'
                   : category.name}

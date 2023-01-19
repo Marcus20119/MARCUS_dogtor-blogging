@@ -173,6 +173,7 @@ const TableSectionAdmin = ({ roleValue }) => {
           text: 'This user has been deleted.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });

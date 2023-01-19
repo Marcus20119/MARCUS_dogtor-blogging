@@ -115,6 +115,7 @@ const AddPostPageAdmin = () => {
             text: `You can check your post's status in "All posts" section.`,
             icon: 'success',
             scrollbarPadding: false,
+            confirmButtonColor: '#8d351a',
           });
         }
       });

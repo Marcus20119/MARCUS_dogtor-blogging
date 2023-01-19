@@ -36,12 +36,27 @@ const ListPost = ({
   orderByField = 'createdAt',
   orderByType = 'desc',
   postPerLoad = 5,
+  isWhereFieldArray = false,
+  reRenderCondition,
 }) => {
   let quantityQuery;
   let firstQuery;
 
-  // Nếu filter theo field
-  if (whereField) {
+  // Nếu field lọc thuộc dạng array
+  if (isWhereFieldArray) {
+    quantityQuery = query(
+      collection(db, 'posts'),
+      where(whereField, 'array-contains', whereValue),
+      orderBy(orderByField, orderByType)
+    );
+    firstQuery = query(
+      collection(db, 'posts'),
+      where(whereField, 'array-contains', whereValue),
+      orderBy(orderByField, orderByType),
+      limit(postPerLoad)
+    );
+    // Nếu filter theo field
+  } else if (whereField) {
     quantityQuery = query(
       collection(db, 'posts'),
       where('status', '==', 1),
@@ -92,12 +107,20 @@ const ListPost = ({
     firstQuery,
     nextQuery,
     setLastSnapshot,
-    reRenderCondition: [searchQuery],
+    reRenderCondition: reRenderCondition ? [reRenderCondition] : [],
   });
 
   const handleLoadMore = () => {
     let nextDataQuery;
-    if (whereField) {
+    if (isWhereFieldArray) {
+      nextDataQuery = query(
+        collection(db, 'posts'),
+        where(whereField, 'array-contains', whereValue),
+        orderBy(orderByField, orderByType),
+        startAfter(lastSnapshot),
+        limit(postPerLoad)
+      );
+    } else if (whereField) {
       nextDataQuery = query(
         collection(db, 'posts'),
         where('status', '==', 1),
@@ -126,7 +149,7 @@ const ListPost = ({
     }
     setNextQuery(nextDataQuery);
   };
-
+  console.log(posts);
   return (
     <ListPostStyled>
       <div className="listPost-wrap">
@@ -137,7 +160,7 @@ const ListPost = ({
           ))}
       </div>
       {isLoading && <LoadingBounce />}
-      {query && (!posts || posts.length === 0) && (
+      {searchQuery && (!posts || posts.length === 0) && (
         <span>No post was found! Try another keyword</span>
       )}
       {posts && posts.length < quantity && (

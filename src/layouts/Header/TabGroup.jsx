@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const TabGroupStyled = styled.div`
@@ -28,34 +28,32 @@ const TabGroupStyled = styled.div`
         opacity: 1;
         color: ${props => props.theme.color.brown};
       }
-
-      &--active {
-        opacity: 1;
-      }
     }
   }
 `;
 
-const TabGroup = ({ categories, title, groupIndex }) => {
+const TabGroup = ({ categories, title, groupIndex, setShow }) => {
+  const navigateTo = useNavigate();
   return (
     <TabGroupStyled>
       <div className="tabGroup__title">{title}</div>
       {categories.map(
         category =>
           category.group === groupIndex && (
-            <NavLink
+            <Link
               key={`tabGroup-${category.slug}`}
               to={`/category/${category.slug}`}
-              className={({ isActive }) =>
-                isActive
-                  ? 'tabGroup__tab tabGroup__tab--active'
-                  : 'tabGroup__tab'
-              }
+              className="tabGroup__tab"
+              onClick={e => {
+                e.preventDefault();
+                navigateTo(`/category/${category.slug}`);
+                setShow(false);
+              }}
             >
               {category.name === 'Food n Drink'
                 ? 'Food & Drink'
                 : category.name}
-            </NavLink>
+            </Link>
           )
       )}
     </TabGroupStyled>

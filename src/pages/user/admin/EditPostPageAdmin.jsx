@@ -122,6 +122,7 @@ const EditPostPageAdmin = () => {
             text: 'Your post has been updated.',
             icon: 'success',
             scrollbarPadding: false,
+            cancelButtonColor: '#8d351a50',
           });
           // navigateTo('/user/admin/all-posts');
           window.history.back();

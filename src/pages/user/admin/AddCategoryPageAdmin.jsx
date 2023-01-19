@@ -95,6 +95,7 @@ const AddCategoryPageAdmin = () => {
             text: 'New Category has been created.',
             icon: 'success',
             scrollbarPadding: false,
+            confirmButtonColor: '#8d351a',
           });
         }
       });
@@ -122,7 +123,7 @@ const AddCategoryPageAdmin = () => {
 
   return (
     <AddCategoryPageAdminStyled>
-      <UserSectionTitle>Add New Post</UserSectionTitle>
+      <UserSectionTitle>Add New Category</UserSectionTitle>
       <form
         className="addCategoryPageAdmin-form"
         onSubmit={handleSubmit(onSubmitHandler, () => onErrorsHandler(errors))}

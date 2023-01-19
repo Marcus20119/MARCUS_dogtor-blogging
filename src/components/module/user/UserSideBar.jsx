@@ -7,11 +7,6 @@ import { UserAvatar } from '.';
 
 const adminTabs = [
   {
-    name: 'Dashboard',
-    iconClass: 'bx bx-cube',
-    path: '/user/admin/dashboard',
-  },
-  {
     name: 'Manage Posts',
     iconClass: 'bx bx-book-open',
     path: '/user/admin/all-posts?category=All%20categories&search=',
@@ -35,6 +30,11 @@ const adminTabs = [
     name: 'Add New User',
     iconClass: 'bx bx-user-plus',
     path: '/user/admin/add-user',
+  },
+  {
+    name: 'Favorite Posts',
+    iconClass: 'bx bx-heart',
+    path: '/user/admin/favorite-posts',
   },
   {
     name: 'User Info',

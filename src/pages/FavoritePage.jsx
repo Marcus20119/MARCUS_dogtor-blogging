@@ -70,7 +70,6 @@ const FavoritePage = () => {
     query: foodNDrinkQueryFavorite,
   });
   const lifeStylePosts = useMultiDocs({ query: lifeStyleQueryFavorite });
-  console.log('lifeStylePosts', lifeStylePosts);
 
   return (
     <FavoriteStyled>

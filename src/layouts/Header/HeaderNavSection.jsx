@@ -83,6 +83,7 @@ const HeaderNavSectionStyled = styled.div`
   @keyframes increaseHeight {
     to {
       max-height: 300px;
+      overflow: hidden;
     }
   }
   .headerNavSection-dropdown {
@@ -95,7 +96,7 @@ const HeaderNavSectionStyled = styled.div`
     border-bottom: solid 1px #8d351a10;
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
     animation: increaseHeight 0.7s ease forwards;
-    overflow: hidden;
+    overflow: hidden !important;
   }
 
   .headerNavSection-dropdown-wrap {
@@ -104,6 +105,7 @@ const HeaderNavSectionStyled = styled.div`
     width: 1280px;
     margin: 0 auto;
     padding: 20px 8px;
+    overflow: hidden !important;
   }
 `;
 const BehindFixed = styled.div`
@@ -192,16 +194,19 @@ const HeaderNavSection = () => {
                   categories={categories}
                   title={`GOOD & HEALTH`}
                   groupIndex={1}
+                  setShow={setShow}
                 />
                 <TabGroup
                   categories={categories}
                   title={`PET LIFE`}
                   groupIndex={2}
+                  setShow={setShow}
                 />
                 <TabGroup
                   categories={categories}
                   title={`EXPLORE`}
                   groupIndex={3}
+                  setShow={setShow}
                 />
               </div>
             )}

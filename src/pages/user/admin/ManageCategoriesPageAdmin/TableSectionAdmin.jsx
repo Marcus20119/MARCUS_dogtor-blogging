@@ -51,7 +51,7 @@ const TableSectionAdmin = () => {
       text: 'This action will cause a huge damage to your data!',
       icon: 'warning',
       scrollbarPadding: false,
-      cancelButtonColor: '#8d351a50',
+      confirmButtonColor: '#8d351a',
     });
   };
   const handleEditCategory = async () => {
@@ -60,7 +60,7 @@ const TableSectionAdmin = () => {
       text: 'This action will cause a huge damage to your data!',
       icon: 'warning',
       scrollbarPadding: false,
-      cancelButtonColor: '#8d351a50',
+      confirmButtonColor: '#8d351a',
     });
   };
 

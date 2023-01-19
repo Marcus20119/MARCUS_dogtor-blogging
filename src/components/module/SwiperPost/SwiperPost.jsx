@@ -61,7 +61,6 @@ const SwiperPostStyled = styled.div`
     button {
       position: absolute;
       top: 30%;
-      /* transform: translateY(-50%); */
       display: flex;
       justify-content: center;
       align-items: center;
