@@ -21,7 +21,7 @@ const StyledSignUpPage = styled.div`
   align-items: center;
   background-color: ${props => props.theme.color.white};
   min-height: 100vh;
-  width: 100vw;
+  width: calc(100vw - 12px);
 
   .sup-dogtor-logo {
     display: block;
@@ -131,13 +131,10 @@ const SignUpPage = () => {
       });
     } catch (err) {
       console.log(err);
-      toast.error(
-        `Can not sign up because of Error: ${err.code.split('/')[1]}`,
-        {
-          autoClose: 2000,
-          delay: 300,
-        }
-      );
+      toast.error(`Error: ${err.code.split('/')[1]}`, {
+        autoClose: 2000,
+        delay: 300,
+      });
     }
   };
 

@@ -34,16 +34,17 @@ function useSelect({
       };
       const handleSetSelectedValue = e => {
         e.stopPropagation();
-        setSelectedValue(e.target.textContent);
+        // Xử lý vấn đề Food n Drink
+        const fixedValue =
+          e.target.textContent === 'Food & Drink'
+            ? 'Food n Drink'
+            : e.target.textContent;
+        setSelectedValue(fixedValue);
         if (setValue) {
-          name
-            ? setValue(name, e.target.textContent)
-            : setValue(e.target.textContent);
+          name ? setValue(name, fixedValue) : setValue(fixedValue);
         }
         if (setError) {
-          name
-            ? setError(name, e.target.textContent)
-            : setError(e.target.textContent);
+          name ? setError(name, fixedValue) : setError(fixedValue);
         }
         handleHide();
       };

@@ -23,7 +23,7 @@ const tabs = [
 
 const HeaderNavSectionStyled = styled.div`
   position: relative;
-  width: 100%;
+  width: 100vw;
   background-color: #693626;
   padding: 10px 0;
   z-index: 665;
@@ -42,6 +42,7 @@ const HeaderNavSectionStyled = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 1280px;
+    max-width: 85vw;
     margin: 0 auto;
   }
   .headerNavSection__tabs-wrap {
@@ -103,6 +104,7 @@ const HeaderNavSectionStyled = styled.div`
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 1280px;
+    max-width: 85vw;
     margin: 0 auto;
     padding: 20px 8px;
     overflow: hidden !important;

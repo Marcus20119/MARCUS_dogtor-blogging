@@ -1,6 +1,7 @@
 import { signOut } from 'firebase/auth';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { auth } from '~/firebase/firebase-config';
 import { UserAvatar } from '.';
@@ -45,18 +46,10 @@ const adminTabs = [
     name: 'Log Out',
     iconClass: 'bx bx-log-out-circle',
     path: '/latest',
-    onClick() {
-      signOut(auth);
-    },
   },
 ];
 
 const writerTabs = [
-  {
-    name: 'Dashboard',
-    iconClass: 'bx bx-cube',
-    path: '/user/writer/dashboard',
-  },
   {
     name: 'My Posts',
     iconClass: 'bx bx-book-open',
@@ -68,9 +61,9 @@ const writerTabs = [
     path: '/user/writer/add-post',
   },
   {
-    name: 'Category',
-    iconClass: 'bx bx-box',
-    path: '/user/writer/category',
+    name: 'Favorite Posts',
+    iconClass: 'bx bx-heart',
+    path: '/user/admin/favorite-posts',
   },
   {
     name: 'User Info',
@@ -81,9 +74,29 @@ const writerTabs = [
     name: 'Log Out',
     iconClass: 'bx bx-log-out-circle',
     path: '/latest',
-    onClick() {
-      signOut(auth);
-    },
+  },
+];
+
+const readerTabs = [
+  {
+    name: 'Read List',
+    iconClass: 'bx bx-bookmark',
+    path: '/user/reader/read-list',
+  },
+  {
+    name: 'Favorite Posts',
+    iconClass: 'bx bx-heart',
+    path: '/user/reader/favorite-posts',
+  },
+  {
+    name: 'User Info',
+    iconClass: 'bx bx-user',
+    path: '/user/reader/user-info',
+  },
+  {
+    name: 'Log Out',
+    iconClass: 'bx bx-log-out-circle',
+    path: '/latest',
   },
 ];
 
@@ -155,12 +168,32 @@ const UserSideBarStyled = styled.div`
 const UserSideBar = () => {
   const { userDocument, imgURLs } = useFirebase();
 
+  const navigateTo = useNavigate();
+
+  const handleLogOut = navigatePath => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You will immediately sign out!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#8d351a',
+      cancelButtonColor: '#8d351a50',
+      confirmButtonText: 'Sign out',
+      scrollbarPadding: false,
+    }).then(async result => {
+      if (result.isConfirmed) {
+        signOut(auth);
+        navigateTo(navigatePath);
+      }
+    });
+  };
+
   const tabs =
     userDocument.role === 'admin'
       ? adminTabs
       : userDocument.role === 'writer'
       ? writerTabs
-      : writerTabs;
+      : readerTabs;
 
   return (
     <UserSideBarStyled>
@@ -184,7 +217,12 @@ const UserSideBar = () => {
                 ? 'userSidebar__tab userSidebar__tab--active'
                 : 'userSidebar__tab'
             }
-            onClick={tab.onClick ? tab.onClick : () => {}}
+            onClick={e => {
+              if (tab.name === 'Log Out') {
+                e.preventDefault();
+                handleLogOut(tab.path);
+              }
+            }}
           >
             <i className={tab.iconClass}></i>
             <span>{tab.name}</span>

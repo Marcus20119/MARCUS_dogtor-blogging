@@ -146,7 +146,9 @@ const Select = ({
         </div>
         <ul className="select-options hidden">
           {options.map(option => (
-            <li key={option}>{option}</li>
+            <li key={option}>
+              {option === 'Food n Drink' ? 'Food & Drink' : option}
+            </li>
           ))}
         </ul>
       </div>

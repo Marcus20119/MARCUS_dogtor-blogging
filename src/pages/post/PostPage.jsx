@@ -1,8 +1,8 @@
 import { collection, doc, query, updateDoc, where } from 'firebase/firestore';
 import parse from 'html-react-parser';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
@@ -11,6 +11,7 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { useScrollOnTop } from '~/hooks';
 import PostPageHeader from './PostPageHeader';
 import PostPageSideSection from './PostPageSideSection';
+import ButtonReadList from './ButtonReadList';
 
 const PostPageStyled = styled.div`
   .postPage-container {
@@ -94,6 +95,9 @@ const PostPage = () => {
             <ButtonEditPost
               navigatePath={`/user/admin/edit-post/${postData.id}`}
             />
+          )}
+          {userDocument?.id && userDocument.role === 'reader' && (
+            <ButtonReadList userId={userDocument.id} postData={postData} />
           )}
         </Fragment>
       )}

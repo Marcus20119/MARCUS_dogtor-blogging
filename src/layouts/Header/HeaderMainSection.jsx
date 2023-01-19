@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Button from '~/components/button';
 import { SearchBar } from '~/components/search';
@@ -10,12 +10,14 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { useEffect } from 'react';
+import { tablet } from '~/styles/responsive';
 
 const HeaderMainSectionStyled = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 1280px;
+  max-width: 85vw;
   margin: 0 auto;
   height: 86px;
   padding: 18px 0;
@@ -48,6 +50,13 @@ const HeaderMainSectionStyled = styled.header`
     align-items: center;
     gap: 12px;
     height: 90%;
+
+    &__search {
+      width: 400px;
+      ${tablet(css`
+        width: 300px;
+      `)};
+    }
 
     &__user-wrapper {
       position: relative;
@@ -111,14 +120,16 @@ const HeaderMainSection = () => {
         <div className="headerMainSection-left__title">Dogtor Blogging</div>
       </a>
       <div className="headerMainSection-right">
-        <SearchBar
-          ref={searchRef}
-          name="layoutSearchQuery"
-          placeholder="Search posts..."
-          defaultValue={query.get('layoutSearch')}
-          width="400px"
-          onChange={handleSetLayoutSearchValue}
-        />
+        <div className="headerMainSection-right__search">
+          <SearchBar
+            ref={searchRef}
+            name="layoutSearchQuery"
+            placeholder="Search posts..."
+            defaultValue={query.get('layoutSearch')}
+            width="100%"
+            onChange={handleSetLayoutSearchValue}
+          />
+        </div>
         {userDocument.email ? (
           <div ref={nodeRef} className="headerMainSection-right__user-wrapper">
             <UserAvatar

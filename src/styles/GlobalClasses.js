@@ -35,6 +35,7 @@ export const GlobalClasses = css`
     display: none !important;
   }
 
+  /* Sweet Alert */
   .swal2-popup .swal2-styled:focus {
     box-shadow: none !important;
   }
@@ -43,6 +44,7 @@ export const GlobalClasses = css`
     overflow: unset !important;
   }
 
+  /* React quill */
   .entry-content,
   .entry-content .ql-snow .ql-editor {
     font-family: 'Poppins', sans-serif;
@@ -125,5 +127,11 @@ export const GlobalClasses = css`
   .ql-editor ul > li::before,
   .ql-editor ol > li::before {
     content: '';
+  }
+
+  /* Toastify */
+  :root {
+    --toastify-icon-color-info: #dd814c !important;
+    --toastify-color-progress-info: #dd814c !important;
   }
 `;

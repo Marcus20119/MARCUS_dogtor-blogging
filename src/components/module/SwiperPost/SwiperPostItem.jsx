@@ -25,7 +25,8 @@ const SwiperPostItemStyled = styled.a`
       left: 0;
       display: block;
       width: 100%;
-      object-fit: contain;
+      height: 100%;
+      object-fit: cover;
       object-position: center center;
       transform: translateY(-50%) scale(1);
       transition: all ease 1s;

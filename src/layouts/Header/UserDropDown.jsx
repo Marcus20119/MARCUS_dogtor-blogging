@@ -2,6 +2,7 @@ import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 import { UserAvatar } from '~/components/module/user';
 import { useFirebase } from '~/contexts/firebaseContext';
@@ -112,7 +113,7 @@ const UserDropDownStyled = styled.div`
 `;
 
 const UserDropDown = ({ setShow }) => {
-  const { userDocument } = useFirebase();
+  const { userDocument, imgURLs } = useFirebase();
   const navigateTo = useNavigate();
   const [userItems, setUserItems] = useState([]);
   useEffect(() => {
@@ -164,12 +165,12 @@ const UserDropDown = ({ setShow }) => {
             {
               name: 'Read List',
               iconClass: 'bx bx-book-reader',
-              navigatePath: '/',
+              navigatePath: '/user/reader/read-list',
             },
             {
-              name: 'Settings & privacy',
-              iconClass: 'bx bxs-cog',
-              navigatePath: '/',
+              name: 'Favorite Posts',
+              iconClass: 'bx bx-heart',
+              navigatePath: '/user/reader/favorite-posts',
             },
             {
               name: 'Log Out',
@@ -185,6 +186,24 @@ const UserDropDown = ({ setShow }) => {
       setUserItems(configItems);
     }
   }, [navigateTo, userDocument]);
+
+  const handleLogOut = navigatePath => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You will immediately sign out!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#8d351a',
+      cancelButtonColor: '#8d351a50',
+      confirmButtonText: 'Sign out',
+      scrollbarPadding: false,
+    }).then(async result => {
+      if (result.isConfirmed) {
+        signOut(auth);
+        navigateTo(navigatePath);
+      }
+    });
+  };
 
   return (
     <UserDropDownStyled>
@@ -208,10 +227,11 @@ const UserDropDown = ({ setShow }) => {
             className="userDropDown-tabs__item"
             onClick={e => {
               e.preventDefault();
-              navigateTo(item.navigatePath);
               setShow(false);
               if (item.name === 'Log Out') {
-                signOut(auth);
+                handleLogOut(item.navigatePath);
+              } else {
+                navigateTo(item.navigatePath);
               }
             }}
           >

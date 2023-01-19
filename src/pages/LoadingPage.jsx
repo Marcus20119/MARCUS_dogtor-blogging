@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import LoadingBounce from '~/components/loading/Bounce';
+import { useScrollOnTop } from '~/hooks';
 import { Header } from '~/layouts/Header';
 
 const LoadingPageStyled = styled.div`
@@ -14,6 +15,7 @@ const LoadingPageStyled = styled.div`
 `;
 
 const LoadingPage = () => {
+  useScrollOnTop();
   useEffect(() => {
     const handleScroll = () => {
       document.documentElement.scrollTop = 0;

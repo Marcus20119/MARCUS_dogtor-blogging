@@ -6,7 +6,7 @@ import HeaderNavSection from './HeaderNavSection';
 const HeaderStyled = styled.header`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 100vw;
 `;
 
 const Header = () => {

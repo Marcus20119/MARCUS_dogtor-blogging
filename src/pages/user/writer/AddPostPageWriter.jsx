@@ -36,11 +36,11 @@ const AddPostPageWriterStyled = styled.div`
   }
 `;
 const schema = yup.object({
-  title: yup.string().required('Required'),
+  title: yup.string().required('Required').min(35, 'Too short'),
   author: yup.string().required('required'),
   slug: yup.string(),
   category: yup.string().required('required'),
-  overview: yup.string().required('required'),
+  overview: yup.string().required('required').min(70, 'Too short'),
   image: yup.string().required('required'),
 });
 

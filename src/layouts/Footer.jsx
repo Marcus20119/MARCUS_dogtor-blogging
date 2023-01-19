@@ -12,6 +12,7 @@ const FooterStyled = styled.div`
     align-items: center;
     gap: 12px;
     width: 1280px;
+    max-width: 85vw;
     border-top: solid 1px #ccc;
     margin: 0 auto;
     padding: 48px 0 36px;

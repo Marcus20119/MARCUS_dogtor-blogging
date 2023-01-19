@@ -149,7 +149,6 @@ const ListPost = ({
     }
     setNextQuery(nextDataQuery);
   };
-  console.log(posts);
   return (
     <ListPostStyled>
       <div className="listPost-wrap">

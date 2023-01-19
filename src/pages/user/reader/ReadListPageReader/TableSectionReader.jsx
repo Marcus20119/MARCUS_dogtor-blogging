@@ -1,12 +1,12 @@
 import {
   collection,
-  deleteDoc,
   doc,
   orderBy,
   limit,
   query,
   startAfter,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { Fragment } from 'react';
 import { useState } from 'react';
@@ -21,39 +21,37 @@ import {
   IconLink,
   IconButton,
   PostCell,
-  StatusTag,
 } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
-  deleteOldImage,
   useMultiDocsPagination,
   useQuantityOfCollection,
 } from '~/firebase/funcs';
-import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
+import { EyeIcon, TrashIcon } from '~/icons';
 
-const AllPostWriterTableHeadStyled = styled.thead`
-  .allPage-firstRow {
+const ReadListReaderTableHeadStyled = styled.thead`
+  .readListPage-firstRow {
     th:nth-child(1) {
       width: 70px;
       text-align: center !important;
     }
     th:nth-child(2) {
-      width: 400px;
+      width: 600px;
     }
   }
 `;
-const AllPostWriterTableBodyStyled = styled.tbody`
-  .allPage-postId {
+const ReadListReaderTableBodyStyled = styled.tbody`
+  .readListPage-postId {
     text-align: center !important;
   }
-  .allPage-postAction {
+  .readListPage-postAction {
     div {
       display: flex;
       align-items: center;
       gap: 12px;
     }
   }
-  .allPage-postAuthor {
+  .readListPage-postAuthor {
     height: 100%;
     span {
       overflow: hidden;
@@ -64,7 +62,7 @@ const AllPostWriterTableBodyStyled = styled.tbody`
   }
 `;
 
-const TableSectionWriter = ({ categoryValue, searchValue }) => {
+const TableSectionReader = ({ categoryValue, searchValue }) => {
   const { userDocument, imgURLs } = useOutletContext();
   // Set query base on the selected category
   let quantityQuery;
@@ -74,7 +72,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     if (categoryValue && categoryValue !== 'All categories') {
       quantityQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('category', '==', categoryValue),
         where('title', '>=', searchValue),
         where('title', '<=', searchValue + 'utf8'),
@@ -83,7 +81,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
 
       firstQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('category', '==', categoryValue),
         where('title', '>=', searchValue),
         where('title', '<=', searchValue + 'utf8'),
@@ -93,7 +91,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     } else {
       quantityQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('title', '>=', searchValue),
         where('title', '<=', searchValue + 'utf8'),
         orderBy('title', 'desc')
@@ -101,7 +99,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
 
       firstQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('title', '>=', searchValue),
         where('title', '<=', searchValue + 'utf8'),
         orderBy('title', 'desc'),
@@ -112,14 +110,14 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     if (categoryValue && categoryValue !== 'All categories') {
       quantityQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('category', '==', categoryValue),
         orderBy('createdAt', 'desc')
       );
 
       firstQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         where('category', '==', categoryValue),
         orderBy('createdAt', 'desc'),
         limit(postPerLoad)
@@ -127,13 +125,13 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     } else {
       quantityQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         orderBy('createdAt', 'desc')
       );
 
       firstQuery = query(
         collection(db, 'posts'),
-        where('userId', '==', userDocument.id),
+        where('usersReading', 'array-contains', userDocument.id),
         orderBy('createdAt', 'desc'),
         limit(postPerLoad)
       );
@@ -161,7 +159,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
       if (categoryValue && categoryValue !== 'All categories') {
         nextDataQuery = query(
           collection(db, 'posts'),
-          where('userId', '==', userDocument.id),
+          where('usersReading', 'array-contains', userDocument.id),
           where('category', '==', categoryValue),
           where('title', '>=', searchValue),
           where('title', '<=', searchValue + 'utf8'),
@@ -172,7 +170,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
       } else {
         nextDataQuery = query(
           collection(db, 'posts'),
-          where('userId', '==', userDocument.id),
+          where('usersReading', 'array-contains', userDocument.id),
           where('title', '>=', searchValue),
           where('title', '<=', searchValue + 'utf8'),
           orderBy('title', 'desc'),
@@ -184,7 +182,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
       if (categoryValue && categoryValue !== 'All categories') {
         nextDataQuery = query(
           collection(db, 'posts'),
-          where('userId', '==', userDocument.id),
+          where('usersReading', 'array-contains', userDocument.id),
           where('category', '==', categoryValue),
           orderBy('createdAt', 'desc'),
           startAfter(lastSnapshot),
@@ -193,7 +191,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
       } else {
         nextDataQuery = query(
           collection(db, 'posts'),
-          where('userId', '==', userDocument.id),
+          where('usersReading', 'array-contains', userDocument.id),
           orderBy('createdAt', 'desc'),
           startAfter(lastSnapshot),
           limit(postPerLoad)
@@ -203,15 +201,15 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     setNextQuery(nextDataQuery);
   };
 
-  const handleDeletePost = async post => {
+  const handleRemovePost = async post => {
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      text: 'This post will be removed from your Read List immediately!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#8d351a',
       cancelButtonColor: '#8d351a50',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, remove it!',
       scrollbarPadding: false,
     }).then(async result => {
       if (result.isConfirmed) {
@@ -225,13 +223,18 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
           allowOutsideClick: false,
           scrollbarPadding: false,
         });
-        await deleteDoc(doc(db, 'posts', post.id));
-        await deleteOldImage({ imgName: post.img.name });
+        const newUsersReading = post.usersReading.filter(
+          userId => userId !== userDocument.id
+        );
+        await updateDoc(doc(db, 'posts', post.id), {
+          ...post,
+          usersReading: newUsersReading,
+        });
         const newPosts = posts.filter(dataItem => dataItem.id !== post.id);
         setPosts(newPosts);
         Swal.fire({
-          title: 'Deleted!',
-          text: 'Your file has been deleted.',
+          title: 'Removed!',
+          text: 'This post has been removed.',
           icon: 'success',
           scrollbarPadding: false,
         });
@@ -242,46 +245,36 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
   return (
     <Fragment>
       <Table>
-        <AllPostWriterTableHeadStyled>
-          <tr className="allPage-firstRow">
+        <ReadListReaderTableHeadStyled>
+          <tr className="readListPage-firstRow">
             <th>No.</th>
             <th>Post</th>
             <th>Author</th>
-            <th>Status</th>
             <th>Actions</th>
           </tr>
-        </AllPostWriterTableHeadStyled>
-        <AllPostWriterTableBodyStyled>
+        </ReadListReaderTableHeadStyled>
+        <ReadListReaderTableBodyStyled>
           {posts &&
             posts.length > 0 &&
             posts.map((post, index) => (
               <tr key={post.id}>
-                <td className="allPage-postId">
+                <td className="readListPage-postId">
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </td>
                 <td>
                   <PostCell postData={post} />
                 </td>
-                <td className="allPage-postAuthor">
+                <td className="readListPage-postAuthor">
                   <span>{post.author}</span>
                 </td>
-                <td className="allPage-postStatus">
-                  <StatusTag status={post.status} />
-                </td>
-                <td className="allPage-postAction">
+                <td className="readListPage-postAction">
                   <div>
                     <IconLink navigatePath={`/post/${post.slug}`} title="view">
                       <EyeIcon />
                     </IconLink>
-                    <IconLink
-                      navigatePath={`/user/writer/edit-post/${post.id}`}
-                      title="edit"
-                    >
-                      <WriteIcon />
-                    </IconLink>
                     <IconButton
-                      onClick={() => handleDeletePost(post)}
-                      title="delete"
+                      onClick={() => handleRemovePost(post)}
+                      title="remove from Read List"
                     >
                       <TrashIcon />
                     </IconButton>
@@ -291,21 +284,21 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
             ))}
           {isLoading && (
             <tr>
-              <td colSpan="5">
+              <td colSpan="4">
                 <LoadingBounce />
               </td>
             </tr>
           )}
           {!isLoading && posts && posts.length === 0 && (
             <tr>
-              <td colSpan="5">
+              <td colSpan="4">
                 {searchValue
                   ? 'No post was found! Try another keyword'
                   : `You still don't have any posts about this section yet!`}
               </td>
             </tr>
           )}
-        </AllPostWriterTableBodyStyled>
+        </ReadListReaderTableBodyStyled>
       </Table>
       {posts && posts.length < quantity && (
         <Button
@@ -320,4 +313,4 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
   );
 };
 
-export default TableSectionWriter;
+export default TableSectionReader;

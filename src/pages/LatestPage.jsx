@@ -87,7 +87,7 @@ const LatestPage = () => {
           <div className="latestPage-listSection__main">
             <ListPost
               orderByField="createdAt"
-              orderByType="asc"
+              orderByType="desc"
               postPerLoad={10}
             />
           </div>

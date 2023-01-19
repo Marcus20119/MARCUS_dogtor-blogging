@@ -1,6 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore';
-import { useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   FacebookShareButton,
   EmailShareButton,
@@ -14,9 +14,9 @@ import {
   TwitterIcon,
 } from 'react-share';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
-import { useSingleDoc } from '~/firebase/funcs';
 import { convertDate, convertTime } from '~/helpers';
 
 const PostPageHeaderStyled = styled.div`
@@ -109,58 +109,49 @@ const PostPageHeaderStyled = styled.div`
       font-weight: 500;
     }
   }
+  .meta__social-print {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    background-color: #8d351a90;
+    color: white;
+    border-radius: 50%;
+  }
 `;
 
 const PostPageHeader = ({ postData }) => {
-  const { document: userData } = useSingleDoc({
-    col: 'users',
-    id: postData?.userId ? postData.userId : '',
-  });
   const facebookRef = useRef();
   const { userDocument } = useFirebase();
+  const navigateTo = useNavigate();
 
   // Handle like post
   /**
    * Dùng state số lượng like để hiển thị phần giao diện còn cho chạy ẩn phía background
-   * Dùng thêm 1 state disable để disable đi button cho đến khi phía background chạy xong để tránh tình trạng lost update
+   * Dùng thêm 1 state disable để disable đi button cho đến khi phía background chạy xong để tránh tình trạng lost update khi spam nút like
    * Background sẽ cập nhật 2 collection:
    * - user: cập nhật id post mà user like
    * - post: cập nhật id của user đã like post này
    *  */
-  const [quantityLiked, setQuantityLiked] = useState(
-    postData?.usersLiked ? postData.usersLiked.length : 0
-  );
-  const [isCurrentUserLike, setIsCurrentUserLike] = useState(
-    (postData?.usersLiked &&
-      userDocument?.id &&
-      postData.usersLiked.includes(userDocument.id)) ||
-      false
-  );
-  console.log('isCurrentUserLike', isCurrentUserLike);
+  const [quantityLiked, setQuantityLiked] = useState(0);
+  const [isCurrentUserLike, setIsCurrentUserLike] = useState(false);
+  const { slug } = useParams();
+  useEffect(() => {
+    setQuantityLiked(postData?.usersLiked ? postData.usersLiked.length : 0);
+    setIsCurrentUserLike(
+      (postData?.usersLiked &&
+        userDocument?.id &&
+        postData.usersLiked.includes(userDocument.id)) ||
+        false
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
   const [forceDisable, setForceDisable] = useState(false);
 
-  const handleUpdateUser = async () => {
-    let newPostsLiked;
-    if (userDocument?.postsLiked && userDocument.postsLiked.length > 0) {
-      newPostsLiked = [...userDocument.postsLiked];
-      if (isCurrentUserLike) {
-        newPostsLiked = newPostsLiked.filter(id => id !== postData.id);
-      } else {
-        newPostsLiked.push(postData.id);
-      }
-    } else {
-      if (isCurrentUserLike) {
-        newPostsLiked = [];
-      } else {
-        newPostsLiked = [postData.id];
-      }
-    }
-    await updateDoc(doc(db, 'users', userDocument.id), {
-      ...userDocument,
-      postsLiked: newPostsLiked,
-    });
-  };
-
+  // Update field usersLiked trong document post
   const handleUpdatePost = async () => {
     let newUsersLiked;
     if (postData?.usersLiked && postData.usersLiked.length > 0) {
@@ -187,19 +178,34 @@ const PostPageHeader = ({ postData }) => {
   const handleSetLike = () => {
     const handleUpdate = async () => {
       setForceDisable(true);
-      await handleUpdateUser();
-      handleUpdatePost();
+      await handleUpdatePost();
       setForceDisable(false);
     };
-
-    if (isCurrentUserLike) {
-      setQuantityLiked(prev => prev - 1);
+    if (userDocument?.id) {
+      if (isCurrentUserLike) {
+        setQuantityLiked(prev => prev - 1);
+      } else {
+        setQuantityLiked(prev => prev + 1);
+      }
+      handleUpdate();
+      setIsCurrentUserLike(!isCurrentUserLike);
     } else {
-      setQuantityLiked(prev => prev + 1);
+      Swal.fire({
+        title: 'Sign In is needed!',
+        text: 'You need to sign in to do this action!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8d351a',
+        cancelButtonColor: '#8d351a50',
+        confirmButtonText: 'Sign In!',
+        scrollbarPadding: false,
+      }).then(async result => {
+        if (result.isConfirmed) {
+          // Loading pop-up
+          navigateTo('/sign-in');
+        }
+      });
     }
-    handleUpdate();
-
-    setIsCurrentUserLike(!isCurrentUserLike);
   };
 
   return (
@@ -246,6 +252,15 @@ const PostPageHeader = ({ postData }) => {
             <TwitterShareButton url={window.location.href}>
               <TwitterIcon size={32} round />
             </TwitterShareButton>
+            <a
+              className="meta__social-print"
+              href={`/post/print/${postData.slug}`}
+              title="Print"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i className="bx bxs-printer"></i>
+            </a>
           </div>
         </div>
         <div className="meta__info">
@@ -253,7 +268,7 @@ const PostPageHeader = ({ postData }) => {
           <div className="meta__info-breakLine--small">&nbsp;</div>
           <span>{convertTime(postData.createdAt.seconds)}</span>
           <div className="meta__info-breakLine">&nbsp;</div>
-          {userData?.userName && <span>{userData.userName}</span>}
+          <span>{postData.author}</span>
         </div>
       </div>
     </PostPageHeaderStyled>

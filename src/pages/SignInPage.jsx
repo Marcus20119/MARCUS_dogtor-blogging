@@ -102,13 +102,10 @@ const SignInPage = () => {
         password: '',
         email: '',
       });
-      toast.error(
-        `Can not sign in because of Error: ${err.code.split('/')[1]}`,
-        {
-          autoClose: 2000,
-          delay: 300,
-        }
-      );
+      toast.error(`Error: ${err.code.split('/')[1]}`, {
+        autoClose: 2000,
+        delay: 300,
+      });
     }
   };
   return (

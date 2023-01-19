@@ -9,6 +9,7 @@ const NotFoundPageStyled = styled.div`
   right: 0;
   left: 0;
   background: #f6eede;
+  z-index: 10000;
 
   .nfp {
     position: absolute;
