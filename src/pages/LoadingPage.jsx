@@ -1,6 +1,8 @@
+import { Fragment } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import LoadingBounce from '~/components/loading/Bounce';
+import { useImg } from '~/contexts/imgContext';
 import { useScrollOnTop } from '~/hooks';
 import { Header } from '~/layouts/Header';
 
@@ -25,13 +27,19 @@ const LoadingPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  const { imgReady } = useImg();
+
   return (
-    <LoadingPageStyled>
-      <Header />
-      <div className="loadingPage-loadingSection">
-        <LoadingBounce />
-      </div>
-    </LoadingPageStyled>
+    <Fragment>
+      {imgReady && (
+        <LoadingPageStyled>
+          <Header />
+          <div className="loadingPage-loadingSection">
+            <LoadingBounce />
+          </div>
+        </LoadingPageStyled>
+      )}
+    </Fragment>
   );
 };
 

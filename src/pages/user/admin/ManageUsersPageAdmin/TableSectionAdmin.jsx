@@ -111,6 +111,7 @@ const TableSectionAdmin = ({ roleValue }) => {
     data: users,
     setData: setUsers,
     isLoading,
+    isLoadingFirstTime,
   } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
@@ -194,7 +195,8 @@ const TableSectionAdmin = ({ roleValue }) => {
           </tr>
         </AllUsersAdminTableHeadStyled>
         <AllUsersAdminTableBodyStyled>
-          {users &&
+          {!isLoadingFirstTime &&
+            users &&
             users.length > 0 &&
             users.map((user, index) => (
               <tr key={user.id}>
@@ -251,7 +253,7 @@ const TableSectionAdmin = ({ roleValue }) => {
             )}
         </AllUsersAdminTableBodyStyled>
       </Table>
-      {users && users.length < quantity && (
+      {!isLoadingFirstTime && users && users.length < quantity && (
         <Button
           width="150px"
           style={{ margin: '24px auto 0' }}

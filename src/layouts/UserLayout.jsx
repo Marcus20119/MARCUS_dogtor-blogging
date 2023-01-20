@@ -1,9 +1,10 @@
 import { upperFirst } from 'lodash';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserSideBar } from '~/components/module';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { useImg } from '~/contexts/imgContext';
 import { ButtonScrollOnTop } from './ButtonScrollOnTop';
 import Footer from './Footer';
 import { Header } from './Header';
@@ -32,29 +33,40 @@ const ContainerStyled = styled.div`
 
 const UserLayout = () => {
   const { userDocument, categories, categoriesName, imgURLs } = useFirebase();
+  const { imgReady } = useImg();
+
   useEffect(() => {
     if (userDocument?.role) {
       document.title = `${upperFirst(userDocument.role)}'s Site`;
     }
   }, [userDocument.role]);
   return (
-    <UserLayoutStyled>
-      <Header />
-      <ContainerStyled>
-        <div className="userLayout-left">
-          <UserSideBar />
-        </div>
-        <div className="userLayout-right">
-          {userDocument?.id && (
-            <Outlet
-              context={{ userDocument, categories, categoriesName, imgURLs }}
-            />
-          )}
-        </div>
-      </ContainerStyled>
-      <ButtonScrollOnTop />
-      <Footer />
-    </UserLayoutStyled>
+    <Fragment>
+      {imgReady && (
+        <UserLayoutStyled>
+          <Header />
+          <ContainerStyled>
+            <div className="userLayout-left">
+              <UserSideBar />
+            </div>
+            <div className="userLayout-right">
+              {userDocument?.id && (
+                <Outlet
+                  context={{
+                    userDocument,
+                    categories,
+                    categoriesName,
+                    imgURLs,
+                  }}
+                />
+              )}
+            </div>
+          </ContainerStyled>
+          <ButtonScrollOnTop />
+          <Footer />
+        </UserLayoutStyled>
+      )}
+    </Fragment>
   );
 };
 

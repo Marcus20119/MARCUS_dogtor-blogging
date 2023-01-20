@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
@@ -13,24 +13,40 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { tablet } from '~/styles/responsive';
 
 const StyledSignUpPage = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.theme.color.white};
   min-height: 100vh;
-  width: calc(100vw - 12px);
+  width: 100vw;
+  background: url('/imgs/background-dog.jpg') center center;
 
+  .sup-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    background-color: ${props => props.theme.color.white};
+    border-radius: 8px;
+    border-bottom: solid 1px #8d351a10;
+    box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
+
+    ${tablet(css`
+      width: 70%;
+    `)}
+  }
   .sup-dogtor-logo {
     display: block;
     width: 10%;
-    min-width: 150px;
+    min-width: 110px;
     margin-top: 20px;
   }
   .sup-title {
-    font-size: 32px;
+    font-size: 28px;
     font-family: ${props => props.theme.font.secondary};
     letter-spacing: 0.7px;
     color: ${props => props.theme.color.brown};
@@ -71,10 +87,10 @@ const schema = yup.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'
     ),
-  confirmPassword: yup
-    .string()
-    .required('Required')
-    .oneOf([yup.ref('password')], 'Passwords do not match'),
+  // confirmPassword: yup
+  //   .string()
+  //   .required('Required')
+  //   .oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
 const SignUpPage = () => {
@@ -140,7 +156,7 @@ const SignUpPage = () => {
 
   return (
     <StyledSignUpPage>
-      <div className="small-container">
+      <div className="sup-container">
         <img
           className="sup-dogtor-logo"
           src="/imgs/dogtor-logo.png"
@@ -164,10 +180,10 @@ const SignUpPage = () => {
             <Label id="password">Password</Label>
             <InputTogglePassword control={control} name="password" />
           </Field>
-          <Field>
+          {/* <Field>
             <Label id="confirmPassword">Confirm Password</Label>
             <InputTogglePassword control={control} name="confirmPassword" />
-          </Field>
+          </Field> */}
           <div className="sup-question">
             <span className="sup-question-black">
               You already have an account?

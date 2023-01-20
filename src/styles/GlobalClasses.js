@@ -24,13 +24,6 @@ export const GlobalClasses = css`
     height: 100%;
   } */
 
-  .small-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 60%;
-  }
   .hidden {
     display: none !important;
   }

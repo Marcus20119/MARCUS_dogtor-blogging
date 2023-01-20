@@ -13,11 +13,12 @@ import {
   TelegramIcon,
   TwitterIcon,
 } from 'react-share';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { convertDate, convertTime } from '~/helpers';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const PostPageHeaderStyled = styled.div`
   .postPage-header {
@@ -104,6 +105,7 @@ const PostPageHeaderStyled = styled.div`
       background-color: #ccc;
       height: 16px;
     }
+
     span:last-of-type {
       color: #4e4d4d;
       font-weight: 500;
@@ -119,6 +121,25 @@ const PostPageHeaderStyled = styled.div`
     background-color: #8d351a90;
     color: white;
     border-radius: 50%;
+
+    ${tabletAndMobile(css`
+      display: none;
+    `)}
+  }
+
+  .meta__info--tabletAndMobile {
+    display: none;
+    margin-bottom: 12px;
+
+    ${tabletAndMobile(css`
+      display: flex;
+    `)}
+  }
+  .meta__info--laptop {
+    display: flex;
+    ${tabletAndMobile(css`
+      display: none;
+    `)}
   }
 `;
 
@@ -216,7 +237,20 @@ const PostPageHeader = ({ postData }) => {
           : postData.category.toUpperCase()}
       </span>
       <h1 className="postPage-header__title">{postData.title}</h1>
-      <div className="postPage-header__meta">
+
+      <div className="meta__info meta__info--tabletAndMobile">
+        <span className="meta__info-time">
+          {convertDate(postData.createdAt.seconds, true)}
+        </span>
+        <div className="meta__info-breakLine--small">&nbsp;</div>
+        <span className="meta__info-date">
+          {convertTime(postData.createdAt.seconds)}
+        </span>
+        <div className="meta__info-breakLine">&nbsp;</div>
+        <span className="meta__info-author">{postData.author}</span>
+      </div>
+
+      <div className="postPage-header__meta ">
         <div className="meta__social">
           <div className="meta__social-left">
             <button
@@ -263,12 +297,16 @@ const PostPageHeader = ({ postData }) => {
             </a>
           </div>
         </div>
-        <div className="meta__info">
-          <span>{convertDate(postData.createdAt.seconds, true)}</span>
+        <div className="meta__info meta__info--laptop">
+          <span className="meta__info-time">
+            {convertDate(postData.createdAt.seconds, true)}
+          </span>
           <div className="meta__info-breakLine--small">&nbsp;</div>
-          <span>{convertTime(postData.createdAt.seconds)}</span>
+          <span className="meta__info-date">
+            {convertTime(postData.createdAt.seconds)}
+          </span>
           <div className="meta__info-breakLine">&nbsp;</div>
-          <span>{postData.author}</span>
+          <span className="meta__info-author">{postData.author}</span>
         </div>
       </div>
     </PostPageHeaderStyled>

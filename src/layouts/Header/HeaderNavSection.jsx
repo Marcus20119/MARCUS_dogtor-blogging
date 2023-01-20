@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useClickOutSide } from '~/hooks';
+import { tablet } from '~/styles/responsive';
 import TabGroup from './TabGroup';
 
 const tabs = [
@@ -108,6 +109,10 @@ const HeaderNavSectionStyled = styled.div`
     margin: 0 auto;
     padding: 20px 8px;
     overflow: hidden !important;
+
+    ${tablet(css`
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    `)};
   }
 `;
 const BehindFixed = styled.div`
@@ -200,7 +205,7 @@ const HeaderNavSection = () => {
                 />
                 <TabGroup
                   categories={categories}
-                  title={`PET LIFE`}
+                  title={`NORMAL LIFE`}
                   groupIndex={2}
                   setShow={setShow}
                 />

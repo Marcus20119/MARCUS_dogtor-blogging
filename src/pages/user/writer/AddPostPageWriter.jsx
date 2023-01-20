@@ -118,6 +118,7 @@ const AddPostPageWriter = () => {
             text: `You can check your post's status in "My Posts" section.`,
             icon: 'success',
             scrollbarPadding: false,
+            confirmButtonColor: '#8d351a',
           });
         }
       });

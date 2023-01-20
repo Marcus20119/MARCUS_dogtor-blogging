@@ -1,7 +1,7 @@
 import { collection, doc, query, updateDoc, where } from 'firebase/firestore';
 import parse from 'html-react-parser';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Fragment, useEffect } from 'react';
 
 import { db } from '~/firebase/firebase-config';
@@ -12,6 +12,7 @@ import { useScrollOnTop } from '~/hooks';
 import PostPageHeader from './PostPageHeader';
 import PostPageSideSection from './PostPageSideSection';
 import ButtonReadList from './ButtonReadList';
+import { tablet } from '~/styles/responsive';
 
 const PostPageStyled = styled.div`
   .postPage-container {
@@ -22,6 +23,11 @@ const PostPageStyled = styled.div`
   }
   .postPage-mainSection {
     width: 68%;
+
+    ${tablet(css`
+      width: 100%;
+    `)}
+
     &__overview {
       color: ${props => props.theme.color.black};
       font-family: ${props => props.theme.font.primary};
@@ -31,6 +37,10 @@ const PostPageStyled = styled.div`
   }
   .postPage-subSection {
     flex: 1;
+
+    ${tablet(css`
+      display: none;
+    `)}
   }
 `;
 

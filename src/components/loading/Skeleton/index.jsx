@@ -10,7 +10,9 @@ const LoadingSkeleton = ({ className, style }) => {
           : styles.loadingSkeleton
       }
       style={style ? style : {}}
-    ></div>
+    >
+      &nbsp;
+    </div>
   );
 };
 

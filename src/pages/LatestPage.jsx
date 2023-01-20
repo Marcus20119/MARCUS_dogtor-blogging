@@ -1,12 +1,13 @@
 import { collection, limit, query, where, orderBy } from 'firebase/firestore';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { ListPost, MatrixPost, SwiperPost } from '~/components/module';
 import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
+import { tablet } from '~/styles/responsive';
 
 const LatestStyled = styled.div`
   display: flex;
@@ -24,9 +25,15 @@ const LatestStyled = styled.div`
 
     &__main {
       width: 68%;
+      ${tablet(css`
+        width: 100%;
+      `)}
     }
     &__sub {
       flex: 1;
+      ${tablet(css`
+        display: none !important;
+      `)}
     }
   }
 `;
@@ -73,15 +80,13 @@ const LatestPage = () => {
 
   return (
     <LatestStyled>
-      {newestPosts && newestPosts.length > 0 && (
-        <MatrixPost posts={newestPosts} />
-      )}
-      {sharingPosts && sharingPosts.length > 0 && (
-        <SwiperPost posts={sharingPosts} title="SHARING" />
-      )}
-      {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
-        <MatrixPost posts={foodNDrinkPosts} type={2} />
-      )}
+      {/* MatrixPost và SwiperPost đã có skeleton làm loading nên không cần check điều kiện */}
+      <MatrixPost posts={newestPosts} />
+
+      <SwiperPost posts={sharingPosts} title="SHARING" />
+
+      <MatrixPost posts={foodNDrinkPosts} type={2} />
+
       {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
         <div className="latestPage-listSection">
           <div className="latestPage-listSection__main">

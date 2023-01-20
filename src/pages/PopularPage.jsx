@@ -1,12 +1,13 @@
 import { collection, limit, query, where, orderBy } from 'firebase/firestore';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { ListPost, MatrixPost, SwiperPost } from '~/components/module';
 import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
+import { tablet } from '~/styles/responsive';
 
 const PopularStyled = styled.div`
   display: flex;
@@ -24,9 +25,15 @@ const PopularStyled = styled.div`
 
     &__main {
       width: 68%;
+      ${tablet(css`
+        width: 100%;
+      `)}
     }
     &__sub {
       flex: 1;
+      ${tablet(css`
+        display: none !important;
+      `)}
     }
   }
 `;
@@ -52,7 +59,7 @@ const foodNDrinkQueryPopular = query(
 );
 const dogHealthQueryPopular = query(
   collection(db, 'posts'),
-  where('status', '==', 1), 
+  where('status', '==', 1),
   where('category', '==', 'Dog Health'),
   orderBy('quantityView', 'desc'),
   limit(3)
@@ -75,15 +82,13 @@ const PopularPage = () => {
 
   return (
     <PopularStyled>
-      {newestPosts && newestPosts.length > 0 && (
-        <MatrixPost posts={newestPosts} />
-      )}
-      {mentalHealthPosts && mentalHealthPosts.length > 0 && (
-        <SwiperPost posts={mentalHealthPosts} title="MENTAL HEALTH" />
-      )}
-      {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
-        <MatrixPost posts={foodNDrinkPosts} type={2} />
-      )}
+      {/* MatrixPost và SwiperPost đã có skeleton làm loading nên không cần check điều kiện */}
+      <MatrixPost posts={newestPosts} />
+
+      <SwiperPost posts={mentalHealthPosts} title="MENTAL HEALTH" />
+
+      <MatrixPost posts={foodNDrinkPosts} type={2} />
+
       {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
         <div className="popularPage-listSection">
           <div className="popularPage-listSection__main">

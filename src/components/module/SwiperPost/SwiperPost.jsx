@@ -1,13 +1,15 @@
-import PropTypes from 'prop-types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import NextBtn from '~/components/Base/Swiper/NextBtn';
 import PrevBtn from '~/components/Base/Swiper/PrevBtn';
 import SwiperPostItem from './SwiperPostItem';
+import LoadingSwiperPostItem from './LoadingSwiperPostItem';
+import { tablet } from '~/styles/responsive';
 
 const SwiperPostStyled = styled.div`
+  width: 100%;
   margin-bottom: 12px;
 
   .swiperPost-title {
@@ -49,9 +51,17 @@ const SwiperPostStyled = styled.div`
     }
     &::after {
       right: 39%;
+
+      ${tablet(css`
+        right: 28%;
+      `)}
     }
     &::before {
       left: 39%;
+
+      ${tablet(css`
+        left: 28%;
+      `)}
     }
   }
 
@@ -79,13 +89,25 @@ const SwiperPostStyled = styled.div`
 
     &__btn-prev {
       left: -70px;
+
+      ${tablet(css`
+        display: none !important;
+      `)}
     }
     &__btn-next {
       right: -70px;
+
+      ${tablet(css`
+        display: none !important;
+      `)}
     }
   }
   .swiper-slide {
     width: calc((100% - 45px) / 4) !important;
+
+    ${tablet(css`
+      width: calc((100% - 60px) / 3) !important;
+    `)}
   }
 `;
 
@@ -110,6 +132,15 @@ const SwiperPost = ({ posts, title }) => {
                 <SwiperPostItem post={post} />
               </SwiperSlide>
             ))}
+          {posts &&
+            posts.length === 0 &&
+            Array(6)
+              .fill('')
+              .map((post, index) => (
+                <SwiperSlide key={`skeleton-swiper-${index}`}>
+                  <LoadingSwiperPostItem />
+                </SwiperSlide>
+              ))}
           <NextBtn ref={nextRef} />
           <PrevBtn ref={prevRef} />
         </Swiper>

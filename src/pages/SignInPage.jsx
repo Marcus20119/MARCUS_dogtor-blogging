@@ -1,5 +1,6 @@
+import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
@@ -11,23 +12,43 @@ import Label from '~/components/form/label';
 import { Input, InputTogglePassword } from '~/components/form/input';
 import Button from '~/components/button';
 import { auth } from '~/firebase/firebase-config';
+import LoadingBounce from '~/components/loading/Bounce';
+import { useImg } from '~/contexts/imgContext';
+import { tablet } from '~/styles/responsive';
 
 const StyledSignInPage = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.theme.color.white};
+  background: url('/imgs/background-dog.jpg') center center;
   min-height: 100vh;
   width: 100vw;
+
+  .sip-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    background-color: ${props => props.theme.color.white};
+    padding: 32px 0;
+    border-radius: 8px;
+    border-bottom: solid 1px #8d351a10;
+    box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
+
+    ${tablet(css`
+      width: 70%;
+    `)}
+  }
 
   .sip-dogtor-logo {
     display: block;
     width: 10%;
-    min-width: 150px;
+    min-width: 110px;
   }
   .sip-title {
-    font-size: 32px;
+    font-size: 28px;
     font-family: ${props => props.theme.font.secondary};
     letter-spacing: 0.7px;
     color: ${props => props.theme.color.brown};
@@ -66,6 +87,10 @@ const schema = yup.object({
 });
 
 const SignInPage = () => {
+  const navigateTo = useNavigate();
+
+  const { imgReady } = useImg();
+
   const {
     control,
     handleSubmit,
@@ -76,7 +101,6 @@ const SignInPage = () => {
     mode: 'all',
   });
 
-  const navigateTo = useNavigate();
   // Handle submit
   const onSubmitHandler = async data => {
     try {
@@ -109,47 +133,56 @@ const SignInPage = () => {
     }
   };
   return (
-    <StyledSignInPage>
-      <div className="small-container">
-        <img
-          className="sip-dogtor-logo"
-          src="/imgs/dogtor-logo.png"
-          alt="dogtor-logo"
-        />
-        <span className="sip-title">Dogtor blogging</span>
-        <form
-          onSubmit={handleSubmit(onSubmitHandler)}
-          className="sip-form"
-          // autoComplete="off"
-        >
-          <Field>
-            <Label id="email">Email Address</Label>
-            <Input control={control} name="email"></Input>
-          </Field>
-          <Field>
-            <Label id="password">Password</Label>
-            <InputTogglePassword control={control} name="password" />
-          </Field>
-          <div className="sip-question">
-            <span className="sip-question-black">
-              You have not had an account?
-            </span>
-            <Link to="/sign-up" className="sip-question-color">
-              {' '}
-              Register an account
-            </Link>
+    <Fragment>
+      {imgReady && (
+        <StyledSignInPage>
+          <div className="sip-container">
+            <img
+              className="sip-dogtor-logo"
+              src="/imgs/dogtor-logo.png"
+              alt="dogtor-logo"
+            />
+            <span className="sip-title">Dogtor blogging</span>
+            <form
+              onSubmit={handleSubmit(onSubmitHandler)}
+              className="sip-form"
+              // autoComplete="off"
+            >
+              <Field>
+                <Label id="email">Email Address</Label>
+                <Input control={control} name="email"></Input>
+              </Field>
+              <Field>
+                <Label id="password">Password</Label>
+                <InputTogglePassword control={control} name="password" />
+              </Field>
+              <div className="sip-question">
+                <span className="sip-question-black">
+                  You have not had an account?
+                </span>
+                <Link to="/sign-up" className="sip-question-color">
+                  {' '}
+                  Register an account
+                </Link>
+              </div>
+              <Button
+                width="350px"
+                style={{ marginTop: '12px', padding: '12px 16px' }}
+                type="submit"
+                isSubmitting={isSubmitting}
+              >
+                Sign In
+              </Button>
+            </form>
           </div>
-          <Button
-            width="350px"
-            style={{ marginTop: '12px', padding: '12px 16px' }}
-            type="submit"
-            isSubmitting={isSubmitting}
-          >
-            Sign In
-          </Button>
-        </form>
-      </div>
-    </StyledSignInPage>
+        </StyledSignInPage>
+      )}
+      {!imgReady && (
+        <div style={{ marginTop: '42px' }}>
+          <LoadingBounce />
+        </div>
+      )}
+    </Fragment>
   );
 };
 

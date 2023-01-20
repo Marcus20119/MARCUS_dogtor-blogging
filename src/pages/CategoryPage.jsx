@@ -1,8 +1,9 @@
 import { Fragment } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ListPost } from '~/components/module';
 import { useScrollOnTop } from '~/hooks';
+import { tablet } from '~/styles/responsive';
 
 const CategoryPageStyled = styled.div`
   .categoryPage-title {
@@ -42,12 +43,24 @@ const CategoryPageStyled = styled.div`
       height: 2px;
       width: 200px;
       background-color: #ccc;
+
+      ${tablet(css`
+        width: 180px;
+      `)}
     }
     &::after {
       right: 30%;
+
+      ${tablet(css`
+        right: 15%;
+      `)}
     }
     &::before {
       left: 30%;
+
+      ${tablet(css`
+        left: 15%;
+      `)}
     }
   }
 `;

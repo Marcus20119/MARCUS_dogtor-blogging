@@ -1,12 +1,13 @@
 import { collection, limit, query, where, orderBy } from 'firebase/firestore';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { ListPost, MatrixPost, SwiperPost } from '~/components/module';
 import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
+import { tablet } from '~/styles/responsive';
 
 const FavoriteStyled = styled.div`
   display: flex;
@@ -24,9 +25,15 @@ const FavoriteStyled = styled.div`
 
     &__main {
       width: 68%;
+      ${tablet(css`
+        width: 100%;
+      `)}
     }
     &__sub {
       flex: 1;
+      ${tablet(css`
+        display: none !important;
+      `)}
     }
   }
 `;
@@ -73,15 +80,13 @@ const FavoritePage = () => {
 
   return (
     <FavoriteStyled>
-      {newestPosts && newestPosts.length > 0 && (
-        <MatrixPost posts={newestPosts} />
-      )}
-      {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
-        <SwiperPost posts={foodNDrinkPosts} title="FOOD & DRINK" />
-      )}
-      {sharingPosts && sharingPosts.length > 0 && (
-        <MatrixPost posts={sharingPosts} type={2} />
-      )}
+      {/* MatrixPost và SwiperPost đã có skeleton làm loading nên không cần check điều kiện */}
+      <MatrixPost posts={newestPosts} />
+
+      <SwiperPost posts={foodNDrinkPosts} title="FOOD & DRINK" />
+
+      <MatrixPost posts={sharingPosts} type={2} />
+
       {foodNDrinkPosts && foodNDrinkPosts.length > 0 && (
         <div className="favoritePage-listSection">
           <div className="favoritePage-listSection__main">

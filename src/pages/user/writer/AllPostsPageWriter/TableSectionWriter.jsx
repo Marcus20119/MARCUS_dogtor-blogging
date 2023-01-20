@@ -149,6 +149,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
     data: posts,
     setData: setPosts,
     isLoading,
+    isLoadingFirstTime,
   } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
@@ -234,6 +235,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
           text: 'Your file has been deleted.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });
@@ -252,7 +254,8 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
           </tr>
         </AllPostWriterTableHeadStyled>
         <AllPostWriterTableBodyStyled>
-          {posts &&
+          {!isLoadingFirstTime &&
+            posts &&
             posts.length > 0 &&
             posts.map((post, index) => (
               <tr key={post.id}>
@@ -307,7 +310,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
           )}
         </AllPostWriterTableBodyStyled>
       </Table>
-      {posts && posts.length < quantity && (
+      {!isLoadingFirstTime && posts && posts.length < quantity && (
         <Button
           width="150px"
           style={{ margin: '24px auto 0' }}

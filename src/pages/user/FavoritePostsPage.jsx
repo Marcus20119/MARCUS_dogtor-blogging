@@ -7,7 +7,6 @@ const FavoritePostsPageStyled = styled.div``;
 
 const FavoritePostsPage = () => {
   const { userDocument } = useOutletContext();
-  console.log('userDocument', userDocument.id);
 
   return (
     <FavoritePostsPageStyled>

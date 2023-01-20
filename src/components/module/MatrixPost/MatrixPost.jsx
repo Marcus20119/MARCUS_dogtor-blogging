@@ -1,9 +1,13 @@
 import { Fragment } from 'react';
 import styled, { css } from 'styled-components';
+import { tablet } from '~/styles/responsive';
+import LoadingMatrixItemLarge from './LoadingMatrixItemLarge';
+import LoadingMatrixItemSmall from './LoadingMatrixItemSmall';
 import MatrixItemLarge from './MatrixItemLarge';
 import MatrixItemSmall from './MatrixItemSmall';
 
 const MatrixPostStyled = styled.div`
+  width: 100%;
   ${props =>
     props.type === 2 &&
     css`
@@ -32,6 +36,7 @@ const MatrixPostStyled = styled.div`
           border: 1px solid rgba(0, 0, 0, 0.2);
           &-container {
             width: 1280px;
+            max-width: 85vw;
           }
         }
       }
@@ -49,6 +54,15 @@ const MatrixPostStyled = styled.div`
 
     gap: 16px;
     width: 100%;
+
+    ${tablet(css`
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+
+      grid-template-areas:
+        'h1 h1 h1 h1 h1 h3 h3 h3'
+        'h1 h1 h1 h1 h1 h4 h4 h4'
+        'h1 h1 h1 h1 h1 h5 h5 h5';
+    `)}
   }
   .matrixPostChild {
     &-1 {
@@ -58,6 +72,10 @@ const MatrixPostStyled = styled.div`
     &-2 {
       grid-area: h2;
       width: 100%;
+
+      ${tablet(css`
+        display: none;
+      `)}
     }
     &-3 {
       grid-area: h3;
@@ -81,21 +99,32 @@ const MatrixPost = ({ posts, type = '1' }) => {
         <div className="matrixPost-wrap__full-container">
           <div>
             <div className="matrixPost">
-              {posts.map((post, index) => (
-                <Fragment key={`matrixPost-${index}`}>
-                  {index <= 1 ? (
-                    <MatrixItemLarge
-                      className={`matrixPostChild-${index + 1}`}
-                      post={post}
-                    ></MatrixItemLarge>
-                  ) : (
-                    <MatrixItemSmall
-                      className={`matrixPostChild-${index + 1}`}
-                      post={post}
-                    ></MatrixItemSmall>
-                  )}
+              {posts &&
+                posts.length > 0 &&
+                posts.map((post, index) => (
+                  <Fragment key={`matrixPost-${index}`}>
+                    {index <= 1 ? (
+                      <MatrixItemLarge
+                        className={`matrixPostChild-${index + 1}`}
+                        post={post}
+                      ></MatrixItemLarge>
+                    ) : (
+                      <MatrixItemSmall
+                        className={`matrixPostChild-${index + 1}`}
+                        post={post}
+                      ></MatrixItemSmall>
+                    )}
+                  </Fragment>
+                ))}
+              {(!posts || posts.length === 0) && (
+                <Fragment>
+                  <LoadingMatrixItemLarge className="matrixPostChild-1" />
+                  <LoadingMatrixItemLarge className="matrixPostChild-2" />
+                  <LoadingMatrixItemSmall className="matrixPostChild-3" />
+                  <LoadingMatrixItemSmall className="matrixPostChild-4" />
+                  <LoadingMatrixItemSmall className="matrixPostChild-5" />
                 </Fragment>
-              ))}
+              )}
             </div>
           </div>
         </div>

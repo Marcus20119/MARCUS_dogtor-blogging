@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
-import NotFoundPage from '~/pages/NotFoundPage';
+// import NotFoundPage from '~/pages/NotFoundPage';
 import TableSectionAdmin from './TableSectionAdmin';
 
 const ManageUsersPageAdminStyled = styled.div`
@@ -45,9 +45,9 @@ const ManageUsersPageAdmin = () => {
   }, [roleValue, navigateTo]);
 
   // Nếu không phải là admin thì trả ra trang NotFound
-  if (userDocument.role !== 'admin') {
-    return <NotFoundPage />;
-  }
+  // if (userDocument.role !== 'admin') {
+  //   return <NotFoundPage />;
+  // }
 
   return (
     <ManageUsersPageAdminStyled>

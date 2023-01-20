@@ -120,6 +120,7 @@ const EditPostPageWriter = () => {
             text: 'Your post has been updated.',
             icon: 'success',
             scrollbarPadding: false,
+            confirmButtonColor: '#8d351a',
           });
           window.history.back();
         }

@@ -16,12 +16,7 @@ import Swal from 'sweetalert2';
 import Button from '~/components/button';
 import LoadingBounce from '~/components/loading/Bounce';
 
-import {
-  Table,
-  IconLink,
-  IconButton,
-  PostCell,
-} from '~/components/table';
+import { Table, IconLink, IconButton, PostCell } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
   useMultiDocsPagination,
@@ -147,6 +142,7 @@ const TableSectionReader = ({ categoryValue, searchValue }) => {
     data: posts,
     setData: setPosts,
     isLoading,
+    isLoadingFirstTime,
   } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
@@ -237,6 +233,7 @@ const TableSectionReader = ({ categoryValue, searchValue }) => {
           text: 'This post has been removed.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });
@@ -254,7 +251,8 @@ const TableSectionReader = ({ categoryValue, searchValue }) => {
           </tr>
         </ReadListReaderTableHeadStyled>
         <ReadListReaderTableBodyStyled>
-          {posts &&
+          {!isLoadingFirstTime &&
+            posts &&
             posts.length > 0 &&
             posts.map((post, index) => (
               <tr key={post.id}>
@@ -300,7 +298,7 @@ const TableSectionReader = ({ categoryValue, searchValue }) => {
           )}
         </ReadListReaderTableBodyStyled>
       </Table>
-      {posts && posts.length < quantity && (
+      {!isLoadingFirstTime && posts && posts.length < quantity && (
         <Button
           width="150px"
           style={{ margin: '24px auto 0' }}

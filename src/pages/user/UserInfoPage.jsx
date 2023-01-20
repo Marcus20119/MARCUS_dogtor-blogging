@@ -112,6 +112,7 @@ const UserInfoPage = () => {
           text: 'Your information has been updated.',
           icon: 'success',
           scrollbarPadding: false,
+          confirmButtonColor: '#8d351a',
         });
       }
     });

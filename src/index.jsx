@@ -14,6 +14,7 @@ import FirebaseProvider from './contexts/firebaseContext';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import ImgProvider from './contexts/imgContext';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -24,7 +25,9 @@ root.render(
       <BrowserRouter>
         <AuthProvider>
           <FirebaseProvider>
-            <App />
+            <ImgProvider>
+              <App />
+            </ImgProvider>
           </FirebaseProvider>
         </AuthProvider>
         <ToastContainer />

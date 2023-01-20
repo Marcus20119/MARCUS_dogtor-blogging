@@ -10,7 +10,7 @@ const FooterStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+
     width: 1280px;
     max-width: 85vw;
     border-top: solid 1px #ccc;
@@ -22,21 +22,29 @@ const FooterStyled = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin-bottom: 12px; */
+    flex-wrap: wrap;
     color: ${props => props.theme.color.brown};
     font-size: 15px;
 
     a {
-      padding: 0 24px;
-      border-right: solid 1px #ccc;
+      margin-bottom: 12px;
+      span {
+        display: block;
+        padding: 0 24px;
+        border-right: solid 1px #ccc;
+      }
     }
     a:last-child {
-      border-right: unset;
+      span {
+        border-right: unset;
+      }
     }
 
     a:hover {
-      color: ${props => props.theme.color.brown};
-      background-color: ${props => props.theme.color.skin};
+      span {
+        color: ${props => props.theme.color.brown};
+        background-color: ${props => props.theme.color.skin};
+      }
     }
   }
   .footer-text {
@@ -75,11 +83,14 @@ const Footer = () => {
                 onClick={e => {
                   e.preventDefault();
                   navigateTo(`/category/${category.slug}`);
+                  document.documentElement.scrollTop = 0;
                 }}
               >
-                {category.name === 'Food n Drink'
-                  ? 'Food & Drink'
-                  : category.name}
+                <span>
+                  {category.name === 'Food n Drink'
+                    ? 'Food & Drink'
+                    : category.name}
+                </span>
               </a>
             ))}
         </div>
@@ -90,9 +101,10 @@ const Footer = () => {
               href={link.path}
               onClick={e => {
                 e.preventDefault();
+                document.documentElement.scrollTop = 0;
               }}
             >
-              {link.name}
+              <span>{link.name}</span>
             </a>
           ))}
         </div>

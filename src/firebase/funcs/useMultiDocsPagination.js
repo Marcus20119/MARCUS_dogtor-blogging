@@ -9,10 +9,13 @@ function useMultiDocsPagination({
 }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  // Cần xử lý riêng trường hợp loading đầu tiên ví dụ như loading
+  const [isLoadingFirstTime, setIsLoadingFirstTime] = useState(false);
 
   // First data, run only 1 times when mounting
   useEffect(() => {
     const handleGetFirstData = async () => {
+      setIsLoadingFirstTime(true);
       setIsLoading(true);
       const documentSnapshots = await getDocs(firstQuery);
       let firstData = [];
@@ -26,6 +29,7 @@ function useMultiDocsPagination({
       setLastSnapshot(
         documentSnapshots.docs[documentSnapshots.docs.length - 1]
       );
+      setIsLoadingFirstTime(false);
       setIsLoading(false);
     };
     handleGetFirstData();
@@ -55,7 +59,7 @@ function useMultiDocsPagination({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextQuery]);
-  return { data, setData, isLoading };
+  return { data, setData, isLoading, isLoadingFirstTime };
 }
 
 export { useMultiDocsPagination };

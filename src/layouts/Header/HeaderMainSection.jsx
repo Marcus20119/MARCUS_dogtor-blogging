@@ -7,10 +7,11 @@ import { UserAvatar } from '~/components/module/user';
 import { useClickOutSide } from '~/hooks';
 import UserDropDown from './UserDropDown';
 import { useFirebase } from '~/contexts/firebaseContext';
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { useEffect } from 'react';
 import { tablet } from '~/styles/responsive';
+import { useImg } from '~/contexts/imgContext';
 
 const HeaderMainSectionStyled = styled.header`
   display: flex;
@@ -66,6 +67,7 @@ const HeaderMainSectionStyled = styled.header`
 
 const HeaderMainSection = () => {
   const navigateTo = useNavigate();
+  const { imgReady } = useImg();
   const { userDocument } = useFirebase();
   const { show, setShow, nodeRef } = useClickOutSide();
   const { pathname } = useLocation();
@@ -79,7 +81,6 @@ const HeaderMainSection = () => {
       navigateTo(`/search?layoutSearch=${e.target.value}`);
       setHistoryNum(prev => prev + 1);
     } else {
-      console.log(historyNum);
       window.history.go(-historyNum);
       setHistoryNum(0);
     }
@@ -103,55 +104,62 @@ const HeaderMainSection = () => {
   }, []);
 
   return (
-    <HeaderMainSectionStyled>
-      <a
-        href="/latest"
-        className="headerMainSection-left"
-        onClick={e => {
-          e.preventDefault();
-          navigateTo('/latest');
-        }}
-      >
-        <img
-          className="headerMainSection-left__logo"
-          src="/imgs/dog-paw-logo.png"
-          alt="dogtor-logo"
-        />
-        <div className="headerMainSection-left__title">Dogtor Blogging</div>
-      </a>
-      <div className="headerMainSection-right">
-        <div className="headerMainSection-right__search">
-          <SearchBar
-            ref={searchRef}
-            name="layoutSearchQuery"
-            placeholder="Search posts..."
-            defaultValue={query.get('layoutSearch')}
-            width="100%"
-            onChange={handleSetLayoutSearchValue}
-          />
-        </div>
-        {userDocument.email ? (
-          <div ref={nodeRef} className="headerMainSection-right__user-wrapper">
-            <UserAvatar
-              src={userDocument.avatar.URL}
-              alt="user-avatar"
-              onClick={() => setShow(!show)}
-            />
-            {show && <UserDropDown setShow={setShow} />}
-          </div>
-        ) : (
-          <Button
-            btnStyle="small"
-            width="fit-content"
-            height="100%"
-            onClick={() => navigateTo('/sign-in')}
-            style={{ borderRadius: '666px' }}
+    <Fragment>
+      {imgReady && (
+        <HeaderMainSectionStyled>
+          <a
+            href="/latest"
+            className="headerMainSection-left"
+            onClick={e => {
+              e.preventDefault();
+              navigateTo('/latest');
+            }}
           >
-            Sign In
-          </Button>
-        )}
-      </div>
-    </HeaderMainSectionStyled>
+            <img
+              className="headerMainSection-left__logo"
+              src="/imgs/dog-paw-logo.png"
+              alt="dogtor-logo"
+            />
+            <div className="headerMainSection-left__title">Dogtor Blogging</div>
+          </a>
+          <div className="headerMainSection-right">
+            <div className="headerMainSection-right__search">
+              <SearchBar
+                ref={searchRef}
+                name="layoutSearchQuery"
+                placeholder="Search posts..."
+                defaultValue={query.get('layoutSearch')}
+                width="100%"
+                onChange={handleSetLayoutSearchValue}
+              />
+            </div>
+            {userDocument.email ? (
+              <div
+                ref={nodeRef}
+                className="headerMainSection-right__user-wrapper"
+              >
+                <UserAvatar
+                  src={userDocument.avatar.URL}
+                  alt="user-avatar"
+                  onClick={() => setShow(!show)}
+                />
+                {show && <UserDropDown setShow={setShow} />}
+              </div>
+            ) : (
+              <Button
+                btnStyle="small"
+                width="fit-content"
+                height="100%"
+                onClick={() => navigateTo('/sign-in')}
+                style={{ borderRadius: '666px' }}
+              >
+                Sign In
+              </Button>
+            )}
+          </div>
+        </HeaderMainSectionStyled>
+      )}
+    </Fragment>
   );
 };
 

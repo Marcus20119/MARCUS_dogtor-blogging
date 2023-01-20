@@ -38,6 +38,7 @@ const SwiperPostItemStyled = styled.a`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     padding: 0 1px;
+    font-size: 19px;
   }
   .swiperPostItem-overview {
     overflow: hidden;

@@ -26,6 +26,7 @@ const ListPostStyled = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 32px;
   }
 `;
 
@@ -103,7 +104,11 @@ const ListPost = ({
 
   const [lastSnapshot, setLastSnapshot] = useState({});
   const [nextQuery, setNextQuery] = useState();
-  const { data: posts, isLoading } = useMultiDocsPagination({
+  const {
+    data: posts,
+    isLoading,
+    isLoadingFirstTime,
+  } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
     setLastSnapshot,
@@ -151,21 +156,30 @@ const ListPost = ({
   };
   return (
     <ListPostStyled>
-      <div className="listPost-wrap">
-        {posts &&
-          posts.length > 0 &&
-          posts.map(post => (
-            <ListPostItem key={`listPost-${post.id}`} post={post} />
-          ))}
-      </div>
-      {isLoading && <LoadingBounce />}
-      {searchQuery && (!posts || posts.length === 0) && (
+      {!isLoadingFirstTime && (
+        <div className="listPost-wrap">
+          {posts &&
+            posts.length > 0 &&
+            posts.map(post => (
+              <ListPostItem key={`listPost-${post.id}`} post={post} />
+            ))}
+        </div>
+      )}
+      {isLoading && (
+        <div style={{ margin: '0 auto 32px' }}>
+          <LoadingBounce />
+        </div>
+      )}
+      {!isLoading && posts && posts.length === 0 && (
+        <span>You still don't have any posts about this section yet! </span>
+      )}
+      {!isLoading && searchQuery && posts && posts.length === 0 && (
         <span>No post was found! Try another keyword</span>
       )}
-      {posts && posts.length < quantity && (
+      {!isLoadingFirstTime && posts && posts.length < quantity && (
         <Button
           width="150px"
-          style={{ margin: '32px auto 4px' }}
+          style={{ margin: '0 auto 4px' }}
           onClick={handleLoadMore}
         >
           Load More

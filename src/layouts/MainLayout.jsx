@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { useImg } from '~/contexts/imgContext';
 import { ButtonScrollOnTop } from './ButtonScrollOnTop';
 import Footer from './Footer';
 import { Header } from './Header';
@@ -19,20 +20,25 @@ const ContainerStyled = styled.div`
 
 const MainLayout = ({ isFull = false }) => {
   const { categories, categoriesName, imgURLs } = useFirebase();
+  const { imgReady } = useImg();
   useEffect(() => {
     document.title = 'Dogtor Blogging';
   }, []);
   return (
-    <MainLayoutStyled>
-      <Header />
-      <ContainerStyled isFull={isFull}>
-        {!!categories?.length && categories.length > 0 && (
-          <Outlet context={{ categories, categoriesName, imgURLs }} />
-        )}
-      </ContainerStyled>
-      <ButtonScrollOnTop />
-      <Footer />
-    </MainLayoutStyled>
+    <Fragment>
+      {imgReady && (
+        <MainLayoutStyled>
+          <Header />
+          <ContainerStyled isFull={isFull}>
+            {!!categories?.length && categories.length > 0 && (
+              <Outlet context={{ categories, categoriesName, imgURLs }} />
+            )}
+          </ContainerStyled>
+          <ButtonScrollOnTop />
+          <Footer />
+        </MainLayoutStyled>
+      )}
+    </Fragment>
   );
 };
 

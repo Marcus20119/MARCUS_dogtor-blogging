@@ -142,6 +142,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
     data: posts,
     setData: setPosts,
     isLoading,
+    isLoadingFirstTime,
   } = useMultiDocsPagination({
     firstQuery,
     nextQuery,
@@ -242,7 +243,8 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
           </tr>
         </AllPostAdminTableHeadStyled>
         <AllPostAdminTableBodyStyled>
-          {posts &&
+          {!isLoadingFirstTime &&
+            posts &&
             posts.length > 0 &&
             posts.map((post, index) => (
               <tr key={post.id}>
@@ -297,7 +299,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
           )}
         </AllPostAdminTableBodyStyled>
       </Table>
-      {posts && posts.length < quantity && (
+      {!isLoadingFirstTime && posts && posts.length < quantity && (
         <Button
           width="150px"
           style={{ margin: '24px auto 0' }}

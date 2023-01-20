@@ -17,6 +17,7 @@ const MatrixItemSmallStyled = styled.a`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      font-size: 18px;
     }
     &-overview {
       overflow: hidden;
