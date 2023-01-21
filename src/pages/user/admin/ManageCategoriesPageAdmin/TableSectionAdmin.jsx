@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 
 import LoadingBounce from '~/components/loading/Bounce';
-import { Table, IconLink, IconButton } from '~/components/table';
+import { Table, IconLink, IconButton, TableLoading } from '~/components/table';
 import { TrashIcon, WriteIcon } from '~/icons';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const AllCategoriesAdminTableHeadStyled = styled.thead`
   .allPage-firstRow {
@@ -15,9 +16,28 @@ const AllCategoriesAdminTableHeadStyled = styled.thead`
     }
     th:nth-child(2) {
       width: 330px;
+      ${tabletAndMobile(css`
+        width: 250px;
+      `)}
     }
     th:last-child {
       width: 150px;
+    }
+    th:nth-child(3),
+    th:nth-child(4) {
+      ${tabletAndMobile(css`
+        width: 150px;
+      `)}
+    }
+    th:nth-child(5) {
+      ${tabletAndMobile(css`
+        width: 100px;
+      `)}
+    }
+    th:nth-child(6) {
+      ${tabletAndMobile(css`
+        width: 120px;
+      `)}
     }
   }
 `;
@@ -112,7 +132,7 @@ const TableSectionAdmin = () => {
           {(!categories || categories.length === 0) && (
             <tr>
               <td colSpan="5">
-                <LoadingBounce />
+                <TableLoading />
               </td>
             </tr>
           )}

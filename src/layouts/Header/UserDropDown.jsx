@@ -208,12 +208,19 @@ const UserDropDown = ({ setShow }) => {
   return (
     <UserDropDownStyled>
       <div className="userDropDown-header">
-        <UserAvatar
-          src={userDocument.avatar.URL}
-          alt="user-avatar"
-          size="70px"
-          style={{ cursor: 'default' }}
-        />
+        <a
+          href="/user/user-info"
+          onClick={e => {
+            e.preventDefault();
+            navigateTo('/user/user-info');
+          }}
+        >
+          <UserAvatar
+            src={userDocument.avatar.URL}
+            alt="user-avatar"
+            size="70px"
+          />
+        </a>
         <span className="userDropDown-header__name">
           {userDocument.userName || userDocument.displayName}
         </span>

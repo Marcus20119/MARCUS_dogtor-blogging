@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const TableStyled = styled.div`
   overflow-x: auto;
@@ -6,6 +7,7 @@ const TableStyled = styled.div`
   border-radius: 10px;
   box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
   border: solid 1px #8d351a10;
+  max-width: 100%;
 
   table,
   td,
@@ -17,6 +19,11 @@ const TableStyled = styled.div`
     width: 100%;
     table-layout: fixed;
     height: 1px;
+
+    ${tabletAndMobile(css`
+      max-width: 100%;
+      overflow-x: auto;
+    `)}
   }
   thead {
     background-color: #f7f7f8;

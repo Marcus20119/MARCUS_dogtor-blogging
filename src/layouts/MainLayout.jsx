@@ -1,9 +1,11 @@
 import { Fragment, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useImg } from '~/contexts/imgContext';
+import { mobile } from '~/styles/responsive';
 import { ButtonScrollOnTop } from './ButtonScrollOnTop';
+import ButtonSearch from './ButtonSearch';
 import Footer from './Footer';
 import { Header } from './Header';
 
@@ -16,6 +18,10 @@ const ContainerStyled = styled.div`
   min-height: 100vh;
   margin: 0 auto;
   padding: 24px 0;
+
+  ${mobile(css`
+    max-width: 95vw !important;
+  `)}
 `;
 
 const MainLayout = ({ isFull = false }) => {
@@ -34,6 +40,7 @@ const MainLayout = ({ isFull = false }) => {
               <Outlet context={{ categories, categoriesName, imgURLs }} />
             )}
           </ContainerStyled>
+          <ButtonSearch />
           <ButtonScrollOnTop />
           <Footer />
         </MainLayoutStyled>

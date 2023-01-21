@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { mobile } from '~/styles/responsive';
 
 const UserSectionTitleStyled = styled.span`
   display: block;
@@ -9,6 +10,10 @@ const UserSectionTitleStyled = styled.span`
   font-family: ${props => props.theme.font.tertiary};
   color: ${props => props.theme.color.brown};
   text-shadow: 0 0 5px ${props => props.theme.color.skin};
+
+  ${mobile(css`
+    font-size: 32px;
+  `)}
 `;
 
 /**

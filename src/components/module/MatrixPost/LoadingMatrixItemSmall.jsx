@@ -14,8 +14,10 @@ const LoadingMatrixItemSmallStyled = styled.div`
     width: 100%;
     &-title {
       width: 100%;
+      font-size: 0;
 
       &__skeleton {
+        display: inline-block;
         width: 100%;
         height: 18px;
         margin: 4.5px 0;
@@ -26,8 +28,10 @@ const LoadingMatrixItemSmallStyled = styled.div`
     }
     &-overview {
       width: 100%;
+      font-size: 0;
 
       &__skeleton {
+        display: inline-block;
         width: 100%;
         height: 15px;
         margin: 3.75px 0;
@@ -45,7 +49,10 @@ const LoadingMatrixItemSmallStyled = styled.div`
 
       &-createdAt,
       &-author {
+        font-size: 0;
+
         &__skeleton {
+          display: inline-block;
           width: 50px;
           height: 14px;
           margin: 3.5px 0;

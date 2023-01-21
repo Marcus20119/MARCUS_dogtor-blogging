@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useClickOutSide } from '~/hooks';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet } from '~/styles/responsive';
 import TabGroup from './TabGroup';
 
 const tabs = [
@@ -45,6 +45,10 @@ const HeaderNavSectionStyled = styled.div`
     width: 1280px;
     max-width: 85vw;
     margin: 0 auto;
+
+    ${mobile(css`
+      max-width: 90vw;
+    `)}
   }
   .headerNavSection__tabs-wrap {
     display: flex;
@@ -84,8 +88,15 @@ const HeaderNavSectionStyled = styled.div`
   }
   @keyframes increaseHeight {
     to {
-      max-height: 300px;
+      max-height: 500px;
       overflow: hidden;
+    }
+  }
+  @keyframes increaseHeightMobile {
+    to {
+      max-height: 500px;
+      overflow: hidden;
+      height: 357px;
     }
   }
   .headerNavSection-dropdown {
@@ -99,6 +110,10 @@ const HeaderNavSectionStyled = styled.div`
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
     animation: increaseHeight 0.7s ease forwards;
     overflow: hidden !important;
+
+    ${mobile(css`
+      animation: increaseHeightMobile 0.9s ease forwards;
+    `)}
   }
 
   .headerNavSection-dropdown-wrap {
@@ -113,6 +128,12 @@ const HeaderNavSectionStyled = styled.div`
     ${tablet(css`
       grid-template-columns: repeat(3, minmax(0, 1fr));
     `)};
+
+    ${mobile(css`
+      max-width: 90vw !important;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 8px;
+    `)}
   }
 `;
 const BehindFixed = styled.div`

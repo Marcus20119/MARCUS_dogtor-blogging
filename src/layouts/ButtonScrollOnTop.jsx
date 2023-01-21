@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { mobile } from '~/styles/responsive';
 
 const ButtonScrollOnTopStyled = styled.div`
   position: fixed;
@@ -17,6 +18,10 @@ const ButtonScrollOnTopStyled = styled.div`
   font-size: 30px;
   cursor: pointer;
   opacity: 0.95;
+
+  ${mobile(css`
+    right: 20px;
+  `)}
 
   :hover {
     opacity: 0.8;

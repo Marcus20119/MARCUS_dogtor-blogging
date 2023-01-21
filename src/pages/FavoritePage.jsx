@@ -7,7 +7,7 @@ import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
-import { tablet } from '~/styles/responsive';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const FavoriteStyled = styled.div`
   display: flex;
@@ -25,13 +25,13 @@ const FavoriteStyled = styled.div`
 
     &__main {
       width: 68%;
-      ${tablet(css`
+      ${tabletAndMobile(css`
         width: 100%;
       `)}
     }
     &__sub {
       flex: 1;
-      ${tablet(css`
+      ${tabletAndMobile(css`
         display: none !important;
       `)}
     }
@@ -40,28 +40,28 @@ const FavoriteStyled = styled.div`
 const newestQueryFavorite = query(
   collection(db, 'posts'),
   where('status', '==', 1),
-  orderBy('usersLiked', 'desc'),
+  orderBy('likesCount', 'desc'),
   limit(5)
 );
 const sharingQueryFavorite = query(
   collection(db, 'posts'),
   where('status', '==', 1),
   where('category', '==', 'Sharing'),
-  orderBy('usersLiked', 'desc'),
+  orderBy('likesCount', 'desc'),
   limit(5)
 );
 const foodNDrinkQueryFavorite = query(
   collection(db, 'posts'),
   where('status', '==', 1),
   where('category', '==', 'Food n Drink'),
-  orderBy('usersLiked', 'desc'),
+  orderBy('likesCount', 'desc'),
   limit(10)
 );
 const lifeStyleQueryFavorite = query(
   collection(db, 'posts'),
   where('status', '==', 1),
   where('category', '==', 'Life style'),
-  orderBy('usersLiked', 'desc'),
+  orderBy('likesCount', 'desc'),
   limit(3)
 );
 
@@ -91,7 +91,7 @@ const FavoritePage = () => {
         <div className="favoritePage-listSection">
           <div className="favoritePage-listSection__main">
             <ListPost
-              orderByField="usersLiked"
+              orderByField="likesCount"
               orderByType="desc"
               postPerLoad={10}
             />

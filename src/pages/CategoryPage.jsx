@@ -3,7 +3,7 @@ import { useOutletContext, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { ListPost } from '~/components/module';
 import { useScrollOnTop } from '~/hooks';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet } from '~/styles/responsive';
 
 const CategoryPageStyled = styled.div`
   .categoryPage-title {
@@ -16,6 +16,10 @@ const CategoryPageStyled = styled.div`
     letter-spacing: 2px;
     text-shadow: 0 0 1px ${props => props.theme.color.darkBrown};
     margin-bottom: 4px;
+
+    ${mobile(css`
+      font-size: 36px;
+    `)}
   }
   .categoryPage-gap {
     position: relative;
@@ -47,6 +51,10 @@ const CategoryPageStyled = styled.div`
       ${tablet(css`
         width: 180px;
       `)}
+
+      ${mobile(css`
+        width: 70px;
+      `)}
     }
     &::after {
       right: 30%;
@@ -54,12 +62,20 @@ const CategoryPageStyled = styled.div`
       ${tablet(css`
         right: 15%;
       `)}
+
+      ${mobile(css`
+        right: 19%;
+      `)}
     }
     &::before {
       left: 30%;
 
       ${tablet(css`
         left: 15%;
+      `)}
+
+      ${mobile(css`
+        left: 19%;
       `)}
     }
   }

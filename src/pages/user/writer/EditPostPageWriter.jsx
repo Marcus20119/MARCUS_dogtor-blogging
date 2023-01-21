@@ -2,7 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as yup from 'yup';
 import { useEffect } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ import { db } from '~/firebase/firebase-config';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { deleteOldImage, uploadImage, useSingleDoc } from '~/firebase/funcs';
 import NotFoundPage from '~/pages/NotFoundPage';
+import { mobile } from '~/styles/responsive';
 
 const EditPostPageWriterStyled = styled.div`
   width: 100%;
@@ -30,6 +31,11 @@ const EditPostPageWriterStyled = styled.div`
       grid-template-rows: repeat(3, minmax(0, 1fr));
       gap: 36px;
       margin-bottom: 36px;
+
+      ${mobile(css`
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        grid-template-rows: unset;
+      `)}
     }
   }
 `;

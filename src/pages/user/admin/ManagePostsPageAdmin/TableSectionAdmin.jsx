@@ -11,10 +11,9 @@ import {
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
-import LoadingBounce from '~/components/loading/Bounce';
 
 import {
   Table,
@@ -22,6 +21,7 @@ import {
   IconButton,
   PostCell,
   StatusTag,
+  TableLoading,
 } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
@@ -30,9 +30,10 @@ import {
   useQuantityOfCollection,
 } from '~/firebase/funcs';
 import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const AllPostAdminTableHeadStyled = styled.thead`
-  .allPage-firstRow {
+  .allPostAdmin-firstRow {
     th:nth-child(1) {
       width: 70px;
       text-align: center !important;
@@ -40,20 +41,27 @@ const AllPostAdminTableHeadStyled = styled.thead`
     th:nth-child(2) {
       width: 400px;
     }
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5) {
+      ${tabletAndMobile(css`
+        width: 150px;
+      `)}
+    }
   }
 `;
 const AllPostAdminTableBodyStyled = styled.tbody`
-  .allPage-postId {
+  .allPostAdmin-postId {
     text-align: center !important;
   }
-  .allPage-postAction {
+  .allPostAdmin-postAction {
     div {
       display: flex;
       align-items: center;
       gap: 12px;
     }
   }
-  .allPage-postAuthor {
+  .allPostAdmin-postAuthor {
     height: 100%;
     span {
       overflow: hidden;
@@ -234,7 +242,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
     <Fragment>
       <Table>
         <AllPostAdminTableHeadStyled>
-          <tr className="allPage-firstRow">
+          <tr className="allPostAdmin-firstRow">
             <th>No.</th>
             <th>Post</th>
             <th>Author</th>
@@ -248,19 +256,19 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
             posts.length > 0 &&
             posts.map((post, index) => (
               <tr key={post.id}>
-                <td className="allPage-postId">
+                <td className="allPostAdmin-postId">
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </td>
                 <td>
                   <PostCell postData={post} />
                 </td>
-                <td className="allPage-postAuthor">
+                <td className="allPostAdmin-postAuthor">
                   <span>{post.author}</span>
                 </td>
-                <td className="allPage-postStatus">
+                <td className="allPostAdmin-postStatus">
                   <StatusTag status={post.status} />
                 </td>
-                <td className="allPage-postAction">
+                <td className="allPostAdmin-postAction">
                   <div>
                     <IconLink navigatePath={`/post/${post.slug}`} title="view">
                       <EyeIcon />
@@ -284,7 +292,7 @@ const TableSectionAdmin = ({ categoryValue, searchValue }) => {
           {isLoading && (
             <tr>
               <td colSpan="5">
-                <LoadingBounce />
+                <TableLoading />
               </td>
             </tr>
           )}

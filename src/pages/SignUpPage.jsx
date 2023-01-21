@@ -13,7 +13,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFirebase } from '~/contexts/firebaseContext';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet } from '~/styles/responsive';
 
 const StyledSignUpPage = styled.div`
   position: relative;
@@ -38,6 +38,10 @@ const StyledSignUpPage = styled.div`
     ${tablet(css`
       width: 70%;
     `)}
+
+    ${mobile(css`
+      width: 90%;
+    `)}
   }
   .sup-dogtor-logo {
     display: block;
@@ -59,7 +63,7 @@ const StyledSignUpPage = styled.div`
     align-items: flex-start;
     gap: 24px;
     width: 70%;
-    min-width: 350px;
+    min-width: 320px;
     margin-bottom: 28px;
   }
   .sup-question {
@@ -194,7 +198,7 @@ const SignUpPage = () => {
             </Link>
           </div>
           <Button
-            width="350px"
+            width="100%"
             style={{ marginTop: '12px', padding: '12px 16px' }}
             type="submit"
             isSubmitting={isSubmitting}

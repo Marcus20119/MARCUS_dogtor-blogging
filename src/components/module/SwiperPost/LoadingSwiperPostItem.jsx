@@ -15,8 +15,10 @@ const LoadingSwiperPostItemStyled = styled.div`
     padding-top: 60%;
     border-radius: 6px;
     overflow: hidden;
+    font-size: 0;
 
     &__skeleton {
+      display: inline-block;
       position: absolute;
       top: 0;
       left: 0;
@@ -27,8 +29,10 @@ const LoadingSwiperPostItemStyled = styled.div`
   .loadingSwiperPostItem-title {
     padding: 0 1px;
     width: 100%;
+    font-size: 0;
 
     &__skeleton {
+      display: inline-block;
       width: 100%;
       height: 19px;
       margin: 4.75px 0;
@@ -64,7 +68,10 @@ const LoadingSwiperPostItemStyled = styled.div`
 
     &-createdAt,
     &-author {
+      font-size: 0;
+
       &__skeleton {
+        display: inline-block;
         width: 50px;
         height: 14px;
         margin-top: 3.5px;

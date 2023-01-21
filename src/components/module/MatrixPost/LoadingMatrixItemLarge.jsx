@@ -18,8 +18,10 @@ const LoadingMatrixItemLargeStyled = styled.div`
       padding-top: 80%;
       border-radius: 8px;
       overflow: hidden;
+      font-size: 0;
 
       &__skeleton {
+        display: inline-block;
         position: absolute;
         top: 0;
         left: 0;
@@ -30,10 +32,11 @@ const LoadingMatrixItemLargeStyled = styled.div`
     &-title {
       display: block;
       width: 100%;
-      font-size: 28px;
       padding: 0 1px;
+      font-size: 0;
 
       &__skeleton {
+        display: inline-block;
         width: 100%;
         height: 28px;
         margin: 7px 0;
@@ -48,8 +51,10 @@ const LoadingMatrixItemLargeStyled = styled.div`
       opacity: 0.8;
       padding: 0 1px;
       width: 100%;
-
+      font-size: 0;
       &__skeleton {
+        display: inline-block;
+
         width: 100%;
         height: 16px;
         margin: 4px 0;
@@ -69,8 +74,10 @@ const LoadingMatrixItemLargeStyled = styled.div`
 
       &-createdAt {
         width: 50px;
+        font-size: 0;
 
         &__skeleton {
+          display: inline-block;
           width: 100%;
           height: 16px;
           margin: 4px 0;
@@ -80,8 +87,11 @@ const LoadingMatrixItemLargeStyled = styled.div`
       }
       &-author {
         width: 50px;
+        font-size: 0;
 
         &__skeleton {
+          display: inline-block;
+
           width: 100%;
           height: 16px;
           margin: 4px 0;

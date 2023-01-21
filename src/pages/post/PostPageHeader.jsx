@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { db } from '~/firebase/firebase-config';
 import { convertDate, convertTime } from '~/helpers';
-import { tabletAndMobile } from '~/styles/responsive';
+import { mobile, tabletAndMobile } from '~/styles/responsive';
 
 const PostPageHeaderStyled = styled.div`
   .postPage-header {
@@ -38,6 +38,11 @@ const PostPageHeaderStyled = styled.div`
       font-family: ${props => props.theme.font.tertiary};
       color: ${props => props.theme.color.brown};
       text-shadow: 0 0 0.5px ${props => props.theme.color.brown};
+
+      ${mobile(css`
+        font-size: 34px;
+        line-height: 40px;
+      `)}
     }
     &__meta {
       display: flex;
@@ -141,6 +146,11 @@ const PostPageHeaderStyled = styled.div`
       display: none;
     `)}
   }
+  .meta__social--facebook {
+    ${mobile(css`
+      display: none;
+    `)}
+  }
 `;
 
 const PostPageHeader = ({ postData }) => {
@@ -152,9 +162,7 @@ const PostPageHeader = ({ postData }) => {
   /**
    * Dùng state số lượng like để hiển thị phần giao diện còn cho chạy ẩn phía background
    * Dùng thêm 1 state disable để disable đi button cho đến khi phía background chạy xong để tránh tình trạng lost update khi spam nút like
-   * Background sẽ cập nhật 2 collection:
-   * - user: cập nhật id post mà user like
-   * - post: cập nhật id của user đã like post này
+   * Background sẽ cập nhật cập nhật id của user đã like post này và tính tổng số count
    *  */
   const [quantityLiked, setQuantityLiked] = useState(0);
   const [isCurrentUserLike, setIsCurrentUserLike] = useState(false);
@@ -173,7 +181,7 @@ const PostPageHeader = ({ postData }) => {
   const [forceDisable, setForceDisable] = useState(false);
 
   // Update field usersLiked trong document post
-  const handleUpdatePost = async () => {
+  const handleUpdatePost = async newQuantityLiked => {
     let newUsersLiked;
     if (postData?.usersLiked && postData.usersLiked.length > 0) {
       newUsersLiked = [...postData.usersLiked];
@@ -193,22 +201,25 @@ const PostPageHeader = ({ postData }) => {
     await updateDoc(doc(db, 'posts', postData.id), {
       ...postData,
       usersLiked: newUsersLiked,
+      likesCount: newQuantityLiked,
     });
   };
 
   const handleSetLike = () => {
-    const handleUpdate = async () => {
+    const handleUpdate = async newQuantityLiked => {
       setForceDisable(true);
-      await handleUpdatePost();
+      await handleUpdatePost(newQuantityLiked);
       setForceDisable(false);
     };
     if (userDocument?.id) {
+      let newQuantityLiked;
       if (isCurrentUserLike) {
-        setQuantityLiked(prev => prev - 1);
+        newQuantityLiked = quantityLiked - 1;
       } else {
-        setQuantityLiked(prev => prev + 1);
+        newQuantityLiked = quantityLiked + 1;
       }
-      handleUpdate();
+      setQuantityLiked(newQuantityLiked);
+      handleUpdate(newQuantityLiked);
       setIsCurrentUserLike(!isCurrentUserLike);
     } else {
       Swal.fire({
@@ -271,7 +282,11 @@ const PostPageHeader = ({ postData }) => {
           </div>
           <div className="meta__social-breakLine">&nbsp;</div>
           <div className="meta__social-right">
-            <FacebookShareButton ref={facebookRef} url={window.location.href}>
+            <FacebookShareButton
+              ref={facebookRef}
+              url={window.location.href}
+              className="meta__social--facebook"
+            >
               <FacebookIcon size={32} round />
             </FacebookShareButton>
             <EmailShareButton url={window.location.href}>

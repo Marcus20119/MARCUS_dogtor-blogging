@@ -12,7 +12,7 @@ import { useScrollOnTop } from '~/hooks';
 import PostPageHeader from './PostPageHeader';
 import PostPageSideSection from './PostPageSideSection';
 import ButtonReadList from './ButtonReadList';
-import { tablet } from '~/styles/responsive';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const PostPageStyled = styled.div`
   .postPage-container {
@@ -24,7 +24,7 @@ const PostPageStyled = styled.div`
   .postPage-mainSection {
     width: 68%;
 
-    ${tablet(css`
+    ${tabletAndMobile(css`
       width: 100%;
     `)}
 
@@ -38,7 +38,7 @@ const PostPageStyled = styled.div`
   .postPage-subSection {
     flex: 1;
 
-    ${tablet(css`
+    ${tabletAndMobile(css`
       display: none;
     `)}
   }

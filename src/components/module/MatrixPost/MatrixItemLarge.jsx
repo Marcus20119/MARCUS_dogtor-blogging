@@ -19,6 +19,9 @@ const MatrixItemLargeStyled = styled.a`
       padding-top: 80%;
       border-radius: 8px;
       overflow: hidden;
+      mask-image: -webkit-radial-gradient(white, black);
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+
       img {
         position: absolute;
         height: 100%;

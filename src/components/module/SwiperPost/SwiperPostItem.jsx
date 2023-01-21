@@ -16,6 +16,8 @@ const SwiperPostItemStyled = styled.a`
     padding-top: 60%;
     border-radius: 6px;
     overflow: hidden;
+    mask-image: -webkit-radial-gradient(white, black);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
 
     img {
       position: absolute;

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import styled, { css } from 'styled-components';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet, tabletAndMobile } from '~/styles/responsive';
 import LoadingMatrixItemLarge from './LoadingMatrixItemLarge';
 import LoadingMatrixItemSmall from './LoadingMatrixItemSmall';
 import MatrixItemLarge from './MatrixItemLarge';
@@ -14,6 +14,10 @@ const MatrixPostStyled = styled.div`
       position: relative;
       width: 100%;
       height: 650px;
+
+      ${mobile(css`
+        height: 550px;
+      `)}
 
       .matrixPost-wrap {
         &__full {
@@ -34,9 +38,18 @@ const MatrixPostStyled = styled.div`
           box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%),
             0px 2px 6px 2px rgb(60 64 67 / 15%);
           border: 1px solid rgba(0, 0, 0, 0.2);
+
+          ${tabletAndMobile(css`
+            width: 100vw !important;
+          `)}
+
           &-container {
             width: 1280px;
             max-width: 85vw;
+
+            ${mobile(css`
+              max-width: 95vw !important;
+            `)}
           }
         }
       }
@@ -63,6 +76,16 @@ const MatrixPostStyled = styled.div`
         'h1 h1 h1 h1 h1 h4 h4 h4'
         'h1 h1 h1 h1 h1 h5 h5 h5';
     `)}
+    ${mobile(css`
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+
+      grid-template-areas:
+        'h1 h1 h1 h1'
+        'h1 h1 h1 h1'
+        'h1 h1 h1 h1'
+        'h1 h1 h1 h1';
+    `)}
   }
   .matrixPostChild {
     &-1 {
@@ -73,21 +96,33 @@ const MatrixPostStyled = styled.div`
       grid-area: h2;
       width: 100%;
 
-      ${tablet(css`
+      ${tabletAndMobile(css`
         display: none;
       `)}
     }
     &-3 {
       grid-area: h3;
       width: 100%;
+
+      ${mobile(css`
+        display: none;
+      `)}
     }
     &-4 {
       grid-area: h4;
       width: 100%;
+
+      ${mobile(css`
+        display: none;
+      `)}
     }
     &-5 {
       grid-area: h5;
       width: 100%;
+
+      ${mobile(css`
+        display: none;
+      `)}
     }
   }
 `;

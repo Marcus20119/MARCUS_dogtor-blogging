@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { convertDate } from '~/helpers';
 import { EyeIcon } from '~/icons';
+import { mobile } from '~/styles/responsive';
 
 const ListPostItemStyled = styled.a`
   width: 100%;
@@ -10,6 +11,10 @@ const ListPostItemStyled = styled.a`
   gap: 12px;
   padding: 16px 0;
   border-bottom: solid 1px #ddd;
+
+  ${mobile(css`
+    align-items: center;
+  `)}
 
   &:first-child {
     padding: 0 0 16px;
@@ -26,11 +31,19 @@ const ListPostItemStyled = styled.a`
       border-radius: 4px;
       background-color: #ccc;
       overflow: hidden;
+      mask-image: -webkit-radial-gradient(white, black);
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+
+      ${mobile(css`
+        width: 105px;
+        height: 85px;
+      `)}
 
       img {
         display: block;
         background-color: #ccc;
-        aspect-ratio: 4/3;
+        height: 100%;
+        width: 100%;
         border-radius: 4px;
         object-fit: cover;
         transform: scale(1);
@@ -50,6 +63,10 @@ const ListPostItemStyled = styled.a`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
+
+      ${mobile(css`
+        font-size: 18px;
+      `)}
     }
     &-overview {
       overflow: hidden;
@@ -63,6 +80,10 @@ const ListPostItemStyled = styled.a`
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+
+      ${mobile(css`
+        align-items: center;
+      `)}
     }
     &-info {
       display: inline-flex;
@@ -70,9 +91,11 @@ const ListPostItemStyled = styled.a`
       gap: 8px;
       font-weight: 500;
 
-      &__createdAt {
-      }
+      &__createdAt,
       &__author {
+        ${mobile(css`
+          font-size: 14px;
+        `)}
       }
     }
     &-view {
@@ -80,6 +103,10 @@ const ListPostItemStyled = styled.a`
       justify-content: center;
       align-items: center;
       gap: 4px;
+
+      ${mobile(css`
+        margin-top: 2px;
+      `)}
 
       div {
         width: 16px;

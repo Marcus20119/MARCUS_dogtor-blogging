@@ -11,10 +11,10 @@ const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ font: [] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
     [{ align: [] }],
+    ['blockquote'],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     ['link', 'image'],
   ],

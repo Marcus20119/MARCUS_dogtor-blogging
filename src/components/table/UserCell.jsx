@@ -8,12 +8,14 @@ const UserCellStyled = styled.div`
 
   .userCell-img {
     width: 60px;
+    height: 60px;
     border-radius: 4px;
 
     img {
       display: block;
       background-color: #ccc;
-      aspect-ratio: 1/1;
+      width: 100%;
+      height: 100%;
       border-radius: 4px;
       object-fit: cover;
       border-radius: 50%;

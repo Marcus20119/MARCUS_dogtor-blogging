@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { isEqual } from 'lodash';
@@ -16,6 +16,7 @@ import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { db } from '~/firebase/firebase-config';
 import { deleteOldImage, uploadImage } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
+import { mobile } from '~/styles/responsive';
 
 const UserInfoPageStyled = styled.div`
   width: 100%;
@@ -27,6 +28,14 @@ const UserInfoPageStyled = styled.div`
       width: 100%;
       display: flex;
       gap: 40px;
+
+      ${mobile(css`
+        flex-direction: column;
+
+        div:first-child {
+          margin: auto auto;
+        }
+      `)}
     }
     &__filed-wrap {
       flex: 1;

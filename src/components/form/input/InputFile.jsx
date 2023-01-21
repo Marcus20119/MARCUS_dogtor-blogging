@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef } from 'react';
 import { useController } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const InputWrapStyled = styled.div`
   position: relative;
@@ -51,6 +52,9 @@ const InputWrapStyled = styled.div`
     letter-spacing: 0.5px;
     font-family: ${props => props.theme.font.tertiary};
     color: ${props => props.theme.color.black};
+    ${tabletAndMobile(css`
+      width: 30%;
+    `)}
   }
   .inputFile-uploadValue {
     display: block;

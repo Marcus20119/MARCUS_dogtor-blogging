@@ -10,7 +10,7 @@ import { useFirebase } from '~/contexts/firebaseContext';
 import { Fragment, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { useEffect } from 'react';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet } from '~/styles/responsive';
 import { useImg } from '~/contexts/imgContext';
 
 const HeaderMainSectionStyled = styled.header`
@@ -22,6 +22,10 @@ const HeaderMainSectionStyled = styled.header`
   margin: 0 auto;
   height: 86px;
   padding: 18px 0;
+
+  ${mobile(css`
+    max-width: 90vw !important;
+  `)}
 
   .headerMainSection-left {
     display: inline-flex;
@@ -56,6 +60,9 @@ const HeaderMainSectionStyled = styled.header`
       width: 400px;
       ${tablet(css`
         width: 300px;
+      `)};
+      ${mobile(css`
+        display: none;
       `)};
     }
 

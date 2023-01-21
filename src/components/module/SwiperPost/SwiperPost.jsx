@@ -6,7 +6,7 @@ import NextBtn from '~/components/Base/Swiper/NextBtn';
 import PrevBtn from '~/components/Base/Swiper/PrevBtn';
 import SwiperPostItem from './SwiperPostItem';
 import LoadingSwiperPostItem from './LoadingSwiperPostItem';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet, tabletAndMobile } from '~/styles/responsive';
 
 const SwiperPostStyled = styled.div`
   width: 100%;
@@ -22,6 +22,10 @@ const SwiperPostStyled = styled.div`
     font-family: ${props => props.theme.font.tertiary};
     letter-spacing: 2px;
     text-shadow: 0 0 1px ${props => props.theme.color.darkBrown};
+
+    ${mobile(css`
+      font-size: 32px;
+    `)}
   }
 
   .swiperPost-gap {
@@ -55,12 +59,20 @@ const SwiperPostStyled = styled.div`
       ${tablet(css`
         right: 28%;
       `)}
+
+      ${mobile(css`
+        right: 14%;
+      `)}
     }
     &::before {
       left: 39%;
 
       ${tablet(css`
         left: 28%;
+      `)}
+
+      ${mobile(css`
+        left: 14%;
       `)}
     }
   }
@@ -90,14 +102,14 @@ const SwiperPostStyled = styled.div`
     &__btn-prev {
       left: -70px;
 
-      ${tablet(css`
+      ${tabletAndMobile(css`
         display: none !important;
       `)}
     }
     &__btn-next {
       right: -70px;
 
-      ${tablet(css`
+      ${tabletAndMobile(css`
         display: none !important;
       `)}
     }
@@ -107,6 +119,9 @@ const SwiperPostStyled = styled.div`
 
     ${tablet(css`
       width: calc((100% - 60px) / 3) !important;
+    `)}
+    ${mobile(css`
+      width: calc(100% - 40px) !important;
     `)}
   }
 `;
@@ -124,8 +139,7 @@ const SwiperPost = ({ posts, title }) => {
       </div>
       <div className="swiperPost-swiper">
         <Swiper spaceBetween={15} slidesPerView="auto">
-          {posts &&
-            posts.length &&
+          {!!posts?.length &&
             posts.length > 0 &&
             posts.map(post => (
               <SwiperSlide key={post.id}>

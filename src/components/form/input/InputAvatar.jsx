@@ -3,7 +3,6 @@ import { useController } from 'react-hook-form';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { useFirebase } from '~/contexts/firebaseContext';
 import { CameraIcon, PhotoIcon } from '~/icons';
 import { useClickOutSide } from '~/hooks';
 import { useOutletContext } from 'react-router-dom';

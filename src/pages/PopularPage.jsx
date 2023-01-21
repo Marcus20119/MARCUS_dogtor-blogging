@@ -7,7 +7,7 @@ import { SidePost } from '~/components/module/SidePost';
 import { db } from '~/firebase/firebase-config';
 import { useMultiDocs } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
-import { tablet } from '~/styles/responsive';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const PopularStyled = styled.div`
   display: flex;
@@ -25,13 +25,13 @@ const PopularStyled = styled.div`
 
     &__main {
       width: 68%;
-      ${tablet(css`
+      ${tabletAndMobile(css`
         width: 100%;
       `)}
     }
     &__sub {
       flex: 1;
-      ${tablet(css`
+      ${tabletAndMobile(css`
         display: none !important;
       `)}
     }

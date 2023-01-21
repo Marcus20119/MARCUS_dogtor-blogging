@@ -1,9 +1,10 @@
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Button from '~/components/button';
 
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import NotFoundPage from '~/pages/NotFoundPage';
+import { mobile, tablet } from '~/styles/responsive';
 import TableSectionAdmin from './TableSectionAdmin';
 
 const ManageCategoriesPageAdminStyled = styled.div`
@@ -21,6 +22,14 @@ const ManageCategoriesPageAdminStyled = styled.div`
     &__category {
       width: 30%;
       min-width: 200px;
+
+      ${tablet(css`
+        width: 45%;
+      `)}
+
+      ${mobile(css`
+        width: fit-content;
+      `)}
     }
   }
 `;

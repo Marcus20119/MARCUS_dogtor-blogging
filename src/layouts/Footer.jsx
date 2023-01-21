@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { mobile } from '~/styles/responsive';
 
 const FooterStyled = styled.div`
   width: 100%;
@@ -10,12 +11,16 @@ const FooterStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     width: 1280px;
     max-width: 85vw;
     border-top: solid 1px #ccc;
     margin: 0 auto;
     padding: 48px 0 36px;
+
+    ${mobile(css`
+      max-width: 95vw !important;
+      padding: 32px 0 36px;
+    `)}
   }
   .footer-category,
   .footer-links {
@@ -36,8 +41,15 @@ const FooterStyled = styled.div`
     }
     a:last-child {
       span {
-        border-right: unset;
+        border-right: solid 1px transparent;
       }
+    }
+    a:nth-child(2) {
+      ${mobile(css`
+        span {
+          border-right: unset;
+        }
+      `)}
     }
 
     a:hover {
@@ -50,6 +62,11 @@ const FooterStyled = styled.div`
   .footer-text {
     font-size: 15px;
     margin-top: 8px;
+  }
+  .footer-category {
+    ${mobile(css`
+      display: none;
+    `)}
   }
 `;
 

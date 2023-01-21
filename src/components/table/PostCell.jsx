@@ -9,13 +9,15 @@ const PostCellStyled = styled.div`
 
   .postCell-img {
     width: 80px;
+    height: 60px;
     border-radius: 4px;
     background-color: #ccc;
 
     img {
       display: block;
       background-color: #ccc;
-      aspect-ratio: 4/3;
+      width: 100%;
+      height: 100%;
       border-radius: 4px;
       object-fit: cover;
     }

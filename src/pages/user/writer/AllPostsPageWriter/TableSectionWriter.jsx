@@ -11,7 +11,7 @@ import {
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
 import LoadingBounce from '~/components/loading/Bounce';
@@ -22,6 +22,7 @@ import {
   IconButton,
   PostCell,
   StatusTag,
+  TableLoading,
 } from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
@@ -30,6 +31,7 @@ import {
   useQuantityOfCollection,
 } from '~/firebase/funcs';
 import { EyeIcon, TrashIcon, WriteIcon } from '~/icons';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const AllPostWriterTableHeadStyled = styled.thead`
   .allPage-firstRow {
@@ -39,6 +41,13 @@ const AllPostWriterTableHeadStyled = styled.thead`
     }
     th:nth-child(2) {
       width: 400px;
+    }
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5) {
+      ${tabletAndMobile(css`
+        width: 150px;
+      `)}
     }
   }
 `;
@@ -295,7 +304,7 @@ const TableSectionWriter = ({ categoryValue, searchValue }) => {
           {isLoading && (
             <tr>
               <td colSpan="5">
-                <LoadingBounce />
+                <TableLoading />
               </td>
             </tr>
           )}

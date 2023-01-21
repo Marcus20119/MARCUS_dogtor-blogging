@@ -11,18 +11,24 @@ import {
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
-import LoadingBounce from '~/components/loading/Bounce';
 
-import { Table, IconLink, IconButton, PostCell } from '~/components/table';
+import {
+  Table,
+  IconLink,
+  IconButton,
+  PostCell,
+  TableLoading,
+} from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
   useMultiDocsPagination,
   useQuantityOfCollection,
 } from '~/firebase/funcs';
 import { EyeIcon, TrashIcon } from '~/icons';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const ReadListReaderTableHeadStyled = styled.thead`
   .readListPage-firstRow {
@@ -31,7 +37,17 @@ const ReadListReaderTableHeadStyled = styled.thead`
       text-align: center !important;
     }
     th:nth-child(2) {
-      width: 600px;
+      width: 500px;
+    }
+    th:nth-child(3) {
+      ${tabletAndMobile(css`
+        width: 180px;
+      `)}
+    }
+    th:nth-child(4) {
+      ${tabletAndMobile(css`
+        width: 120px;
+      `)}
     }
   }
 `;
@@ -283,7 +299,7 @@ const TableSectionReader = ({ categoryValue, searchValue }) => {
           {isLoading && (
             <tr>
               <td colSpan="4">
-                <LoadingBounce />
+                <TableLoading />
               </td>
             </tr>
           )}

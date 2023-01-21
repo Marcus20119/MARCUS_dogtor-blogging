@@ -73,6 +73,8 @@ function App() {
         <Route path="/post/print/:slug" element={<PrintPostPage />} />
 
         <Route path="/user" element={<UserLayout />}>
+          <Route path="user-info" element={<UserInfoPage />} />
+
           <Route path="admin">
             <Route path="all-posts" element={<MangePostsPageAdmin />} />
             <Route path="all-users" element={<ManageUsersPageAdmin />} />
@@ -86,19 +88,18 @@ function App() {
             <Route path="add-user" element={<AddUserPageAdmin />} />
             <Route path="add-category" element={<AddCategoryPageAdmin />} />
             <Route path="favorite-posts" element={<FavoritePostsPage />} />
-            <Route path="user-info" element={<UserInfoPage />} />
+            {/* <Route path="user-info" element={<UserInfoPage />} /> */}
           </Route>
           <Route path="writer">
             <Route path="all-posts" element={<AllPostsPageWriter />} />
             <Route path="add-post" element={<AddPostPageWriter />} />
             <Route path="favorite-posts" element={<FavoritePostsPage />} />
             <Route path="edit-post/:id" element={<EditPostPageWriter />} />
-            <Route path="user-info" element={<UserInfoPage />} />
+            {/* <Route path="user-info" element={<UserInfoPage />} /> */}
           </Route>
           <Route path="reader">
             <Route path="read-list" element={<ReadListPageReader />} />
             <Route path="favorite-posts" element={<FavoritePostsPage />} />
-            <Route path="user-info" element={<UserInfoPage />} />
           </Route>
         </Route>
         <Route path="/" element={<MainLayout />}>

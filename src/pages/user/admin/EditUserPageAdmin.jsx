@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { isEqual } from 'lodash';
@@ -18,6 +18,7 @@ import { deleteOldImage, uploadImage, useSingleDoc } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
 import { Radio } from '~/components/form/radio';
 import { userRoles } from '~/utils/constants';
+import { mobile } from '~/styles/responsive';
 
 const EditUserPageAdminStyled = styled.div`
   width: 100%;
@@ -29,6 +30,14 @@ const EditUserPageAdminStyled = styled.div`
       width: 100%;
       display: flex;
       gap: 40px;
+
+      ${mobile(css`
+        flex-direction: column;
+
+        div:first-child {
+          margin: auto auto;
+        }
+      `)}
     }
     &__filed-wrap {
       flex: 1;

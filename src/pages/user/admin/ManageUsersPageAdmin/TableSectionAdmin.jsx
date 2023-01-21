@@ -12,12 +12,17 @@ import { upperFirst } from 'lodash';
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import Button from '~/components/button';
-import LoadingBounce from '~/components/loading/Bounce';
 
-import { Table, IconLink, IconButton, UserCell } from '~/components/table';
+import {
+  Table,
+  IconLink,
+  IconButton,
+  UserCell,
+  TableLoading,
+} from '~/components/table';
 import { db } from '~/firebase/firebase-config';
 import {
   deleteOldImage,
@@ -25,6 +30,7 @@ import {
   useQuantityOfCollection,
 } from '~/firebase/funcs';
 import { TrashIcon, WriteIcon } from '~/icons';
+import { tabletAndMobile } from '~/styles/responsive';
 
 const AllUsersAdminTableHeadStyled = styled.thead`
   .allPage-firstRow {
@@ -34,6 +40,22 @@ const AllUsersAdminTableHeadStyled = styled.thead`
     }
     th:nth-child(2) {
       width: 300px;
+      ${tabletAndMobile(css`
+        width: 250px;
+      `)}
+    }
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5),
+    th:nth-child(6) {
+      ${tabletAndMobile(css`
+        width: 100px;
+      `)}
+    }
+    th:nth-child(7) {
+      ${tabletAndMobile(css`
+        width: 120px;
+      `)}
     }
   }
 `;
@@ -239,7 +261,7 @@ const TableSectionAdmin = ({ roleValue }) => {
           {isLoading && (
             <tr>
               <td colSpan="7">
-                <LoadingBounce />
+                <TableLoading />
               </td>
             </tr>
           )}

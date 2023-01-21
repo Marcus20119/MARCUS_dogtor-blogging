@@ -6,12 +6,13 @@ import {
   useOutletContext,
   useSearchParams,
 } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { SelectNoForm } from '~/components/form/select';
 import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { SearchBar } from '~/components/search';
 import NotFoundPage from '~/pages/NotFoundPage';
+import { mobile } from '~/styles/responsive';
 import TableSectionAdmin from './TableSectionAdmin';
 
 const ManagePostsPageAdminStyled = styled.div`
@@ -26,9 +27,22 @@ const ManagePostsPageAdminStyled = styled.div`
     width: 100%;
     margin-bottom: 24px;
 
+    ${mobile(css`
+      flex-direction: column;
+      gap: 16px;
+
+      div:first-child {
+        width: 100% !important;
+      }
+    `)}
+
     &__category {
       width: 30%;
       min-width: 200px;
+
+      ${mobile(css`
+        width: 100%;
+      `)}
     }
   }
 `;

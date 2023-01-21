@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Button from '~/components/button';
+import { mobile, tablet } from '~/styles/responsive';
 
 const NotFoundPageStyled = styled.div`
   position: fixed;
@@ -21,6 +22,10 @@ const NotFoundPageStyled = styled.div`
     justify-content: center;
     align-items: center;
 
+    ${mobile(css`
+      width: 90%;
+    `)}
+
     &-header {
       display: flex;
       justify-content: center;
@@ -32,6 +37,10 @@ const NotFoundPageStyled = styled.div`
         line-height: 1;
         transform: translateY(-10%);
         text-shadow: 0 0 5px #dd7e49;
+
+        ${mobile(css`
+          font-size: 120px;
+        `)}
       }
       img {
         display: block;
@@ -39,6 +48,11 @@ const NotFoundPageStyled = styled.div`
         height: 250px;
         object-fit: cover;
         object-position: center;
+
+        ${mobile(css`
+          width: 120px;
+          height: 150px;
+        `)}
       }
     }
     &-text {
@@ -51,9 +65,18 @@ const NotFoundPageStyled = styled.div`
       font-family: ${props => props.theme.font.tertiary};
       margin-bottom: 28px;
 
+      ${tablet(css`
+        width: 100%;
+      `)}
+
+      ${mobile(css`
+        width: 90%;
+      `)}
+
       &__top {
         font-weight: 700;
         font-size: 20px;
+        text-align: center;
         color: ${props => props.theme.color.brown};
       }
       &__bottom {

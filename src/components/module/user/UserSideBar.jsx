@@ -1,8 +1,10 @@
 import { signOut } from 'firebase/auth';
+import { Fragment } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { useFirebase } from '~/contexts/firebaseContext';
+import { useImg } from '~/contexts/imgContext';
 import { auth } from '~/firebase/firebase-config';
 import { UserAvatar } from '.';
 
@@ -40,7 +42,7 @@ const adminTabs = [
   {
     name: 'User Info',
     iconClass: 'bx bx-user',
-    path: '/user/admin/user-info',
+    path: '/user/user-info',
   },
   {
     name: 'Log Out',
@@ -68,7 +70,7 @@ const writerTabs = [
   {
     name: 'User Info',
     iconClass: 'bx bx-user',
-    path: '/user/writer/user-info',
+    path: '/user/user-info',
   },
   {
     name: 'Log Out',
@@ -91,7 +93,7 @@ const readerTabs = [
   {
     name: 'User Info',
     iconClass: 'bx bx-user',
-    path: '/user/reader/user-info',
+    path: '/user/user-info',
   },
   {
     name: 'Log Out',
@@ -114,7 +116,7 @@ const UserSideBarStyled = styled.div`
     box-shadow: 0px 1px 2px 0px #8d351a30, 0px 2px 6px 2px #8d351a30;
     border-radius: 8px;
     border: solid 1px #8d351a10;
-    background-color: ${props => props.theme.color.skin};
+    background-color: #f6eedf;
     font-family: ${props => props.theme.font.tertiary};
 
     &__header {
@@ -155,6 +157,7 @@ const UserSideBarStyled = styled.div`
         margin-bottom: 2px;
       }
       span {
+        font-size: 16px;
       }
     }
     &__tab:hover,
@@ -167,8 +170,8 @@ const UserSideBarStyled = styled.div`
 
 const UserSideBar = () => {
   const { userDocument, imgURLs } = useFirebase();
-
   const navigateTo = useNavigate();
+  const { imgReady } = useImg();
 
   const handleLogOut = navigatePath => {
     Swal.fire({
@@ -196,40 +199,44 @@ const UserSideBar = () => {
       : readerTabs;
 
   return (
-    <UserSideBarStyled>
-      <div className="userSidebar">
-        <div className="userSidebar__header">
-          <UserAvatar
-            src={userDocument?.avatar?.URL || imgURLs.transparent}
-            alt="user-avatar"
-            size="40px"
-          />
-          {userDocument?.userName && (
-            <span>{userDocument.userName.split(' ')[0]}</span>
-          )}
-        </div>
-        {tabs.map((tab, index) => (
-          <NavLink
-            key={`userSidebar-${index}`}
-            to={tab.path}
-            className={({ isActive }) =>
-              isActive
-                ? 'userSidebar__tab userSidebar__tab--active'
-                : 'userSidebar__tab'
-            }
-            onClick={e => {
-              if (tab.name === 'Log Out') {
-                e.preventDefault();
-                handleLogOut(tab.path);
-              }
-            }}
-          >
-            <i className={tab.iconClass}></i>
-            <span>{tab.name}</span>
-          </NavLink>
-        ))}
-      </div>
-    </UserSideBarStyled>
+    <Fragment>
+      {imgReady && (
+        <UserSideBarStyled>
+          <div className="userSidebar">
+            <div className="userSidebar__header">
+              <UserAvatar
+                src={userDocument?.avatar?.URL || imgURLs.transparent}
+                alt="user-avatar"
+                size="40px"
+              />
+              {userDocument?.userName && (
+                <span>{userDocument.userName.split(' ')[0]}</span>
+              )}
+            </div>
+            {tabs.map((tab, index) => (
+              <NavLink
+                key={`userSidebar-${index}`}
+                to={tab.path}
+                className={({ isActive }) =>
+                  isActive
+                    ? 'userSidebar__tab userSidebar__tab--active'
+                    : 'userSidebar__tab'
+                }
+                onClick={e => {
+                  if (tab.name === 'Log Out') {
+                    e.preventDefault();
+                    handleLogOut(tab.path);
+                  }
+                }}
+              >
+                <i className={tab.iconClass}></i>
+                <span>{tab.name}</span>
+              </NavLink>
+            ))}
+          </div>
+        </UserSideBarStyled>
+      )}
+    </Fragment>
   );
 };
 

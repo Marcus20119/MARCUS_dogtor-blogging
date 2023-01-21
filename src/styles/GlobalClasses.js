@@ -77,6 +77,7 @@ export const GlobalClasses = css`
     }
     ul li {
       list-style: disc !important;
+      line-height: 2;
     }
     ol li {
       list-style-type: decimal !important;

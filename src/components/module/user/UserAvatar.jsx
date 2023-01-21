@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const UserAvatarStyled = styled.div`
   display: block;

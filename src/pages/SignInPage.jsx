@@ -14,7 +14,7 @@ import Button from '~/components/button';
 import { auth } from '~/firebase/firebase-config';
 import LoadingBounce from '~/components/loading/Bounce';
 import { useImg } from '~/contexts/imgContext';
-import { tablet } from '~/styles/responsive';
+import { mobile, tablet } from '~/styles/responsive';
 
 const StyledSignInPage = styled.div`
   position: relative;
@@ -40,6 +40,10 @@ const StyledSignInPage = styled.div`
     ${tablet(css`
       width: 70%;
     `)}
+
+    ${mobile(css`
+      width: 90%;
+    `)}
   }
 
   .sip-dogtor-logo {
@@ -61,7 +65,7 @@ const StyledSignInPage = styled.div`
     align-items: flex-start;
     gap: 24px;
     width: 70%;
-    min-width: 350px;
+    min-width: 320px;
     margin-bottom: 28px;
   }
   .sip-question {
@@ -166,8 +170,11 @@ const SignInPage = () => {
                 </Link>
               </div>
               <Button
-                width="350px"
-                style={{ marginTop: '12px', padding: '12px 16px' }}
+                width="100%"
+                style={{
+                  marginTop: '12px',
+                  padding: '12px 16px',
+                }}
                 type="submit"
                 isSubmitting={isSubmitting}
               >

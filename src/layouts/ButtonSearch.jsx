@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { mobile } from '~/styles/responsive';
 
-const ButtonEditPostStyled = styled.a`
+const ButtonSearchStyled = styled.button`
   position: fixed;
   bottom: 100px;
   right: 35px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   width: 50px;
@@ -14,11 +14,14 @@ const ButtonEditPostStyled = styled.a`
   border-radius: 50%;
   background-color: ${props => props.theme.color.brown};
   color: ${props => props.theme.color.skin} !important;
-  font-size: 26px;
+  font-size: 24px;
   cursor: pointer;
   opacity: 0.95;
+  z-index: 777;
+  font-weight: 900;
 
   ${mobile(css`
+    display: flex;
     right: 20px;
   `)}
 
@@ -27,20 +30,18 @@ const ButtonEditPostStyled = styled.a`
   }
 `;
 
-const ButtonEditPost = ({ navigatePath }) => {
+const ButtonSearch = () => {
   const navigateTo = useNavigate();
   return (
-    <ButtonEditPostStyled
-      href={navigatePath}
-      onClick={e => {
-        e.preventDefault();
-        navigateTo(navigatePath);
+    <ButtonSearchStyled
+      title="Search"
+      onClick={() => {
+        navigateTo('/search?layoutSearch=');
       }}
-      title="Edit post"
     >
-      <i className="bx bx-edit"></i>
-    </ButtonEditPostStyled>
+      <i className="bx bx-search"></i>
+    </ButtonSearchStyled>
   );
 };
 
-export default ButtonEditPost;
+export default ButtonSearch;

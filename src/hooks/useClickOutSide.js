@@ -4,16 +4,12 @@ import { useEffect, useRef, useState } from 'react';
  *
  */
 
-function useClickOutSide(dom = 'button') {
+function useClickOutSide() {
   const [show, setShow] = useState(false);
   const nodeRef = useRef(null);
   useEffect(() => {
     function handleClickOutSide(e) {
-      if (
-        nodeRef.current &&
-        !nodeRef.current.contains(e.target) &&
-        !e.target.matches(dom)
-      ) {
+      if (nodeRef.current && !nodeRef.current.contains(e.target)) {
         setShow(false);
       }
     }

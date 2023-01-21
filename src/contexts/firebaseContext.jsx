@@ -3,7 +3,11 @@ import { Fragment, useContext } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
 import { db } from '~/firebase/firebase-config';
-import { useMultiDocs, useSingleDocRealtime } from '~/firebase/funcs';
+import {
+  useMultiDocs,
+  useSingleDoc,
+  useSingleDocRealtime,
+} from '~/firebase/funcs';
 import { useAuth } from './authContext';
 
 const FirebaseContext = createContext();
@@ -20,7 +24,7 @@ const FirebaseProvider = props => {
   const categoriesName = categories.map(category => category.name);
 
   // Get user document
-  const { document: userDocument, setDocument } = useSingleDocRealtime({
+  const { document: userDocument, setDocument } = useSingleDoc({
     col: 'users',
     id: userInfo.uid,
   });

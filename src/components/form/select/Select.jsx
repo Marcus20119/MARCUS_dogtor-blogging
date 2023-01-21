@@ -5,6 +5,7 @@ import { useSelect } from '~/hooks';
 
 const SelectStyled = styled.div`
   width: 100%;
+  min-height: 50px;
 
   .select-wrap {
     position: relative;

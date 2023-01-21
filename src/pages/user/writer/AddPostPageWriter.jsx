@@ -2,7 +2,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import slugify from 'slugify';
 import * as yup from 'yup';
 import Swal from 'sweetalert2';
@@ -19,6 +19,7 @@ import UserSectionTitle from '~/components/module/user/UserSectionTitle';
 import { uploadImage } from '~/firebase/funcs';
 import { useScrollOnTop } from '~/hooks';
 import NotFoundPage from '~/pages/NotFoundPage';
+import { mobile } from '~/styles/responsive';
 
 const AddPostPageWriterStyled = styled.div`
   width: 100%;
@@ -32,6 +33,11 @@ const AddPostPageWriterStyled = styled.div`
       grid-template-rows: repeat(3, minmax(0, 1fr));
       gap: 36px;
       margin-bottom: 36px;
+
+      ${mobile(css`
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        grid-template-rows: unset;
+      `)}
     }
   }
 `;

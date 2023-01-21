@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { useNavigate, useOutletContext } from 'react-router-dom';
@@ -23,6 +23,7 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
+import { mobile } from '~/styles/responsive';
 
 const AddUserPageAdminStyled = styled.div`
   width: 100%;
@@ -34,6 +35,14 @@ const AddUserPageAdminStyled = styled.div`
       width: 100%;
       display: flex;
       gap: 40px;
+
+      ${mobile(css`
+        flex-direction: column;
+
+        div:first-child {
+          margin: auto auto;
+        }
+      `)}
     }
     &__filed-wrap {
       flex: 1;

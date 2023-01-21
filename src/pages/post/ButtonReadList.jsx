@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { db } from '~/firebase/firebase-config';
+import { mobile } from '~/styles/responsive';
 
 const ButtonReadListStyled = styled.button`
   position: fixed;
@@ -21,6 +22,10 @@ const ButtonReadListStyled = styled.button`
   font-size: 24px;
   cursor: pointer;
   opacity: 0.95;
+
+  ${mobile(css`
+    right: 20px;
+  `)}
 
   :hover {
     opacity: 0.8;
