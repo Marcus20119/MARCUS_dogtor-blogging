@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-// import createHistory from 'history/createBrowserHistory';
 
 import MainLayout from './layouts/MainLayout';
 import UserLayout from './layouts/UserLayout';
