@@ -25,6 +25,7 @@ const ButtonReadListStyled = styled.button`
 
   ${mobile(css`
     right: 20px;
+    bottom: 170px;
   `)}
 
   :hover {

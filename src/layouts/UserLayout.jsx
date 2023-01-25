@@ -2,10 +2,11 @@ import { upperFirst } from 'lodash';
 import { Fragment, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import LoadingBounce from '~/components/loading/Bounce';
 import { UserSideBar } from '~/components/module';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useImg } from '~/contexts/imgContext';
-import { mobile, tablet, tabletAndMobile } from '~/styles/responsive';
+import { mobile, tabletAndMobile } from '~/styles/responsive';
 import ButtonMenu from './ButtonMenu';
 import { ButtonScrollOnTop } from './ButtonScrollOnTop';
 import Footer from './Footer';
@@ -42,6 +43,10 @@ const ContainerStyled = styled.div`
       max-width: 100%;
     `)}
   }
+  .userLayout-loadingSection {
+    width: 100%;
+    margin-top: 36px;
+  }
 `;
 
 const UserLayout = () => {
@@ -63,7 +68,7 @@ const UserLayout = () => {
               <UserSideBar />
             </div>
             <div className="userLayout-right">
-              {userDocument?.id && (
+              {userDocument?.id ? (
                 <Outlet
                   context={{
                     userDocument,
@@ -72,6 +77,10 @@ const UserLayout = () => {
                     imgURLs,
                   }}
                 />
+              ) : (
+                <div className="userLayout-loadingSection">
+                  <LoadingBounce />
+                </div>
               )}
             </div>
           </ContainerStyled>

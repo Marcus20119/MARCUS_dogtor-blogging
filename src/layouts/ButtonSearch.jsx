@@ -32,6 +32,7 @@ const ButtonSearchStyled = styled.button`
 
 const ButtonSearch = () => {
   const navigateTo = useNavigate();
+
   return (
     <ButtonSearchStyled
       title="Search"

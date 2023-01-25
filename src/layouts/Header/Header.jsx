@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { tabletAndMobile } from '~/styles/responsive';
 
 import { HeaderMainSection } from './HeaderMainSection';
 import HeaderNavSection from './HeaderNavSection';
@@ -6,7 +7,11 @@ import HeaderNavSection from './HeaderNavSection';
 const HeaderStyled = styled.header`
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  width: calc(100vw - 12px);
+
+  ${tabletAndMobile(css`
+    width: 100vw;
+  `)}
 `;
 
 const Header = () => {

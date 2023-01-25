@@ -44,7 +44,6 @@ const AddPostPageWriterStyled = styled.div`
 const schema = yup.object({
   title: yup.string().required('Required').min(35, 'Too short'),
   author: yup.string().required('required'),
-  slug: yup.string(),
   category: yup.string().required('required'),
   overview: yup.string().required('required').min(70, 'Too short'),
   image: yup.string().required('required'),
@@ -94,7 +93,7 @@ const AddPostPageWriter = () => {
           const { image, ...cloneData } = data;
           // Custom value
           cloneData.slug =
-            slugify(data.slug || data.title, {
+            slugify(data.title, {
               remove: /[*+~.()'"!:@?]/g,
               lower: true,
             }) +
@@ -135,7 +134,6 @@ const AddPostPageWriter = () => {
         image: '',
         category: '',
         author: '',
-        slug: '',
         overview: '',
       });
       setContent('');
@@ -204,11 +202,6 @@ const AddPostPageWriter = () => {
               options={categoriesName}
               secondary
             ></Select>
-          </Field>
-
-          <Field>
-            <Label id="slug">Slug</Label>
-            <Input control={control} name="slug" secondary></Input>
           </Field>
         </div>
         <Field>

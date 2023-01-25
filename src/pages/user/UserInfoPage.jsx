@@ -56,7 +56,10 @@ const schema = yup.object({
     .string()
     .matches(/^[0-9]+$/, 'Must be a valid phone number')
     .min(10, 'Must be a valid phone number')
-    .max(10, 'Must be a valid phone number'),
+    .max(10, 'Must be a valid phone number')
+    // cho phép dữ liệu trống
+    .nullable()
+    .transform(value => (!!value ? value : null)),
 });
 
 const UserInfoPage = () => {

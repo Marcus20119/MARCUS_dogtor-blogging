@@ -20,6 +20,7 @@ const ButtonEditPostStyled = styled.a`
 
   ${mobile(css`
     right: 20px;
+    bottom: 170px;
   `)}
 
   :hover {
@@ -29,6 +30,7 @@ const ButtonEditPostStyled = styled.a`
 
 const ButtonEditPost = ({ navigatePath }) => {
   const navigateTo = useNavigate();
+
   return (
     <ButtonEditPostStyled
       href={navigatePath}

@@ -81,6 +81,7 @@ export const GlobalClasses = css`
     }
     ol li {
       list-style-type: decimal !important;
+      line-height: 2;
     }
     ul,
     ol {

@@ -89,6 +89,10 @@ const InputAvatarWrapStyled = styled.div`
     transform: scale(0);
     transform-origin: 50% 0;
     animation: zoomOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
     li {
       display: flex;

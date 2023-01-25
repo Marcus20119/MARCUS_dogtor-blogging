@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import LoadingBounce from '~/components/loading/Bounce';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useImg } from '~/contexts/imgContext';
 import { mobile } from '~/styles/responsive';
@@ -22,6 +23,11 @@ const ContainerStyled = styled.div`
   ${mobile(css`
     max-width: 95vw !important;
   `)}
+
+  .mainLayout-loadingSection {
+    width: 100%;
+    margin-top: 36px;
+  }
 `;
 
 const MainLayout = ({ isFull = false }) => {
@@ -36,8 +42,12 @@ const MainLayout = ({ isFull = false }) => {
         <MainLayoutStyled>
           <Header />
           <ContainerStyled isFull={isFull}>
-            {!!categories?.length && categories.length > 0 && (
+            {!!categories?.length && categories.length > 0 ? (
               <Outlet context={{ categories, categoriesName, imgURLs }} />
+            ) : (
+              <div className="mainLayout-loadingSection">
+                <LoadingBounce />
+              </div>
             )}
           </ContainerStyled>
           <ButtonSearch />

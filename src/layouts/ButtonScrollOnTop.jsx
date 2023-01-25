@@ -7,7 +7,7 @@ const ButtonScrollOnTopStyled = styled.div`
   position: fixed;
   bottom: 30px;
   right: 35px;
-  display: flex;
+  display: ${props => (props.show ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   width: 50px;
@@ -18,9 +18,11 @@ const ButtonScrollOnTopStyled = styled.div`
   font-size: 30px;
   cursor: pointer;
   opacity: 0.95;
+  z-index: 777;
 
   ${mobile(css`
     right: 20px;
+    display: flex !important;
   `)}
 
   :hover {
@@ -32,7 +34,7 @@ const ButtonScrollOnTop = () => {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 500) {
+      if (window.scrollY > 200) {
         setShow(true);
       } else {
         setShow(false);
@@ -51,14 +53,13 @@ const ButtonScrollOnTop = () => {
 
   return (
     <Fragment>
-      {show && (
-        <ButtonScrollOnTopStyled
-          onClick={handleScrollOnTop}
-          title="Scroll to top"
-        >
-          <i className="bx bx-up-arrow-alt"></i>
-        </ButtonScrollOnTopStyled>
-      )}
+      <ButtonScrollOnTopStyled
+        onClick={handleScrollOnTop}
+        title="Scroll to top"
+        show={show}
+      >
+        <i className="bx bx-up-arrow-alt"></i>
+      </ButtonScrollOnTopStyled>
     </Fragment>
   );
 };

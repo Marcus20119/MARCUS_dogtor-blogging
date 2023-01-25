@@ -8,6 +8,7 @@ import {
 } from 'firebase/firestore';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import Button from '~/components/button';
 import { db } from '~/firebase/firebase-config';
@@ -15,7 +16,6 @@ import {
   useMultiDocsPagination,
   useQuantityOfCollection,
 } from '~/firebase/funcs';
-import { useState } from 'react';
 import LoadingBounce from '~/components/loading/Bounce';
 import ListPostItem from './ListPostItem';
 
@@ -26,7 +26,11 @@ const ListPostStyled = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 32px;
+    margin-bottom: ${props =>
+      props.posts && props.posts.length === 0 ? '0' : '32px'};
+  }
+  .listPost-loading {
+    margin: 0 auto 32px;
   }
 `;
 
@@ -155,7 +159,7 @@ const ListPost = ({
     setNextQuery(nextDataQuery);
   };
   return (
-    <ListPostStyled>
+    <ListPostStyled posts={posts}>
       {!isLoadingFirstTime && (
         <div className="listPost-wrap">
           {posts &&
@@ -166,11 +170,11 @@ const ListPost = ({
         </div>
       )}
       {isLoading && (
-        <div style={{ margin: '0 auto 32px' }}>
+        <div className="listPost-loading">
           <LoadingBounce />
         </div>
       )}
-      {!isLoading && posts && posts.length === 0 && (
+      {!isLoading && !searchQuery && posts && posts.length === 0 && (
         <span>You still don't have any posts about this section yet! </span>
       )}
       {!isLoading && searchQuery && posts && posts.length === 0 && (

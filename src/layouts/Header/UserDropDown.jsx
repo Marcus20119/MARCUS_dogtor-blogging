@@ -32,6 +32,10 @@ const UserDropDownStyled = styled.div`
   transform: scale(0);
   transform-origin: 90% 0;
   animation: zoomOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 666;
 
   .userDropDown-header {
@@ -113,7 +117,7 @@ const UserDropDownStyled = styled.div`
 `;
 
 const UserDropDown = ({ setShow }) => {
-  const { userDocument, imgURLs } = useFirebase();
+  const { userDocument } = useFirebase();
   const navigateTo = useNavigate();
   const [userItems, setUserItems] = useState([]);
   useEffect(() => {
@@ -213,6 +217,7 @@ const UserDropDown = ({ setShow }) => {
           onClick={e => {
             e.preventDefault();
             navigateTo('/user/user-info');
+            setShow(false);
           }}
         >
           <UserAvatar

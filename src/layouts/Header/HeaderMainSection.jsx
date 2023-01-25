@@ -12,6 +12,7 @@ import { debounce } from 'lodash';
 import { useEffect } from 'react';
 import { mobile, tablet } from '~/styles/responsive';
 import { useImg } from '~/contexts/imgContext';
+import { useAuth } from '~/contexts/authContext';
 
 const HeaderMainSectionStyled = styled.header`
   display: flex;
@@ -75,7 +76,8 @@ const HeaderMainSectionStyled = styled.header`
 const HeaderMainSection = () => {
   const navigateTo = useNavigate();
   const { imgReady } = useImg();
-  const { userDocument } = useFirebase();
+  const { userDocument, imgURLs } = useFirebase();
+  const { userInfo } = useAuth();
   const { show, setShow, nodeRef } = useClickOutSide();
   const { pathname } = useLocation();
   const [query] = useSearchParams();
@@ -140,13 +142,16 @@ const HeaderMainSection = () => {
                 onChange={handleSetLayoutSearchValue}
               />
             </div>
-            {userDocument.email ? (
+            {userInfo.email ? (
               <div
                 ref={nodeRef}
                 className="headerMainSection-right__user-wrapper"
               >
                 <UserAvatar
-                  src={userDocument.avatar.URL}
+                  src={
+                    (userDocument?.avatar?.URL && userDocument.avatar.URL) ||
+                    imgURLs.userAvatar
+                  }
                   alt="user-avatar"
                   onClick={() => setShow(!show)}
                 />

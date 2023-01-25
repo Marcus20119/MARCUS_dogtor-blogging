@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useFirebase } from '~/contexts/firebaseContext';
 import { useClickOutSide } from '~/hooks';
-import { mobile, tablet } from '~/styles/responsive';
+import { mobile, tablet, tabletAndMobile } from '~/styles/responsive';
 import TabGroup from './TabGroup';
 
 const tabs = [
@@ -24,7 +24,7 @@ const tabs = [
 
 const HeaderNavSectionStyled = styled.div`
   position: relative;
-  width: 100vw;
+  width: calc(100vw - 12px);
   background-color: #693626;
   padding: 10px 0;
   z-index: 665;
@@ -37,6 +37,10 @@ const HeaderNavSectionStyled = styled.div`
       left: 0;
       background-color: #693626;
     `};
+
+  ${tabletAndMobile(css`
+    width: 100vw;
+  `)}
 
   .headerNavSection {
     display: flex;
