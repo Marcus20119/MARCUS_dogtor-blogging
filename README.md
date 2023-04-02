@@ -31,6 +31,7 @@ The Dogtor Blogging website is a user-friendly platform that allows individuals 
   - react-hook-form
 - Others
   - sweetalert2
+  - swiper
   - swr
 
 ### `Back End`
