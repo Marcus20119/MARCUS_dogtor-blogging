@@ -11,7 +11,7 @@ If you want to access `Admin` or `Writer` Privileges, try 2 accounts below:
 
 ## Project Description
 
-The Dogtor Blogging website is a user-friendly platform that allows individuals to create and publish their own blog posts on a variety of topics. The website's simple and intuitive interface makes it easy for users to create, edit, and publish blog posts with ease. Additionally, the platform offers a range of features, including the ability to like posts, print posts, search for specific topics, and explore popular content. The Monkey Blogging website serves as a hub for individuals to share their thoughts, insights, and experiences with a wider audience.
+The Dogtor Blogging website is a user-friendly platform that allows individuals to create and publish their own blog posts on a variety of topics. The website's simple and intuitive interface makes it easy for users to create, edit, and publish blog posts with ease. Additionally, the platform offers a range of features, including the ability to like posts, print posts, search for specific topics, and explore popular content. The Dogtor Blogging website serves as a hub for individuals to share their thoughts, insights, and experiences with a wider audience.
 
 ### <img src="https://github.com/Marcus20119/IMAGES/blob/main/dogtor_blogging/dogtor-home-page.png?raw=true" alt="Home page" style="display:block;border-radius:8px;"></img>
 
@@ -58,7 +58,7 @@ The "Manage" feature on Dogtor Blogging lets users easily edit, delete, and publ
 
 ### `Print`
 
-The "Print" feature on the Dogtor Blogging website allows users to easily print blog posts for personal use. Users can access the "Print" feature from individual blog posts, such as "Chewy's Letter to Chewy Claus to Make Pets Jolly All Holiday Season Long," by clicking the "Print" button on the post's page. The feature provides a printer-friendly version of the post's content, which users can then print for their personal records or reference. Overall, the "Print" feature offers a convenient way for users to access and save their favorite blog posts from the Monkey Blogging website.
+The "Print" feature on the Dogtor Blogging website allows users to easily print blog posts for personal use. Users can access the "Print" feature from individual blog posts, such as "Chewy's Letter to Chewy Claus to Make Pets Jolly All Holiday Season Long," by clicking the "Print" button on the post's page. The feature provides a printer-friendly version of the post's content, which users can then print for their personal records or reference. Overall, the "Print" feature offers a convenient way for users to access and save their favorite blog posts from the Dogtor Blogging website.
 
 ### <img src="https://github.com/Marcus20119/IMAGES/blob/main/dogtor_blogging/dogtor-print.png?raw=true" alt="Print" style="display:block;border-radius:8px;"></img>
 
@@ -72,3 +72,4 @@ The Dogtor Blogging website has a responsive design that adjusts to fit the scre
 
 - Load more
 - Search post, filter by category
+- Skeleton loading
