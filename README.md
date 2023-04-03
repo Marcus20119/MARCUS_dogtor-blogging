@@ -28,7 +28,7 @@ The Dogtor Blogging website is a user-friendly platform that allows individuals 
   - react-share
   - react-toastify
   - react-quill
-  - react-hook-form
+  - react-hook-form + yup
 - Others
   - sweetalert2
   - swiper
