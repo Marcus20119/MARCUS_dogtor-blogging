@@ -58,7 +58,7 @@ The "Manage" feature on Dogtor Blogging lets users easily edit, delete, and publ
 
 ### `Print`
 
-The "Print" feature on the Dogtor Blogging website allows users to easily print blog posts for personal use. Users can access the "Print" feature from individual blog posts, such as "Chewy's Letter to Chewy Claus to Make Pets Jolly All Holiday Season Long," by clicking the "Print" button on the post's page. The feature provides a printer-friendly version of the post's content, which users can then print for their personal records or reference. Overall, the "Print" feature offers a convenient way for users to access and save their favorite blog posts from the Dogtor Blogging website.
+The "Print" feature on the Dogtor Blogging website allows users to easily print blog posts for personal use. Users can access the "Print" feature from individual blog posts by clicking the "Print" button on the post's page. The feature provides a printer-friendly version of the post's content, which users can then print for their personal records or reference. Overall, the "Print" feature offers a convenient way for users to access and save their favorite blog posts from the Dogtor Blogging website.
 
 ### <img src="https://github.com/Marcus20119/IMAGES/blob/main/dogtor_blogging/dogtor-print.png?raw=true" alt="Print" style="display:block;border-radius:8px;"></img>
 
