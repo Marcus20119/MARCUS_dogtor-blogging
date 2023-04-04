@@ -101,7 +101,7 @@ const PostPage = () => {
             className="printPostPage-printBtn"
             onClick={() => window.print()}
           >
-            <i class="bx bxs-printer"></i>
+            <i className="bx bxs-printer"></i>
             <span>Print This Post</span>
           </div>
         </Fragment>

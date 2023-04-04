@@ -3,7 +3,6 @@ import { ThemeProvider } from 'styled-components';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,6 +11,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import AuthProvider from './contexts/authContext';
 import FirebaseProvider from './contexts/firebaseContext';
 
+import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import ImgProvider from './contexts/imgContext';
