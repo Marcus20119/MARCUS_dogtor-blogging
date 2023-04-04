@@ -2,7 +2,7 @@
 
 You can explore this website with `Reader` Privileges by yourself [here](https://monkey-blogging-4878f.web.app).
 
-If you want to access `Admin` or `Writer` Privileges, try 2 accounts below:
+If you want to access `Admin` or `Writer` Privileges, try 2 accounts below: 
  
 |           | Email                              | Password    |
 | --------- | ---------------------------------- | ------------|
